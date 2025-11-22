@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2px0xjglf7oo"]
+
+[sub_resource type="GDScript" id="GDScript_puj50"]
+script/source = "extends CanvasLayer
+class_name ScreenFader
+
+# --- Signals ---
+signal fade_finished # Emitted when a fade_in or fade_out operation completes
+
+# --- Node References ---
+@onready var fade_rect: ColorRect = $FadeRect
+
+# --- State ---
+var tween: Tween # Only declared here, initialized in fade functions
+
+func _ready():
+	# Ensure the ColorRect is set up correctly initially
+	fade_rect.visible = true
+	fade_rect.modulate.a = 1.0
+
+## Fades the screen from black (or color) to transparent.
+func fade_in(duration := 1.0) -> void:
+	# Ensure the rect starts visible and fully opaque
+	fade_rect.visible = true
+	fade_rect.modulate.a = 1.0
+	
+	# Stop any currently running tween
+	if is_instance_valid(tween):
+		tween.kill()
+	
+	tween = create_tween()
+	
+	# Connect the completion signal
+	tween.finished.connect(Callable(self, \"_on_fade_complete\").bind(0.0))
+	
+	# Tween Alpha from 1.0 (Opaque) to 0.0 (Transparent)
+	tween.tween_property(fade_rect, \"modulate:a\", 0.0, duration)
+
+## Fades the screen from transparent to black (or color).
+func fade_out(duration := 1.0) -> void:
+	# Ensure the rect starts visible and fully transparent
+	fade_rect.visible = true
+	fade_rect.modulate.a = 0.0
+	
+	# Stop any currently running tween
+	if is_instance_valid(tween):
+		tween.kill()
+		
+	tween = create_tween()
+	
+	# Connect the completion signal
+	tween.finished.connect(Callable(self, \"_on_fade_complete\").bind(1.0))
+	
+	# Tween Alpha from 0.0 (Transparent) to 1.0 (Opaque)
+	tween.tween_property(fade_rect, \"modulate:a\", 1.0, duration)
+
+# --- Internal Handler ---
+
+func _on_fade_complete(final_alpha: float) -> void:
+	# If fading in (final_alpha = 0.0), we can hide the ColorRect entirely for safety
+	if final_alpha == 0.0:
+		fade_rect.visible = false
+		
+	fade_finished.emit()
+"
+
+[node name="Fade" type="CanvasLayer"]
+
+[node name="FadeRect" type="ColorRect" parent="."]
+modulate = Color(0, 0, 0.003921569, 0.9843137)
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+script = SubResource("GDScript_puj50")

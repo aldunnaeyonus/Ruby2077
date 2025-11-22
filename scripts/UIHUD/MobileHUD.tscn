@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2lwludamy27l"]
+
+[ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_vwbvu"]
+[ext_resource type="Texture2D" uid="uid://gf45sykdyv25" path="res://assets/icons/joystick_knob.svg" id="2_ob6lk"]
+[ext_resource type="PackedScene" uid="uid://cneggb4yr2doi" path="res://scripts/input/TouchJoystick.tscn" id="2_r4frp"]
+
+[node name="MobileHUD" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vwbvu")
+
+[node name="HUDRoot" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="HBoxContainer" parent="HUDRoot"]
+anchors_preset = 10
+anchor_right = 1.0
+
+[node name="LabelScore" type="Label" parent="HUDRoot/TopBar"]
+layout_mode = 2
+text = "LabelScore"
+
+[node name="LabelTime" type="Label" parent="HUDRoot/TopBar"]
+layout_mode = 2
+text = "LabelTime"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUDRoot"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="ButtonJump" type="TextureButton" parent="HUDRoot/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("2_ob6lk")
+
+[node name="ButtonAttack" type="TextureButton" parent="HUDRoot/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("2_ob6lk")
+
+[node name="ButtonPause" type="TextureButton" parent="HUDRoot/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("2_ob6lk")
+stretch_mode = 0
+
+[node name="TouchJoystick" parent="HUDRoot" instance=ExtResource("2_r4frp")]

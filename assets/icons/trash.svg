@@ -1,0 +1,23 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  
+  <style>
+    .trash-color { fill: #888888; }
+    .stroke-color { stroke: #666666; }
+  </style>
+  
+  <g transform="translate(10, 10) scale(0.8)">
+    
+    <rect x="25" y="30" width="50" height="60" rx="5" ry="5" class="trash-color" stroke-width="5" class="stroke-color"/>
+    
+    <rect x="15" y="25" width="70" height="8" rx="2" ry="2" fill="#555555"/>
+    
+    <rect x="40" y="15" width="20" height="8" rx="2" ry="2" fill="#666666"/>
+    
+    <g class="stroke-color" stroke-width="5" stroke-linecap="round">
+      <line x1="35" y1="40" x2="35" y2="80" opacity="0.5"/>
+      <line x1="50" y1="40" x2="50" y2="80" opacity="0.5"/>
+      <line x1="65" y1="40" x2="65" y2="80" opacity="0.5"/>
+    </g>
+    
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfbd85rxlgq7j"]
+
+[ext_resource type="Script" uid="uid://dmqfqj1351xku" path="res://scripts/UIHUD/QuestTrackerHUD.gd" id="1_pl543"]
+
+[node name="QuestTrackerHud" type="CanvasLayer"]
+script = ExtResource("1_pl543")
+
+[node name="SafeAreaRoot" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TrackerPanel" type="Panel" parent="SafeAreaRoot"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/TrackerPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxHeader" type="HBoxContainer" parent="SafeAreaRoot/TrackerPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="SafeAreaRoot/TrackerPanel/VBoxContainer/HBoxHeader"]
+layout_mode = 2
+
+[node name="ButtonToggle" type="TextureButton" parent="SafeAreaRoot/TrackerPanel/VBoxContainer/HBoxHeader"]
+layout_mode = 2
+
+[node name="QuestList" type="VBoxContainer" parent="SafeAreaRoot/TrackerPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

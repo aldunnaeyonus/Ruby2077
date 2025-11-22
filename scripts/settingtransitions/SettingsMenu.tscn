@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://i6hclmd74t8l"]
+
+[ext_resource type="Script" uid="uid://ctwm7cj341bh7" path="res://scripts/settingtransitions/SettingsMenu.gd" id="1_yelko"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_yelko")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = -40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+spacing = 16
+
+[node name="LabelAudio" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Audio"
+
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelVolume" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="LabelVideo" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Video"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelResolution" type="Label" parent="Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="ResolutionOption" type="OptionButton" parent="Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="LabelGameplay" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Gameplay"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelDifficulty" type="Label" parent="Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Difficulty"
+
+[node name="DifficultyOption" type="OptionButton" parent="Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="ButtonBack" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Back"

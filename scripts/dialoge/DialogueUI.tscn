@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd8rlh16wn876"]
+
+[ext_resource type="Script" uid="uid://cpnwn7yfn3d2m" path="res://scripts/dialoge/DialogueUI.gd" id="1_0qyo7"]
+[ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="2_5j0pa"]
+
+[node name="DialogueUI" type="CanvasLayer"]
+script = ExtResource("1_0qyo7")
+
+[node name="SafeAreaRoot" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_5j0pa")
+
+[node name="Panel" type="Panel" parent="SafeAreaRoot"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SafeAreaRoot/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="LabelName" type="Label" parent="SafeAreaRoot/Panel/VBoxContainer/HBoxContainer/Portrait"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonNext" type="Button" parent="SafeAreaRoot/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../SafeAreaRoot/Panel/VBoxContainer")

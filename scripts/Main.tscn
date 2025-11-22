@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgqnrfxcg85mn"]
+
+[ext_resource type="Script" uid="uid://bvmmvb6x4kwxn" path="res://scripts/Main.gd" id="1_elqb8"]
+[ext_resource type="Texture2D" uid="uid://dqtr6nup4dhfc" path="res://assets/menu.png" id="2_0bbpv"]
+[ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
+
+[node name="Main" type="CanvasLayer"]
+script = ExtResource("1_elqb8")
+metadata/_custom_type_script = "uid://ccfdivqk34v2g"
+
+[node name="StartupVideo" type="VideoStreamPlayer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RubyIntroVideo" type="VideoStreamPlayer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeAreaRoot" type="MarginContainer" parent="."]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 1283.0
+offset_bottom = 720.0
+script = ExtResource("3_i8f85")
+
+[node name="StartMenu" type="Control" parent="SafeAreaRoot"]
+layout_mode = 2
+
+[node name="ColorRect" type="TextureRect" parent="SafeAreaRoot/StartMenu"]
+layout_mode = 0
+offset_right = 1281.0
+offset_bottom = 854.0
+texture = ExtResource("2_0bbpv")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/StartMenu"]
+layout_mode = 0
+offset_left = 733.0
+offset_top = 350.0
+offset_right = 996.0
+offset_bottom = 631.0
+scale = Vector2(1.26, 1.26)
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="ButtonStart" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
+layout_mode = 2
+text = "Start
+"
+
+[node name="ButtonContinue" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
+layout_mode = 2
+text = "Continue
+"
+
+[node name="ButtonSettings" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
+layout_mode = 2
+text = "Settings"

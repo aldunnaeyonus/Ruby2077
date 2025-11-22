@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp8a0t3x0mbtv"]
+
+[ext_resource type="Script" uid="uid://ce88tt4qe8vly" path="res://scripts/UIHUD/QuestPopupUI.gd" id="1_uqon4"]
+
+[node name="QuestPopupUi" type="CanvasLayer"]
+script = ExtResource("1_uqon4")
+
+[node name="PopupPanel" type="Panel" parent="."]
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.05
+anchor_right = 0.7
+anchor_bottom = 0.2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="LabelTitle" type="Label" parent="PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "New Quest!"
+horizontal_alignment = 1
+
+[node name="LabelQuestName" type="Label" parent="PopupPanel/VBoxContainer"]
+layout_mode = 2
+text = "You've received a new quest."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,0 +1,18 @@
+quests.json
+
+{
+  "explore_ruins": {
+    "title": "Explore the Ruins",
+    "description": "Investigate the ancient ruins near Emberdeep.",
+    "xp": 100,
+    "rewards": ["ancient_scroll"],
+    "requires": []
+  },
+  "rescue_miner": {
+    "title": "Rescue the Trapped Miner",
+    "description": "A miner is trapped in the cave. Help him escape.",
+    "xp": 150,
+    "rewards": ["healing_potion"],
+    "requires": ["explore_ruins"]
+  }
+}
