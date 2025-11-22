@@ -1,6 +1,7 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1763803913
+::res://::1763823970
 icon.svg::CompressedTexture2D::3970547927560518484::1762343653::1762343658::1::::<><><>0<>0<>177adc967a0ee3e690683215afab761b<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+README.md::TextFile::-1::1763640382::0::1::::<><><>0<>0<><>::
 ::res://assets/::1763657296
 menu.png::CompressedTexture2D::8322594989523090192::1763617526::1763657296::1::::<><><>0<>0<>c6aa721b6183e46d860a832ce89094fe<>res://.godot/imported/menu.png-507092a63be01007fcca0624aab4189b.ctex::
 ::res://assets/icons/::1763803555
@@ -16,8 +17,8 @@ dialogue_emberdeep.json::JSON::-1::1763654548::0::1::::<><><>0<>0<><>::
 dialogue_ruins.json::JSON::-1::1763654543::0::1::::<><><>0<>0<><>::
 quests.json::JSON::-1::1763654546::0::1::::<><><>0<>0<><>::
 ::res://scenes/::1763803590
-::res://scripts/::1763801574
-Level1.tscn::PackedScene::637860911636729158::1763566871::0::1::::<><><>0<>0<><>::
+::res://scripts/::1763804153
+Level1.tscn::PackedScene::637860911636729158::1763804153::0::1::::<><><>0<>0<><>::uid://b4kwcn7d5ccx4::::res://scripts/input/level_bounds.gd
 Main.gd::GDScript::3885925140222173619::1763800962::0::1::::MainMenuManager<>Node<><>0<>0<><>::
 Main.tscn::PackedScene::7614245134622274437::1763801574::0::1::::<><><>0<>0<><>::uid://bvmmvb6x4kwxn::::res://scripts/Main.gd<>uid://dqtr6nup4dhfc::::res://assets/menu.png<>uid://dnt2dv8xsjcp0::::res://scripts/settingtransitions/SafeArea.gd
 ::res://scripts/dialoge/::1763660723

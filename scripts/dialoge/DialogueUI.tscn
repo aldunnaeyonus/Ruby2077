@@ -1,43 +1,53 @@
-[gd_scene load_steps=3 format=3 uid="uid://dd8rlh16wn876"]
+[gd_scene load_steps=4 format=3 uid="uid://dd8rlh16wn876"]
 
 [ext_resource type="Script" uid="uid://cpnwn7yfn3d2m" path="res://scripts/dialoge/DialogueUI.gd" id="1_0qyo7"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="2_5j0pa"]
+[ext_resource type="Texture2D" uid="uid://bp5q5xcwp82tv" path="res://assets/icons/level_transition.svg" id="3_d8gbn"]
 
 [node name="DialogueUI" type="CanvasLayer"]
 script = ExtResource("1_0qyo7")
 
 [node name="SafeAreaRoot" type="MarginContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2_5j0pa")
 
-[node name="Panel" type="Panel" parent="SafeAreaRoot"]
+[node name="DialoguePanel" type="Panel" parent="SafeAreaRoot"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/DialoguePanel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SafeAreaRoot/Panel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/Panel/VBoxContainer/HBoxContainer"]
+[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_d8gbn")
+stretch_mode = 5
+
+[node name="LabelName" type="Label" parent="SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Speaker"
+
+[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
+layout_mode = 2
+text = "This is a line of dialogue."
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="LabelName" type="Label" parent="SafeAreaRoot/Panel/VBoxContainer/HBoxContainer/Portrait"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/Panel/VBoxContainer"]
+[node name="ButtonNext" type="Button" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
 layout_mode = 2
-
-[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/Panel/VBoxContainer"]
-layout_mode = 2
-
-[node name="ButtonNext" type="Button" parent="SafeAreaRoot/Panel/VBoxContainer"]
-layout_mode = 2
+text = "Next"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../SafeAreaRoot/Panel/VBoxContainer")
+root_node = NodePath("../SafeAreaRoot/DialoguePanel/VBoxContainer")
