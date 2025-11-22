@@ -32,3 +32,5 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_g6cn4")
 script = ExtResource("1_k2aen")
+
+[connection signal="joystick_vector_changed" from="JoystickBase/JoystickKnob" to="JoystickBase/JoystickKnob" method="_update_knob"]

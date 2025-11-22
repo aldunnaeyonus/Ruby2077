@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3o6ftuv21ah6"]
+
+[ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
+[ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
+[ext_resource type="Texture2D" uid="uid://cf3jj6esb4vw7" path="res://assets/icons/jump.svg" id="3_egv6y"]
+
+[node name="GameButtonsUi" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_r1u40")
+
+[node name="CornerPause" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -49.0
+offset_bottom = 50.0
+grow_horizontal = 0
+text = "⏸"
+
+[node name="BottomRightContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
+layout_mode = 0
+offset_left = -145.0
+offset_top = -145.0
+offset_right = -17.0
+offset_bottom = -17.0
+texture_normal = ExtResource("2_30ofi")
+
+[node name="JumpButton" type="TextureButton" parent="BottomRightContainer"]
+layout_mode = 0
+offset_left = -259.0
+offset_top = -250.0
+offset_right = -131.0
+offset_bottom = -122.0
+texture_normal = ExtResource("3_egv6y")
+
+[connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
+[connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="BottomRightContainer/JumpButton" to="." method="_on_jump_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dwfw1eu1i8gjb"]
 
-[ext_resource type="Script" uid="uid://di0c3pnajfjp6" path="res://scripts/settingtransitions/FadeManager.gd" id="1_0hsmw"]
+[ext_resource type="Script" uid="uid://ccfdivqk34v2g" path="res://scripts/settingtransitions/TransitionManager.gd" id="1_0hsmw"]
 
 [sub_resource type="Animation" id="Animation_hyy3r"]
 length = 0.5
@@ -27,10 +27,10 @@ tracks/0/path = NodePath("FadeRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0.06666666, 0.5),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [Color(1, 1, 1, 0), Color(0, 0, 0, 1)]
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_luihr"]
@@ -43,10 +43,10 @@ tracks/0/path = NodePath("FadeRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0.06666672, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hyy3r"]

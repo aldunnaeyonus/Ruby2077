@@ -7,7 +7,7 @@ class_name MainMenuManager
 @onready var safe_area = $SafeAreaRoot
 @onready var start_menu = $SafeAreaRoot/StartMenu
 @onready var settings_menu = $SettingsMenu
-@onready var transition = $TransitionLayer # Assumes this has a play(name) method
+@onready var transition = $TransitionLayer
 
 @onready var btn_start = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonStart
 @onready var btn_continue = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue
@@ -25,7 +25,7 @@ func _ready():
 
 	# === CRITICAL FIX: Add Null Checks for Visibility ===
 	if start_menu:
-		start_menu.visible = false
+		start_menu.visible = true
 	if ruby_intro:
 		ruby_intro.visible = false
 	if settings_menu:
@@ -47,8 +47,8 @@ func _ready():
 		ruby_intro.gui_input.connect(_on_ruby_intro_skip)
 	
 	# Initial scene transition and video play
-	if transition:
-		transition.play("fade_in")
+	#if transition:
+		#transition.play("fade_in")
 	
 
 func _on_startup_video_finished():

@@ -1,3 +1,7 @@
+TextureButton
+Control
+Button
+CanvasLayer
 LevelBounds
 AnimationPlayer
 ScrollContainer
@@ -8,8 +12,3 @@ MarginContainer
 ConfirmationDialog
 TextureRect
 GridContainer
-Panel
-CanvasLayer
-Label
-TextureButton
-HBoxContainer
