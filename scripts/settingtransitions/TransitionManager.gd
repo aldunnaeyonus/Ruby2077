@@ -8,7 +8,8 @@ var audio_tween: Tween
 func _ready():
 	if fade_rect:
 		fade_rect.visible = true
-		fade_rect.modulate.a = 1.0
+		# CRITICAL FIX 1: Start transparent so we don't block the Startup Video
+		fade_rect.modulate.a = 0.0 
 
 func play(name: String, fade_audio := true, duration := 1.0) -> void:
 	if not anim.has_animation(name):
@@ -40,10 +41,14 @@ func _fade_audio_out(duration: float) -> void:
 func _fade_audio_in(duration: float) -> Tween:
 	var bus: int = AudioServer.get_bus_index("Master")
 	
-	# FIX: Safe fallback if ConfigManager returns null
-	var target_db = ConfigManager.get_setting("volume_db")
-	if target_db == null:
-		target_db = 0.0 # Default to 0dB (Max volume)
+	# CRITICAL FIX 2: Match the key used in SettingsMenu ("volume")
+	# and convert the linear 0-1 value to Decibels.
+	var saved_linear = ConfigManager.get_setting("volume")
+	
+	if saved_linear == null:
+		saved_linear = 1.0 # Default to Max (Linear 1.0 = 0dB)
+		
+	var target_db = linear_to_db(float(saved_linear))
 		
 	if is_instance_valid(audio_tween):
 		audio_tween.kill()
@@ -51,7 +56,7 @@ func _fade_audio_in(duration: float) -> Tween:
 	
 	audio_tween.tween_method(
 		Callable(AudioServer, "set_bus_volume_db").bind(bus), 
-		-40.0, float(target_db), duration
+		-40.0, target_db, duration
 	)
 	
 	return audio_tween

@@ -47,8 +47,8 @@ func _ready():
 		ruby_intro.gui_input.connect(_on_ruby_intro_skip)
 	
 	# Initial scene transition and video play
-	#if transition:
-		#transition.play("fade_in")
+	if transition:
+		await transition.play("fade_in")
 	
 
 func _on_startup_video_finished():
