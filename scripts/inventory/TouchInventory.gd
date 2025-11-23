@@ -6,6 +6,7 @@ class_name TouchInventory
 @onready var grid = $SafeArea/InventoryPanel/GridContainer
 @onready var preview = $ItemPreview
 @onready var confirm_delete = $ConfirmDelete
+@onready var base = $SafeArea/InventoryPanel
 
 # --- State and Configuration ---
 # Use the same multi-touch fix state as the joystick

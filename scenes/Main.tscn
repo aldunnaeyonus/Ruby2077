@@ -9,6 +9,13 @@
 script = ExtResource("1_elqb8")
 metadata/_custom_type_script = "uid://ccfdivqk34v2g"
 
+[node name="StartupVideo" type="VideoStreamPlayer" parent="."]
+visible = false
+
+[node name="RubyIntroVideo" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_bottom = 6.0
+
 [node name="SafeAreaRoot" type="MarginContainer" parent="."]
 offset_right = 1280.0
 offset_bottom = 720.0
