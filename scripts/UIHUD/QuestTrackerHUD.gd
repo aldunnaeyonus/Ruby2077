@@ -4,7 +4,7 @@ class_name QuestTrackerHUD
 
 # --- Node References ---
 @onready var quest_list: VBoxContainer = $SafeAreaRoot/TrackerPanel/VBoxContainer/QuestList
-@onready var btn_toggle: Button = $SafeAreaRoot/TrackerPanel/VBoxContainer/HBoxHeader/ButtonToggle
+@onready var btn_toggle: TextureButton = $SafeAreaRoot/TrackerPanel/VBoxContainer/HBoxHeader/ButtonToggle
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
 # --- State and Configuration ---

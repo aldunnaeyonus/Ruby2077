@@ -24,8 +24,8 @@ config/icon="res://icon.svg"
 GameState="*res://scripts/global/GameState.gd"
 QuestManager="*res://scripts/global/QuestManager.gd"
 ConfigManager="*res://scripts/global/ConfigManager.gd"
-QuestTrackerHud="*res://scripts/UIHUD/QuestTrackerHUD.gd"
-QuestPopupUi="*res://scripts/UIHUD/QuestPopupUI.gd"
+QuestTrackerHud="*res://scripts/UIHUD/QuestTrackerHUD.tscn"
+QuestPopupUi="*res://scripts/UIHUD/QuestPopupUI.tscn"
 ItemDatabase="*res://scripts/global/ItemDatabase.gd"
 
 [display]

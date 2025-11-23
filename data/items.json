@@ -1,0 +1,20 @@
+	{
+  "ancient_scroll": {
+	"name": "Ancient Scroll",
+	"description": "A crumbling scroll containing lost knowledge of the ruins.",
+	"icon": "res://assets/icons/scroll.svg",
+	"stackable": true
+  },
+  "healing_potion": {
+	"name": "Healing Potion",
+	"description": "Restores a small amount of health.",
+	"icon": "res://assets/icons/potion.svg",
+	"stackable": true
+  },
+  "sword": {
+	"name": "Iron Sword",
+	"description": "A standard iron sword for beginners.",
+	"icon": "res://assets/icons/sword.svg",
+	"stackable": false
+  }
+}

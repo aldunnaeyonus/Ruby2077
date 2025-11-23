@@ -1,38 +1,33 @@
-dialogue_ruins.json
-
-
-[
   {
-    "id": "intro",
-    "name": "Ruby",
-    "text": "Welcome to the ruins. Be careful.",
-    "portrait": "res://assets/portraits/ruby.png",
-    "choices": [
-      {
-        "text": "What happened here?",
-        "next": "history"
-      },
-      {
-        "text": "I'm ready to explore.",
-        "next": "explore"
-      }
-    ]
+	"id": "intro",
+	"name": "Ruby",
+	"text": "Welcome to the ruins. Be careful.",
+	"portrait": "res://assets/portraits/ruby.png",
+	"choices": [
+	  {
+		"text": "What happened here?",
+		"next": "history"
+	  },
+	  {
+		"text": "I'm ready to explore.",
+		"next": "explore"
+	  }
+	]
   },
   {
-    "id": "history",
-    "name": "Ruby",
-    "text": "Long ago, this place was a sanctuary. Now it's cursed.",
-    "portrait": "res://assets/portraits/ruby.png",
-    "next": "explore"
+	"id": "history",
+	"name": "Ruby",
+	"text": "Long ago, this place was a sanctuary. Now it's cursed.",
+	"portrait": "res://assets/portraits/ruby.png",
+	"next": "explore"
   },
   {
-    "id": "explore",
-    "name": "Ruby",
-    "text": "Then let's begin. Stay close.",
-    "portrait": "res://assets/portraits/ruby.png",
-    "consequences": {
-      "set_flag": "entered_ruins",
-      "start_quest": "explore_ruins"
-    }
+	"id": "explore",
+	"name": "Ruby",
+	"text": "Then let's begin. Stay close.",
+	"portrait": "res://assets/portraits/ruby.png",
+	"consequences": {
+	  "set_flag": "entered_ruins",
+	  "start_quest": "explore_ruins"
+	}
   }
-]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://jc8qgjtl6my5"]
+[gd_scene load_steps=9 format=3 uid="uid://jc8qgjtl6my5"]
 
+[ext_resource type="Script" uid="uid://b7ehuo5htn56h" path="res://levels/level_1.gd" id="1_dkril"]
 [ext_resource type="Script" uid="uid://b4kwcn7d5ccx4" path="res://scripts/input/level_bounds.gd" id="1_jrb8q"]
 [ext_resource type="PackedScene" uid="uid://c2lwludamy27l" path="res://scripts/UIHUD/MobileHUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/UIHUD/PauseMenuOverlay.tscn" id="3_pause"]
@@ -9,9 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://dd8rlh16wn876" path="res://scripts/dialoge/DialogueUI.tscn" id="7_dialog"]
 
 [node name="Level1" type="Node2D"]
+script = ExtResource("1_dkril")
 
 [node name="LevelBounds" type="Node2D" parent="."]
-visible = false
 z_index = 256
 script = ExtResource("1_jrb8q")
 

@@ -1,24 +1,20 @@
-dialogue_emberdeep.json
-
-[
   {
-    "id": "intro",
-    "name": "Elder",
-    "text": "Welcome, traveler. The ruins await.",
-    "next": "warn"
+	"id": "intro",
+	"name": "Elder",
+	"text": "Welcome, traveler. The ruins await.",
+	"next": "warn"
   },
   {
-    "id": "warn",
-    "name": "Elder",
-    "text": "But beware... strange things stir in the dark.",
-    "choices": [
-      { "text": "I'm ready.", "next": "start", "consequences": { "start_quest": "explore_ruins" } },
-      { "text": "Maybe later.", "next": "" }
-    ]
+	"id": "warn",
+	"name": "Elder",
+	"text": "But beware... strange things stir in the dark.",
+	"choices": [
+	  { "text": "I'm ready.", "next": "start", "consequences": { "start_quest": "explore_ruins" } },
+	  { "text": "Maybe later.", "next": "" }
+	]
   },
   {
-    "id": "start",
-    "name": "Elder",
-    "text": "Then go, and may the light guide you."
+	"id": "start",
+	"name": "Elder",
+	"text": "Then go, and may the light guide you."
   }
-]
