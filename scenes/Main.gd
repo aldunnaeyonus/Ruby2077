@@ -13,7 +13,7 @@ class_name MainMenuManager
 @onready var btn_continue = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue
 @onready var btn_settings = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonSettings
 
-var save_file_path := "user://savegame.dat"
+var save_file_path := "res://data/savegame.dat"
 
 func _ready():
 	# Assume ConfigManager is an Autoload Singleton
@@ -104,7 +104,7 @@ func _on_settings_pressed():
 	if start_menu:
 		start_menu.visible = false
 	if settings_menu: # This is the crucial check for the original error line
-		settings_menu.visible = true 
+		settings_menu.visible = true
 
 func _go_to_level(level: int):
 	if transition:

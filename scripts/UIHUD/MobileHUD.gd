@@ -5,11 +5,11 @@ class_name MobileHUD
 @onready var score_label = $HUDRoot/TopBar/LabelScore
 @onready var time_label = $HUDRoot/TopBar/LabelTime
 
-# Update these paths to match your MobileHUD.tscn structure
+# Reference the instances we added in the scene
 @onready var joystick = $HUDRoot/TouchJoystick
 @onready var game_buttons = $HUDRoot/GameButtonsUi
 
-# --- Signals ---
+# --- Signals (Output to Level) ---
 signal jump_pressed
 signal attack_pressed
 signal pause_requested
@@ -18,31 +18,21 @@ signal joystick_input(vector: Vector2)
 func _ready():
 	update_safe_area()
 	
-	# Connect Joystick Signal
+	# 1. Connect Joystick
 	if joystick:
 		joystick.joystick_vector_changed.connect(_on_joystick_input)
 	
-	# Connect GameButtons Signals
+	# 2. Connect Game Buttons (Bubbling up signals)
 	if game_buttons:
-		game_buttons.jump_requested.connect(_on_jump)
-		game_buttons.attack_requested.connect(_on_attack)
-		game_buttons.pause_requested.connect(_on_pause)
+		game_buttons.jump_requested.connect(func(): jump_pressed.emit())
+		game_buttons.attack_requested.connect(func(): attack_pressed.emit())
+		game_buttons.pause_requested.connect(func(): pause_requested.emit())
 
-# --- Signal Relay Functions ---
-
-func _on_jump():
-	jump_pressed.emit()
-
-func _on_attack():
-	attack_pressed.emit()
-
-func _on_pause():
-	pause_requested.emit()
-
+# Forward joystick vector
 func _on_joystick_input(vec: Vector2):
 	joystick_input.emit(vec)
 
-# --- Safe Area Logic (Kept from your previous file) ---
+# --- UI Updates ---
 func update_safe_area():
 	var safe = DisplayServer.get_display_safe_area()
 	var full = get_viewport().get_visible_rect()

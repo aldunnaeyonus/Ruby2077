@@ -10,14 +10,11 @@ signal pause_requested
 @onready var pause_button = $CornerPause
 
 func _ready():
-	# Connections are handled in the .tscn, we just need the callback functions
-	pass
-
-func _on_attack_pressed():
-	attack_requested.emit()
-
-func _on_jump_pressed():
-	jump_requested.emit()
-
-func _on_pause_pressed():
-	pause_requested.emit()
+	# Connect the texture buttons to our internal signal emitters
+	if attack_button:
+		attack_button.pressed.connect(func(): attack_requested.emit())
+	if jump_button:
+		jump_button.pressed.connect(func(): jump_requested.emit())
+	if pause_button:
+		pause_button.pressed.connect(func(): pause_requested.emit())
+		
