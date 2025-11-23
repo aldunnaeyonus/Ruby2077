@@ -3,7 +3,7 @@ class_name VirtualJoystick # Good practice to give it a class_name
 
 # --- Node References ---
 @onready var base = $JoystickBase
-@onready var knob = $JoystickKnob
+@onready var knob = $JoystickBase/JoystickKnob
 
 # --- Configuration ---
 @export var radius := 80.0

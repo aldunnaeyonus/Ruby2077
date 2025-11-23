@@ -7,12 +7,13 @@ class_name MobileHUD
 @onready var btn_jump = $HUDRoot/BottomBar/ButtonJump
 @onready var btn_attack = $HUDRoot/BottomBar/ButtonAttack
 @onready var btn_pause = $HUDRoot/BottomBar/ButtonPause
+@onready var joystick = $HUDRoot/TouchJoystick # Access the joystick instance
 
 # --- Signals (Used to communicate input to the Player/Game Manager) ---
 signal jump_pressed
 signal attack_pressed
 signal pause_requested
-
+signal joystick_input(vector: Vector2) # NEW SIGNAL
 
 func _ready():
 	# Update safe area margins
@@ -23,6 +24,10 @@ func _ready():
 	btn_attack.pressed.connect(_on_attack)
 	btn_pause.pressed.connect(_on_pause)
 	
+	# Forward Joystick Signal
+	if joystick:
+		joystick.joystick_vector_changed.connect(_on_joystick_input)
+		
 	# Assume GameManager or similar Autoload handles score/time updates via signals
 	# Example:
 	# if is_instance_valid(GameManager):

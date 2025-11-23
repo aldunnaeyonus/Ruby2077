@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://jc8qgjtl6my5"]
+[gd_scene load_steps=8 format=3 uid="uid://jc8qgjtl6my5"]
 
 [ext_resource type="Script" uid="uid://b4kwcn7d5ccx4" path="res://scripts/input/level_bounds.gd" id="1_jrb8q"]
+[ext_resource type="PackedScene" uid="uid://c2lwludamy27l" path="res://scripts/UIHUD/MobileHUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/UIHUD/PauseMenuOverlay.tscn" id="3_pause"]
+[ext_resource type="PackedScene" uid="uid://bl6vkhokqopkh" path="res://scripts/inventory/TouchInventory.tscn" id="4_inv"]
+[ext_resource type="PackedScene" uid="uid://cfbd85rxlgq7j" path="res://scripts/UIHUD/QuestTrackerHUD.tscn" id="5_quest"]
+[ext_resource type="PackedScene" uid="uid://cp8a0t3x0mbtv" path="res://scripts/UIHUD/QuestPopupUI.tscn" id="6_popup"]
+[ext_resource type="PackedScene" uid="uid://dd8rlh16wn876" path="res://scripts/dialoge/DialogueUI.tscn" id="7_dialog"]
 
 [node name="Level1" type="Node2D"]
 
@@ -8,4 +14,23 @@
 visible = false
 z_index = 256
 script = ExtResource("1_jrb8q")
-metadata/_custom_type_script = "uid://b4kwcn7d5ccx4"
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MobileHUD" parent="UI" instance=ExtResource("2_hud")]
+
+[node name="PauseMenuOverlay" parent="UI" instance=ExtResource("3_pause")]
+visible = false
+
+[node name="TouchInventory" parent="UI" instance=ExtResource("4_inv")]
+visible = false
+
+[node name="QuestTrackerHud" parent="UI" instance=ExtResource("5_quest")]
+
+[node name="QuestPopupUi" parent="UI" instance=ExtResource("6_popup")]
+visible = false
+
+[node name="DialogueUI" parent="UI" instance=ExtResource("7_dialog")]
+visible = false
+
+[connection signal="pause_requested" from="UI/MobileHUD" to="UI/PauseMenuOverlay" method="show_menu"]

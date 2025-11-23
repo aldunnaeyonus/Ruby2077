@@ -7,51 +7,66 @@
 
 [node name="Main" type="CanvasLayer"]
 script = ExtResource("1_elqb8")
-metadata/_custom_type_script = "uid://ccfdivqk34v2g"
 
 [node name="StartupVideo" type="VideoStreamPlayer" parent="."]
 visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="RubyIntroVideo" type="VideoStreamPlayer" parent="."]
 visible = false
-offset_bottom = 6.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="SafeAreaRoot" type="MarginContainer" parent="."]
-offset_right = 1280.0
-offset_bottom = 720.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_i8f85")
 
 [node name="StartMenu" type="Control" parent="SafeAreaRoot"]
 layout_mode = 2
 
 [node name="ColorRect" type="TextureRect" parent="SafeAreaRoot/StartMenu"]
-layout_mode = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_0bbpv")
 expand_mode = 2
+stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/StartMenu"]
-layout_mode = 0
-offset_left = 749.0
-offset_top = 424.0
-offset_right = 964.07935
-offset_bottom = 650.1904
-scale = Vector2(1.26, 1.26)
-theme_override_constants/separation = 30
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.6
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="ButtonStart" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 35
-text = "Start
-"
+text = "Start"
 
 [node name="ButtonContinue" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Continue
-"
+text = "Continue"
 
 [node name="ButtonSettings" type="Button" parent="SafeAreaRoot/StartMenu/VBoxContainer"]
 layout_mode = 2
@@ -59,11 +74,8 @@ theme_override_font_sizes/font_size = 25
 text = "Settings"
 
 [node name="SettingsMenu" parent="." instance=ExtResource("4_rarhs")]
-offset_left = 1093.0
-offset_top = 453.0
-offset_right = 1093.0
-offset_bottom = 453.0
+visible = false
 
 [connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonStart" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonSettings" to="." method="_on_settings_pressed"]

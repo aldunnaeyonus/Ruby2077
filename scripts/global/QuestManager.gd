@@ -14,6 +14,10 @@ var active_quests := {}
 
 # --- LOADING ---
 
+func _ready():
+	# FIX: Automatically load quests on startup
+	load_quests_from_json("res://data/quests.json")
+	
 ## Loads quest definitions from a JSON file.
 func load_quests_from_json(path: String) -> void:
 	if not FileAccess.file_exists(path):

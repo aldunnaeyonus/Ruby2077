@@ -9,18 +9,18 @@ func set_player(p):
 	player = p
 	
 func _ready():
-	attack_button.pressed.connect(_on_attack_pressed)
-	jump_button.pressed.connect(_on_jump_pressed)
-	pause_button.pressed.connect(_on_pause_pressed)
+	# REDUNDANT CONNECTIONS REMOVED
+	# The connections are already handled in the .tscn file.
+	pass
 
 func _on_attack_pressed():
 	print("Attack triggered")
-	if player:
+	if player and player.has_method("attack"):
 		player.attack()
 
 func _on_jump_pressed():
 	print("Jump triggered")
-	if player:
+	if player and player.has_method("jump"):
 		player.jump()
 
 func _on_pause_pressed():

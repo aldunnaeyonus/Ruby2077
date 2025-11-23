@@ -3,9 +3,9 @@ class_name SettingsMenuUI
 
 # --- Node References ---
 @onready var volume_slider = $Panel/VBoxContainer/HBoxContainer/VolumeSlider
-@onready var resolution_option = $Panel/VBoxContainer/HBoxContainer/ResolutionOption
-@onready var fullscreen_toggle = $Panel/VBoxContainer/CheckBoxFullscreen
-@onready var difficulty_option = $Panel/VBoxContainer/HBoxContainer/DifficultyOption
+@onready var resolution_option = $Panel/VBoxContainer/HBoxContainer2/ResolutionOption 
+@onready var fullscreen_toggle = $Panel/VBoxContainer/CheckBoxFullscreen # Ensure this node exists in Tscn
+@onready var difficulty_option = $Panel/VBoxContainer/HBoxContainer3/DifficultyOption # Check container 3
 @onready var btn_back = $Panel/VBoxContainer/ButtonBack
 
 const RESOLUTIONS = [

@@ -6,53 +6,66 @@
 script = ExtResource("1_mo871")
 
 [node name="JournalPanel" type="Panel" parent="."]
+anchors_preset = -1
 anchor_left = 0.2
 anchor_top = 0.1
 anchor_right = 0.8
 anchor_bottom = 0.9
-margin_left = 0.0
-margin_top = 0.0
-margin_right = 0.0
-margin_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LabelTitle" type="Label" parent="JournalPanel"]
-layout_mode = 0
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = -20.0
+offset_top = 20.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 28
 text = "Quest Journal"
 horizontal_alignment = 1
-custom_fonts/font_size = 28
 
 [node name="Scroll" type="ScrollContainer" parent="JournalPanel"]
-layout_mode = 0
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 60.0
-margin_right = -20.0
-margin_bottom = -20.0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="QuestList" type="VBoxContainer" parent="JournalPanel/Scroll"]
+[node name="QuestList" type="ItemList" parent="JournalPanel/Scroll"]
 layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 0.0
-margin_top = 0.0
-margin_right = 0.0
-margin_bottom = 0.0
-spacing = 12
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+auto_height = true
+item_count = 0
 
 [node name="QuestDetails" type="RichTextLabel" parent="JournalPanel/Scroll/QuestList"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 20.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+bbcode_enabled = true
+fit_content = true
 
-[node name="ButtonClose" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="ButtonClose" type="Button" parent="JournalPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+text = "X"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
