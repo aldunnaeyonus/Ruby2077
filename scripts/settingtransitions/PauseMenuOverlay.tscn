@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwxomwe8bttim"]
+
+[ext_resource type="Script" uid="uid://did7q23571pwp" path="res://scripts/settingtransitions/PauseMenuOverlay.gd" id="1_gq3iu"]
+[ext_resource type="Texture2D" uid="uid://dqtr6nup4dhfc" path="res://assets/ui/menu.png" id="2_0tr1w"]
+
+[node name="PauseMenuOverlay" type="CanvasLayer"]
+script = ExtResource("1_gq3iu")
+
+[node name="NinePatchRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 719.0
+offset_top = 368.0
+offset_right = -331.0
+offset_bottom = -102.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_0tr1w")
+
+[node name="Panel" type="Node" parent="NinePatchRect"]
+
+[node name="LabelPaused" type="Label" parent="NinePatchRect/Panel"]
+offset_left = 729.0
+offset_top = 362.0
+offset_right = 915.0
+offset_bottom = 385.0
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="ButtonResume" type="Button" parent="NinePatchRect/Panel"]
+offset_left = 740.0
+offset_top = 401.0
+offset_right = 927.0
+offset_bottom = 432.0
+text = "Resume"
+
+[node name="ButtonSettings" type="Button" parent="NinePatchRect/Panel"]
+offset_left = 738.0
+offset_top = 491.0
+offset_right = 928.0
+offset_bottom = 522.0
+text = "Settings"
+
+[node name="ButtonQuit" type="Button" parent="NinePatchRect/Panel"]
+offset_left = 739.0
+offset_top = 536.0
+offset_right = 927.0
+offset_bottom = 567.0
+text = "Quit"

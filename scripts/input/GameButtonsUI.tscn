@@ -28,20 +28,24 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
+modulate = Color(1, 1, 1, 0.23529412)
 layout_mode = 0
-offset_left = -145.0
-offset_top = -145.0
-offset_right = -17.0
-offset_bottom = -17.0
+offset_left = -132.0
+offset_top = -133.0
+offset_right = -4.0
+offset_bottom = -5.0
 texture_normal = ExtResource("2_30ofi")
+texture_pressed = ExtResource("2_30ofi")
 
 [node name="JumpButton" type="TextureButton" parent="BottomRightContainer"]
+modulate = Color(1, 1, 1, 0.23529412)
 layout_mode = 0
-offset_left = -259.0
-offset_top = -250.0
-offset_right = -131.0
-offset_bottom = -122.0
+offset_left = -246.0
+offset_top = -238.0
+offset_right = -118.0
+offset_bottom = -110.0
 texture_normal = ExtResource("3_egv6y")
+texture_pressed = ExtResource("3_egv6y")
 
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]

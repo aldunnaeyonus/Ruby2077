@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7ehuo5htn56h" path="res://levels/level_1.gd" id="1_dkril"]
 [ext_resource type="Script" uid="uid://b4kwcn7d5ccx4" path="res://scripts/input/level_bounds.gd" id="1_jrb8q"]
 [ext_resource type="PackedScene" uid="uid://c2lwludamy27l" path="res://scripts/UIHUD/MobileHUD.tscn" id="2_hud"]
-[ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/UIHUD/PauseMenuOverlay.tscn" id="3_pause"]
+[ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/settingtransitions/PauseMenuOverlay.tscn" id="3_pause"]
 [ext_resource type="PackedScene" uid="uid://bl6vkhokqopkh" path="res://scripts/inventory/TouchInventory.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://cfbd85rxlgq7j" path="res://scripts/UIHUD/QuestTrackerHUD.tscn" id="5_quest"]
 [ext_resource type="PackedScene" uid="uid://cp8a0t3x0mbtv" path="res://scripts/UIHUD/QuestPopupUI.tscn" id="6_popup"]
@@ -16,10 +16,15 @@ script = ExtResource("1_dkril")
 [node name="LevelBounds" type="Node2D" parent="."]
 z_index = 256
 script = ExtResource("1_jrb8q")
+width = 1280
+height = 462
+
+[node name="Player" parent="." instance=ExtResource("9_lbu4x")]
+visible = false
+position = Vector2(122, 349)
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="MobileHUD" parent="UI" instance=ExtResource("2_hud")]
+visible = false
 
 [node name="PauseMenuOverlay" parent="UI" instance=ExtResource("3_pause")]
 visible = false
@@ -28,6 +33,7 @@ visible = false
 visible = false
 
 [node name="QuestTrackerHud" parent="UI" instance=ExtResource("5_quest")]
+visible = false
 
 [node name="QuestPopupUi" parent="UI" instance=ExtResource("6_popup")]
 visible = false
@@ -35,6 +41,6 @@ visible = false
 [node name="DialogueUI" parent="UI" instance=ExtResource("7_dialog")]
 visible = false
 
-[node name="Player" parent="." instance=ExtResource("9_lbu4x")]
+[node name="MobileHUD" parent="UI" instance=ExtResource("2_hud")]
 
 [connection signal="pause_requested" from="UI/MobileHUD" to="UI/PauseMenuOverlay" method="show_menu"]
