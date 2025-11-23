@@ -2,11 +2,11 @@ extends Control
 class_name SettingsMenuUI
 
 # --- Node References ---
-@onready var volume_slider = $Panel/VBoxContainer/HBoxContainer/VolumeSlider
-@onready var resolution_option = $Panel/VBoxContainer/HBoxContainer2/ResolutionOption 
-@onready var fullscreen_toggle = $Panel/VBoxContainer/CheckBoxFullscreen # Ensure this node exists in Tscn
-@onready var difficulty_option = $Panel/VBoxContainer/HBoxContainer3/DifficultyOption # Check container 3
-@onready var btn_back = $Panel/VBoxContainer/ButtonBack
+@onready var volume_slider = $NinePatchRect/VBoxContainer/HBoxContainer/VolumeSlider
+@onready var resolution_option = $NinePatchRect/VBoxContainer/HBoxContainer2/ResolutionOption
+@onready var fullscreen_toggle = $NinePatchRect/VBoxContainer/CheckBoxFullscreen
+@onready var difficulty_option = $NinePatchRect/VBoxContainer/HBoxContainer3/DifficultyOption
+@onready var btn_back =  $NinePatchRect/ButtonBack
 
 const RESOLUTIONS = [
 	"1280x720", 

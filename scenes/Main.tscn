@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://dgqnrfxcg85mn"]
 
 [ext_resource type="Script" uid="uid://bvmmvb6x4kwxn" path="res://scenes/Main.gd" id="1_elqb8"]
-[ext_resource type="Texture2D" uid="uid://dqtr6nup4dhfc" path="res://assets/ui/menu.png" id="2_0bbpv"]
 [ext_resource type="VideoStream" uid="uid://b1jhw77if3yuc" path="res://assets/videos/main.ogv" id="2_vcsgt"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
 [ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="4_rarhs"]
+[ext_resource type="Texture2D" uid="uid://bngyku0m7ex0h" path="res://assets/ui/main.png" id="4_vcsgt"]
 
 [node name="Main" type="CanvasLayer"]
 script = ExtResource("1_elqb8")
@@ -43,7 +43,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_0bbpv")
+texture = ExtResource("4_vcsgt")
 expand_mode = 2
 stretch_mode = 6
 
@@ -54,6 +54,10 @@ anchor_left = 0.7
 anchor_top = 0.6
 anchor_right = 0.9
 anchor_bottom = 0.9
+offset_left = -122.0
+offset_top = -24.00003
+offset_right = -122.0
+offset_bottom = -24.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_constants/separation = 20

@@ -1,10 +1,10 @@
-extends CanvasLayer
+extends Control
 class_name PauseMenuOverlay
 
 # --- Node References ---
-@onready var btn_resume = $Panel/VBoxContainer/ButtonResume
-@onready var btn_settings = $Panel/VBoxContainer/ButtonSettings
-@onready var btn_quit = $Panel/VBoxContainer/ButtonQuit
+@onready var btn_resume = $BackgroundImage/Panel/ButtonResume
+@onready var btn_settings = $BackgroundImage/Panel/ButtonSettings
+@onready var btn_quit = $BackgroundImage/Panel/ButtonQuit
 
 # --- Signals (For communication with the Settings Menu) ---
 # Emitted when the settings button is pressed, telling the parent UI to open settings
