@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dgqnrfxcg85mn"]
+[gd_scene load_steps=7 format=3 uid="uid://dgqnrfxcg85mn"]
 
 [ext_resource type="Script" uid="uid://bvmmvb6x4kwxn" path="res://scenes/Main.gd" id="1_elqb8"]
 [ext_resource type="VideoStream" uid="uid://b1jhw77if3yuc" path="res://assets/videos/main.ogv" id="2_vcsgt"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
 [ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="4_rarhs"]
 [ext_resource type="Texture2D" uid="uid://bngyku0m7ex0h" path="res://assets/ui/main.png" id="4_vcsgt"]
+[ext_resource type="PackedScene" uid="uid://dwfw1eu1i8gjb" path="res://scripts/settingtransitions/TransitionManager.tscn" id="6_c01mt"]
 
 [node name="Main" type="CanvasLayer"]
 script = ExtResource("1_elqb8")
@@ -79,6 +80,8 @@ theme_override_font_sizes/font_size = 25
 text = "Settings"
 
 [node name="SettingsMenu" parent="." instance=ExtResource("4_rarhs")]
+
+[node name="TransitionLayer" parent="." instance=ExtResource("6_c01mt")]
 visible = false
 
 [connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonStart" to="." method="_on_start_pressed"]

@@ -20,11 +20,9 @@ width = 1280
 height = 462
 
 [node name="Player" parent="." instance=ExtResource("9_lbu4x")]
-visible = false
 position = Vector2(122, 349)
 
 [node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="PauseMenuOverlay" parent="UI" instance=ExtResource("3_pause")]
 visible = false
