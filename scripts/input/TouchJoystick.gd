@@ -1,80 +1,63 @@
 extends CanvasLayer
-class_name VirtualJoystick # Good practice to give it a class_name
+class_name VirtualJoystick
 
-# --- Node References ---
 @onready var base = $JoystickBase
 @onready var knob = $JoystickBase/JoystickKnob
 
-# --- Configuration ---
 @export var radius := 80.0
-@export var snap_back_speed := 15.0 # For smooth return (optional, but nice)
+@export var snap_back_speed := 15.0
 
-# --- Internal State ---
 var dragging := false
-var touch_index := -1 # Stores the index of the finger controlling the joystick
-var origin := Vector2.ZERO
-var current_vector := Vector2.ZERO
+var touch_index := -1
+var default_knob_pos := Vector2.ZERO
 
-# --- Signals ---
-signal joystick_vector_changed(vec: Vector2) # Emits a normalized vector (magnitude 0 to 1)
-
-# --- Lifecycle ---
+signal joystick_vector_changed(vec: Vector2)
 
 func _ready():
-	# Calculate the center point of the base control node
-	origin = base.position + base.size * 0.5
-	# Initial knob position to center
-	knob.position = origin - knob.size * 0.5
-
-
-# --- Input Handling (Multi-Touch Fix) ---
+	# Calculate the center in LOCAL coordinates of the base
+	# If knob is a child of base, the center is simply half the base size
+	default_knob_pos = base.size * 0.5 - knob.size * 0.5
+	knob.position = default_knob_pos
 
 func _input(event):
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			# Start of Touch: Check if touch is within the base control's area
+			# Check if touch is inside the base rect (Global check is safer for UI)
 			if base.get_global_rect().has_point(event.position) and not dragging:
 				dragging = true
-				touch_index = event.index # Store the touch index
+				touch_index = event.index
 				_update_knob(event.position)
 		
 		elif not event.pressed:
-			# End of Touch: Check if this is the finger that was dragging the joystick
 			if dragging and event.index == touch_index:
 				dragging = false
 				touch_index = -1
-				
-				# Reset state immediately or use a tween for smooth return
 				_reset_knob()
 				
 	elif event is InputEventScreenDrag:
-		# Drag Event: Only respond if we are currently dragging AND the touch index matches
 		if dragging and event.index == touch_index:
 			_update_knob(event.position)
 
-
-# --- Core Logic ---
-
-func _update_knob(pos: Vector2):
-	# Calculate the direction vector from the origin to the touch position
-	var dir = pos - origin
+func _update_knob(global_touch_pos: Vector2):
+	# 1. Convert global touch to local space of the Base node
+	var local_touch_pos = base.get_global_transform().affine_inverse() * global_touch_pos
 	
-	# Clamp the vector length by the defined radius
+	# 2. Calculate vector from center (base.size / 2)
+	var center = base.size * 0.5
+	var dir = local_touch_pos - center
+	
+	# 3. Clamp
 	var clamped_dir = dir.limit_length(radius)
 	
-	# Set the knob position relative to the origin
-	knob.position = origin + clamped_dir - knob.size * 0.5
+	# 4. Apply to Knob (centering the knob sprite)
+	knob.position = (center + clamped_dir) - (knob.size * 0.5)
 	
-	# Calculate the normalized vector (0.0 to 1.0)
-	current_vector = clamped_dir / radius
-	
-	joystick_vector_changed.emit(current_vector)
+	# 5. Emit normalized vector
+	joystick_vector_changed.emit(clamped_dir / radius)
 
 func _reset_knob():
-	current_vector = Vector2.ZERO
-	# Use a Tween for a smooth snap-back effect (Better UI/UX)
-	var tween = create_tween()
-	tween.tween_property(knob, "position", origin - knob.size * 0.5, 1.0 / snap_back_speed)
+	joystick_vector_changed.emit(Vector2.ZERO)
 	
-	# Ensure the signal is emitted when the reset movement starts/ends
-	joystick_vector_changed.emit(current_vector)
+	var tween = create_tween()
+	# Return to the calculated default local position
+	tween.tween_property(knob, "position", default_knob_pos, 1.0 / snap_back_speed)
