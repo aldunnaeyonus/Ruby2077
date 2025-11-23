@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://jc8qgjtl6my5"]
+[gd_scene load_steps=10 format=3 uid="uid://jc8qgjtl6my5"]
 
 [ext_resource type="Script" uid="uid://b7ehuo5htn56h" path="res://levels/level_1.gd" id="1_dkril"]
 [ext_resource type="Script" uid="uid://b4kwcn7d5ccx4" path="res://scripts/input/level_bounds.gd" id="1_jrb8q"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cfbd85rxlgq7j" path="res://scripts/UIHUD/QuestTrackerHUD.tscn" id="5_quest"]
 [ext_resource type="PackedScene" uid="uid://cp8a0t3x0mbtv" path="res://scripts/UIHUD/QuestPopupUI.tscn" id="6_popup"]
 [ext_resource type="PackedScene" uid="uid://dd8rlh16wn876" path="res://scripts/dialoge/DialogueUI.tscn" id="7_dialog"]
+[ext_resource type="PackedScene" uid="uid://ds61c7vd7h6tn" path="res://scripts/player/Player.tscn" id="9_lbu4x"]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_dkril")
@@ -33,5 +34,7 @@ visible = false
 
 [node name="DialogueUI" parent="UI" instance=ExtResource("7_dialog")]
 visible = false
+
+[node name="Player" parent="." instance=ExtResource("9_lbu4x")]
 
 [connection signal="pause_requested" from="UI/MobileHUD" to="UI/PauseMenuOverlay" method="show_menu"]

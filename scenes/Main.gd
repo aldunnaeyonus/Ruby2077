@@ -25,7 +25,7 @@ func _ready():
 
 	# === CRITICAL FIX: Add Null Checks for Visibility ===
 	if start_menu:
-		start_menu.visible = true
+		start_menu.visible = false
 	if ruby_intro:
 		ruby_intro.visible = false
 	if settings_menu:

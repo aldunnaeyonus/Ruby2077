@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgqnrfxcg85mn"]
+[gd_scene load_steps=6 format=3 uid="uid://dgqnrfxcg85mn"]
 
 [ext_resource type="Script" uid="uid://bvmmvb6x4kwxn" path="res://scenes/Main.gd" id="1_elqb8"]
 [ext_resource type="Texture2D" uid="uid://dqtr6nup4dhfc" path="res://assets/ui/menu.png" id="2_0bbpv"]
+[ext_resource type="VideoStream" uid="uid://b1jhw77if3yuc" path="res://assets/videos/main.ogv" id="2_vcsgt"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
 [ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="4_rarhs"]
 
@@ -9,20 +10,20 @@
 script = ExtResource("1_elqb8")
 
 [node name="StartupVideo" type="VideoStreamPlayer" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+stream = ExtResource("2_vcsgt")
 
 [node name="RubyIntroVideo" type="VideoStreamPlayer" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+stream = ExtResource("2_vcsgt")
 
 [node name="SafeAreaRoot" type="MarginContainer" parent="."]
 anchors_preset = 15
