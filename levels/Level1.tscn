@@ -1,31 +1,29 @@
-[gd_scene load_steps=10 format=3 uid="uid://jc8qgjtl6my5"]
+[gd_scene load_steps=12 format=3 uid="uid://jc8qgjtl6my5"]
 
 [ext_resource type="Script" uid="uid://b7ehuo5htn56h" path="res://levels/level_1.gd" id="1_dkril"]
 [ext_resource type="Script" uid="uid://b4kwcn7d5ccx4" path="res://scripts/input/level_bounds.gd" id="1_jrb8q"]
 [ext_resource type="PackedScene" uid="uid://c2lwludamy27l" path="res://scripts/UIHUD/MobileHUD.tscn" id="2_hud"]
+[ext_resource type="Texture2D" uid="uid://vm0qpqgrrvyq" path="res://assets/tiles/unnamed-2.jpg" id="2_nn0v1"]
 [ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/settingtransitions/PauseMenuOverlay.tscn" id="3_pause"]
 [ext_resource type="PackedScene" uid="uid://bl6vkhokqopkh" path="res://scripts/inventory/TouchInventory.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://cfbd85rxlgq7j" path="res://scripts/UIHUD/QuestTrackerHUD.tscn" id="5_quest"]
 [ext_resource type="PackedScene" uid="uid://cp8a0t3x0mbtv" path="res://scripts/UIHUD/QuestPopupUI.tscn" id="6_popup"]
 [ext_resource type="PackedScene" uid="uid://dd8rlh16wn876" path="res://scripts/dialoge/DialogueUI.tscn" id="7_dialog"]
 [ext_resource type="PackedScene" uid="uid://ds61c7vd7h6tn" path="res://scripts/player/Player.tscn" id="9_lbu4x"]
+[ext_resource type="Texture2D" uid="uid://diaxkxnoer1cv" path="res://assets/tiles/Ladder1.png" id="11_nn0v1"]
 
 [node name="Level1" type="Node2D"]
+position = Vector2(8, 8)
 script = ExtResource("1_dkril")
 
-[node name="LevelBounds" type="Node2D" parent="."]
-z_index = 256
-script = ExtResource("1_jrb8q")
-width = 1280
-height = 462
-
-[node name="Player" parent="." instance=ExtResource("9_lbu4x")]
-position = Vector2(122, 349)
+[node name="Unnamed2" type="Sprite2D" parent="."]
+position = Vector2(423.75, 328)
+scale = Vector2(0.8442382, 0.7262079)
+texture = ExtResource("2_nn0v1")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="PauseMenuOverlay" parent="UI" instance=ExtResource("3_pause")]
-visible = false
 
 [node name="TouchInventory" parent="UI" instance=ExtResource("4_inv")]
 visible = false
@@ -40,5 +38,24 @@ visible = false
 visible = false
 
 [node name="MobileHUD" parent="UI" instance=ExtResource("2_hud")]
+visible = false
+
+[node name="Player" parent="." instance=ExtResource("9_lbu4x")]
+position = Vector2(424, 320)
+
+[node name="LevelBounds" type="Node2D" parent="."]
+z_index = 256
+position = Vector2(-8, 80)
+script = ExtResource("1_jrb8q")
+width = 864
+height = 494
+
+[node name="Ladder1" type="Sprite2D" parent="."]
+position = Vector2(128, 400)
+texture = ExtResource("11_nn0v1")
+
+[node name="Ladder2" type="Sprite2D" parent="."]
+position = Vector2(128, 368)
+texture = ExtResource("11_nn0v1")
 
 [connection signal="pause_requested" from="UI/MobileHUD" to="UI/PauseMenuOverlay" method="show_menu"]
