@@ -79,9 +79,9 @@ func _on_resolution_selected(index: int):
 	var res = res_text.split("x")
 	
 	if res.size() == 2:
-		var size = Vector2i(int(res[0]), int(res[1]))
-		DisplayServer.window_set_size(size)
-		ConfigManager.set_setting("resolution", size)
+		var sizes = Vector2i(int(res[0]), int(res[1]))
+		DisplayServer.window_set_size(sizes)
+		ConfigManager.set_setting("resolution", sizes)
 
 func _on_fullscreen_toggled(pressed: bool):
 	var mode = DisplayServer.WINDOW_MODE_FULLSCREEN if pressed else DisplayServer.WINDOW_MODE_WINDOWED

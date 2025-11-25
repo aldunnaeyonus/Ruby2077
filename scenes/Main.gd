@@ -13,43 +13,41 @@ class_name MainMenuManager
 @onready var btn_continue = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue
 @onready var btn_settings = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonSettings
 
-var save_file_path := "res://data/savegame.dat"
+var save_file_path := "user://savegame.json" # Best practice: use user:// for saves
 
 func _ready():
-	# Assume ConfigManager is an Autoload Singleton
-	ConfigManager.apply_settings()
+	# Apply Settings
+	if is_instance_valid(ConfigManager):
+		ConfigManager.apply_settings()
 	
-	# Assume safe_area is a SafeAreaContainer with update_safe_area()
 	if safe_area and safe_area.has_method("update_safe_area"):
 		safe_area.update_safe_area()
 
-	# === CRITICAL FIX: Add Null Checks for Visibility ===
+	# --- 1. Reset Visibility ---
 	if start_menu:
 		start_menu.visible = false
 	if ruby_intro:
 		ruby_intro.visible = false
 	if settings_menu:
 		settings_menu.visible = false
-	# ====================================================
 
-	# Connect signals only once (CRITICAL FIX 2)
+	# --- 2. Setup Startup Video ---
 	if startup_video:
-		startup_video.finished.connect(_on_startup_video_finished)
+		# Safety Check: Connect only if not already connected
+		if not startup_video.finished.is_connected(_on_startup_video_finished):
+			startup_video.finished.connect(_on_startup_video_finished)
 		startup_video.play()
 	
-	btn_start.pressed.connect(_on_start_pressed)
-	btn_continue.pressed.connect(_on_continue_pressed)
-	btn_settings.pressed.connect(_on_settings_pressed)
+	# --- REMOVED BUTTON CONNECTIONS ---
+	# These are already connected in Main.tscn (Green signal icon in Editor).
+	# Re-connecting them here caused the error.
 	
-	# Connect Ruby Intro signals here, but ensure they don't double-connect later
+	# --- 3. Setup Intro Video ---
 	if ruby_intro:
-		ruby_intro.finished.connect(_on_ruby_intro_finished)
-		ruby_intro.gui_input.connect(_on_ruby_intro_skip)
-	
-	# Initial scene transition and video play
-	if transition:
-		await transition.play("fade_in")
-	
+		if not ruby_intro.finished.is_connected(_on_ruby_intro_finished):
+			ruby_intro.finished.connect(_on_ruby_intro_finished)
+		if not ruby_intro.gui_input.is_connected(_on_ruby_intro_skip):
+			ruby_intro.gui_input.connect(_on_ruby_intro_skip)
 
 func _on_startup_video_finished():
 	if transition:
@@ -58,7 +56,7 @@ func _on_startup_video_finished():
 	if startup_video:
 		startup_video.visible = false
 	
-	# Determine if continue button should be active
+	# Handle "Continue" button state
 	if btn_continue:
 		btn_continue.disabled = not FileAccess.file_exists(save_file_path)
 	
@@ -70,6 +68,7 @@ func _on_startup_video_finished():
 
 func _on_start_pressed():
 	if not FileAccess.file_exists(save_file_path):
+		# New Game Flow
 		if transition:
 			await transition.play("fade_out")
 		
@@ -83,6 +82,7 @@ func _on_start_pressed():
 		if transition:
 			await transition.play("fade_in")
 	else:
+		# Load Existing Game
 		_go_to_level(load_saved_level())
 
 func _on_ruby_intro_finished():
@@ -103,31 +103,34 @@ func _on_continue_pressed():
 func _on_settings_pressed():
 	if start_menu:
 		start_menu.visible = false
-	if settings_menu: # This is the crucial check for the original error line
+	if settings_menu: 
 		settings_menu.visible = true
 
 func _go_to_level(level: int):
 	if transition:
 		await transition.play("fade_out")
 		
-	var scene_path = "res://Levels/Level%d.tscn" % level
+	var scene_path = "res://levels/Level%d.tscn" % level
 	get_tree().change_scene_to_file(scene_path)
 
 func load_saved_level() -> int:
 	if not FileAccess.file_exists(save_file_path):
-		push_error("Save file missing when attempting to load.")
-		return 1 # Fallback to Level 1
+		return 1 
 		
-	var f: FileAccess = FileAccess.open(save_file_path, FileAccess.READ)
+	var file = FileAccess.open(save_file_path, FileAccess.READ)
+	if file == null:
+		return 1 
+		
+	var json_text = file.get_as_text()
+	var json = JSON.new()
+	var error = json.parse(json_text)
 	
-	if f == null:
-		push_error("Failed to open save file: %s" % FileAccess.get_open_error())
-		return 1 # Fallback
-		
-	var level: int = 1
-	
-	if not f.eof_reached():
-		level = f.get_32()
-		
-	f.close()
-	return level
+	if error == OK:
+		var data = json.get_data()
+		# Assuming your save data has a "level" key, or you save just the number
+		if typeof(data) == TYPE_DICTIONARY:
+			return data.get("current_level", 1)
+		elif typeof(data) == TYPE_FLOAT or typeof(data) == TYPE_INT:
+			return int(data)
+			
+	return 1

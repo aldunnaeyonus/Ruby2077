@@ -8,22 +8,21 @@ var audio_tween: Tween
 func _ready():
 	if fade_rect:
 		fade_rect.visible = true
-		# CRITICAL FIX 1: Start transparent so we don't block the Startup Video
 		fade_rect.modulate.a = 0.0 
 
-func play(name: String, fade_audio := true, duration := 1.0) -> void:
-	if not anim.has_animation(name):
-		push_error("AnimationPlayer does not contain animation: %s" % name)
+func play(title: String, fade_audio := true, duration := 1.0) -> void:
+	if not anim.has_animation(title):
+		push_error("AnimationPlayer does not contain animation: %s" % title)
 		return
 		
 	if fade_audio:
 		_fade_audio_out(duration)
 		
-	anim.play(name)
+	anim.play(title)
 	await anim.animation_finished
 	
 	if fade_audio:
-		await _fade_audio_in(duration)
+		_fade_audio_in(duration)
 
 func _fade_audio_out(duration: float) -> void:
 	var bus: int = AudioServer.get_bus_index("Master")
@@ -33,20 +32,19 @@ func _fade_audio_out(duration: float) -> void:
 		audio_tween.kill()
 	audio_tween = create_tween()
 	
+	# CRITICAL FIX: Use a lambda to pass arguments in the correct order
+	# 'val' is the changing number from the tween (current_db -> -40.0)
 	audio_tween.tween_method(
-		Callable(AudioServer, "set_bus_volume_db").bind(bus), 
+		func(val): AudioServer.set_bus_volume_db(bus, val),
 		current_db, -40.0, duration
 	)
 
 func _fade_audio_in(duration: float) -> Tween:
 	var bus: int = AudioServer.get_bus_index("Master")
 	
-	# CRITICAL FIX 2: Match the key used in SettingsMenu ("volume")
-	# and convert the linear 0-1 value to Decibels.
 	var saved_linear = ConfigManager.get_setting("volume")
-	
 	if saved_linear == null:
-		saved_linear = 1.0 # Default to Max (Linear 1.0 = 0dB)
+		saved_linear = 1.0
 		
 	var target_db = linear_to_db(float(saved_linear))
 		
@@ -54,8 +52,9 @@ func _fade_audio_in(duration: float) -> Tween:
 		audio_tween.kill()
 	audio_tween = create_tween()
 	
+	# CRITICAL FIX: Use a lambda here too
 	audio_tween.tween_method(
-		Callable(AudioServer, "set_bus_volume_db").bind(bus), 
+		func(val): AudioServer.set_bus_volume_db(bus, val),
 		-40.0, target_db, duration
 	)
 	

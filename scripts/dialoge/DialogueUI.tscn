@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cpnwn7yfn3d2m" path="res://scripts/dialoge/DialogueUI.gd" id="1_0qyo7"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="2_5j0pa"]
-[ext_resource type="Texture2D" uid="uid://bp5q5xcwp82tv" path="res://assets/icons/level_transition.svg" id="3_d8gbn"]
 [ext_resource type="PackedScene" uid="uid://ek4en8ouj0ae" path="res://scripts/UIHUD/panel.tscn" id="3_lalo6"]
+[ext_resource type="Texture2D" uid="uid://b3grul3517bom" path="res://assets/player/ruby.png" id="4_lalo6"]
 
 [node name="DialogueUI" type="CanvasLayer"]
 script = ExtResource("1_0qyo7")
@@ -41,8 +41,8 @@ theme_override_constants/separation = 20
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 0
-texture = ExtResource("3_d8gbn")
-expand_mode = 1
+texture = ExtResource("4_lalo6")
+expand_mode = 5
 stretch_mode = 5
 
 [node name="TextVBox" type="VBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox"]

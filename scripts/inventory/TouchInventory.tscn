@@ -1,46 +1,100 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl6vkhokqopkh"]
+[gd_scene load_steps=5 format=3 uid="uid://bl6vkhokqopkh"]
 
-[ext_resource type="PackedScene" uid="uid://cuagcflnjqffc" path="res://scripts/inventory/InventorySlot.tscn" id="2"]
-[ext_resource type="PackedScene" uid="uid://55a6b24xt5oc" path="res://scripts/inventory/TrashSlot.tscn" id="2_m83bq"]
+[ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://jlpmjhiwb1ua" path="res://assets/ui/panel.png" id="2_507r6"]
+[ext_resource type="PackedScene" uid="uid://cuagcflnjqffc" path="res://scripts/inventory/InventorySlot.tscn" id="2_slot"]
+[ext_resource type="PackedScene" uid="uid://55a6b24xt5oc" path="res://scripts/inventory/TrashSlot.tscn" id="3_trash"]
 
 [node name="TouchInventory" type="CanvasLayer"]
+script = ExtResource("1_script")
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="Dimmer" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
 
-[node name="InventoryPanel" type="PanelContainer" parent="SafeArea"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InventoryBase" type="MarginContainer" parent="CenterContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
-[node name="MainLayout" type="HBoxContainer" parent="SafeArea/InventoryPanel"]
+[node name="Background" type="NinePatchRect" parent="CenterContainer/InventoryBase"]
+layout_mode = 2
+texture = ExtResource("2_507r6")
+patch_margin_left = 2
+patch_margin_top = 25
+patch_margin_right = 27
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Padding" type="MarginContainer" parent="CenterContainer/InventoryBase"]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="MainLayout" type="HBoxContainer" parent="CenterContainer/InventoryBase/Padding"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="GridContainer" type="GridContainer" parent="SafeArea/InventoryPanel/MainLayout"]
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/InventoryBase/Padding/MainLayout"]
 layout_mode = 2
-columns = 3
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 30
+columns = 4
 
-[node name="InventorySlot" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
-layout_mode = 2
-
-[node name="InventorySlot2" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
-layout_mode = 2
-
-[node name="InventorySlot3" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
+[node name="InventorySlot" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
 layout_mode = 2
 
-[node name="SideBar" type="VBoxContainer" parent="SafeArea/InventoryPanel/MainLayout"]
+[node name="InventorySlot2" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
 layout_mode = 2
+
+[node name="InventorySlot3" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot7" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot8" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot9" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot10" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot11" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="InventorySlot12" parent="CenterContainer/InventoryBase/Padding/MainLayout/GridContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="SideBar" type="VBoxContainer" parent="CenterContainer/InventoryBase/Padding/MainLayout"]
+layout_mode = 2
+theme_override_constants/separation = 4
 alignment = 2
 
-[node name="TrashSlot" parent="SafeArea/InventoryPanel/MainLayout/SideBar" instance=ExtResource("2_m83bq")]
+[node name="TrashSlot" parent="CenterContainer/InventoryBase/Padding/MainLayout/SideBar" instance=ExtResource("3_trash")]
 layout_mode = 2
 
 [node name="ItemPreview" type="TextureRect" parent="."]
