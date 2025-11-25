@@ -20,7 +20,7 @@ grow_vertical = 0
 texture = ExtResource("1_f2iiy")
 
 [node name="JoystickKnob" type="TextureRect" parent="JoystickBase"]
-modulate = Color(1, 1, 1, 0.42745098)
+modulate = Color(1, 1, 1, 0.6784314)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

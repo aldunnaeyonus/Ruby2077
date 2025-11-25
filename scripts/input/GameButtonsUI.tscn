@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3o6ftuv21ah6"]
+[gd_scene load_steps=8 format=3 uid="uid://c3o6ftuv21ah6"]
 
 [ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
 [ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
 [ext_resource type="Texture2D" uid="uid://cf3jj6esb4vw7" path="res://assets/icons/jump.svg" id="3_egv6y"]
 [ext_resource type="Texture2D" uid="uid://b7ahaakxasqo4" path="res://assets/icons/inventory.svg" id="3_ks07j"]
+[ext_resource type="Texture2D" uid="uid://db0ncjfjo21dx" path="res://assets/icons/sword__pressed.svg" id="3_pdv1u"]
+[ext_resource type="Texture2D" uid="uid://b1ffiyirgfdfk" path="res://assets/icons/inventory_pressed.svg" id="5_eao6o"]
+[ext_resource type="Texture2D" uid="uid://unydm5wcyceq" path="res://assets/icons/jump_pressed.svg" id="7_7h2fc"]
 
 [node name="GameButtonsUi" type="CanvasLayer"]
 layer = 10
@@ -29,33 +32,36 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
-modulate = Color(1, 1, 1, 0.23529412)
+modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -291.0
-offset_top = -131.0
-offset_right = -163.0
-offset_bottom = -3.0
+offset_left = -289.0
+offset_top = -133.0
+offset_right = -161.0
+offset_bottom = -5.0
 texture_normal = ExtResource("2_30ofi")
+texture_pressed = ExtResource("3_pdv1u")
 stretch_mode = 0
 
 [node name="MenuButton" type="TextureButton" parent="BottomRightContainer"]
-modulate = Color(1, 1, 1, 0.23529412)
+modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -129.0
-offset_top = -130.0
-offset_right = -1.0
-offset_bottom = -2.0
+offset_left = -131.0
+offset_top = -132.0
+offset_right = -3.0
+offset_bottom = -4.0
 texture_normal = ExtResource("3_ks07j")
+texture_pressed = ExtResource("5_eao6o")
 stretch_mode = 0
 
 [node name="JumpButton" type="TextureButton" parent="BottomRightContainer"]
-modulate = Color(1, 1, 1, 0.23529412)
+modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -129.0
+offset_left = -131.0
 offset_top = -285.0
-offset_right = -1.0
+offset_right = -3.0
 offset_bottom = -157.0
 texture_normal = ExtResource("3_egv6y")
+texture_pressed = ExtResource("7_7h2fc")
 stretch_mode = 0
 
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
