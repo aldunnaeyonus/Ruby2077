@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ds61c7vd7h6tn"]
 
 [ext_resource type="Script" uid="uid://cxwgnuwskwx7f" path="res://scripts/player/Player.gd" id="1_player"]
-[ext_resource type="Texture2D" uid="uid://dx5qqnv4yek1m" path="res://assets/player/ruby.png" id="2_s415c"]
+[ext_resource type="Texture2D" path="res://assets/player/ruby.png" id="2_s415c"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pg2bq"]
 animations = [{
@@ -50,7 +50,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(27, 43.5)
+size = Vector2(15, 37)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
@@ -62,7 +62,7 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 18)
+position = Vector2(-1.5, 9.5)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="."]

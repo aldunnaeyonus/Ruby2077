@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3o6ftuv21ah6"]
+[gd_scene load_steps=5 format=3 uid="uid://c3o6ftuv21ah6"]
 
 [ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
 [ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
 [ext_resource type="Texture2D" uid="uid://cf3jj6esb4vw7" path="res://assets/icons/jump.svg" id="3_egv6y"]
+[ext_resource type="Texture2D" uid="uid://b7ahaakxasqo4" path="res://assets/icons/inventory.svg" id="3_ks07j"]
 
 [node name="GameButtonsUi" type="CanvasLayer"]
 layer = 10
@@ -30,23 +31,34 @@ grow_vertical = 0
 [node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.23529412)
 layout_mode = 0
-offset_left = -132.0
-offset_top = -133.0
-offset_right = -4.0
-offset_bottom = -5.0
+offset_left = -291.0
+offset_top = -131.0
+offset_right = -163.0
+offset_bottom = -3.0
 texture_normal = ExtResource("2_30ofi")
-texture_pressed = ExtResource("2_30ofi")
+stretch_mode = 0
+
+[node name="MenuButton" type="TextureButton" parent="BottomRightContainer"]
+modulate = Color(1, 1, 1, 0.23529412)
+layout_mode = 0
+offset_left = -129.0
+offset_top = -130.0
+offset_right = -1.0
+offset_bottom = -2.0
+texture_normal = ExtResource("3_ks07j")
+stretch_mode = 0
 
 [node name="JumpButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.23529412)
 layout_mode = 0
-offset_left = -246.0
-offset_top = -238.0
-offset_right = -118.0
-offset_bottom = -110.0
+offset_left = -129.0
+offset_top = -285.0
+offset_right = -1.0
+offset_bottom = -157.0
 texture_normal = ExtResource("3_egv6y")
-texture_pressed = ExtResource("3_egv6y")
+stretch_mode = 0
 
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="BottomRightContainer/MenuButton" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="BottomRightContainer/JumpButton" to="." method="_on_jump_pressed"]

@@ -1,15 +1,15 @@
-# scripts/TouchInventory.gd
 extends CanvasLayer
 class_name TouchInventory
 
 # --- Node References ---
-@onready var grid = $SafeArea/InventoryPanel/GridContainer
+# Updated path to match the new HBox layout
+@onready var grid = $SafeArea/InventoryPanel/MainLayout/GridContainer
+@onready var trash_slot = $SafeArea/InventoryPanel/MainLayout/SideBar/TrashSlot
 @onready var preview = $ItemPreview
 @onready var confirm_delete = $ConfirmDelete
 @onready var base = $SafeArea/InventoryPanel
 
-# --- State and Configuration ---
-# Use the same multi-touch fix state as the joystick
+# --- State ---
 var touch_index := -1 
 var dragging := false 
 var swipe_start := Vector2.ZERO
@@ -18,139 +18,123 @@ var swipe_start := Vector2.ZERO
 var last_selected_id: String = ""
 
 func _ready():
-	# Initial visibility set by GameState
 	visible = GameState.is_inventory_open()
 	
-	# Connect delete confirmation
 	confirm_delete.confirmed.connect(_on_confirm_delete)
 	
-	# Connect to GameState signals for automatic updates (Issue 4 Fix)
 	if is_instance_valid(GameState):
-		GameState.item_added.connect(Callable(self, "_populate_inventory"))
-		GameState.item_removed.connect(Callable(self, "_populate_inventory"))
-		GameState.ui_state_changed.connect(Callable(self, "_on_game_state_ui_changed"))
-		
-	# CRITICAL FIX 2: Connect slot signals ONLY ONCE
+		GameState.item_added.connect(_populate_inventory)
+		GameState.item_removed.connect(_populate_inventory)
+		GameState.ui_state_changed.connect(_on_game_state_ui_changed)
+	
+	# Connect Inventory Slots
 	for slot in grid.get_children():
-		# Assuming slots are LevelSlot or similar TextureButtons
-		if slot is Control:
-			slot.gui_input.connect(Callable(self, "_on_slot_input").bind(slot))
+		if slot.has_signal("gui_input"):
+			slot.gui_input.connect(_on_slot_input.bind(slot))
+			
+	# Connect Trash Slot
+	if trash_slot:
+		trash_slot.gui_input.connect(_on_trash_input)
 	
 	_populate_inventory()
 
-## Handles visibility change broadcasted from GameState
 func _on_game_state_ui_changed(key: String, state: bool) -> void:
 	if key == "inventory_open":
 		visible = state
+		if state:
+			_populate_inventory()
 
-## Fills the inventory grid with current item data.
-func _populate_inventory():
-	var idx := 0
-	# Get all active item IDs from the GameState dictionary (Issue 1 Fix)
-	var current_item_ids: Array = GameState.inventory.keys()
+func _populate_inventory(item_id: String = "", count: int = 0):
+	# Optional arguments allow this to work as a signal callback
+	var current_item_ids = GameState.inventory.keys()
+	var idx = 0
 
-	# 1. Clear all slots
 	for slot in grid.get_children():
-		if slot.has_method("_update_display"): # Assuming LevelSlot or similar
+		# Reset slot
+		if slot.has_method("reset"):
+			slot.reset()
+		elif "item_data" in slot:
 			slot.item_data = {}
-			slot._update_display()
+			slot.texture_normal = null # Clear icon if using basic buttons
 
-	# 2. Populate slots with items
-	for item_id in current_item_ids:
+	for id in current_item_ids:
 		if idx >= grid.get_child_count():
 			break
 			
 		var slot = grid.get_child(idx)
-		# NOTE: We only store the ID here. Displaying stacks would require a Label on the slot.
-		slot.item_data = {"id": item_id, "count": GameState.get_item_count(item_id)}
+		var item_count = GameState.get_item_count(id)
 		
+		# Assign Data
+		if "item_data" in slot:
+			slot.item_data = {"id": id, "count": item_count}
+			
+		# Update Visuals
 		if slot.has_method("_update_display"):
-			# The slot's internal update function should handle loading the icon
 			slot._update_display()
 		else:
-			# Fallback for generic TextureButton
-			slot.texture_normal = _get_icon(item_id)
+			# Fallback
+			slot.texture_normal = _get_icon(id)
 			
 		idx += 1
-		
-	# If an item was deleted, clear the preview
-	if not GameState.has_item(last_selected_id):
-		hide_item_preview()
 
-## Gets the icon for an item.
 func _get_icon(item_id: String) -> Texture2D:
-	# Assume ItemDatabase is an Autoload Singleton
 	var item_info = ItemDatabase.get_item(item_id)
-	var icon_path = item_info.get("icon", "res://assets/icons/unknown.png")
+	var icon_path = item_info.get("icon", "res://assets/icons/empty.svg")
 	
 	if ResourceLoader.exists(icon_path):
 		return load(icon_path)
-	
-	push_warning("Icon not found for item ID: %s at %s" % [item_id, icon_path])
-	return load("res://assets/icons/unknown.png") # Fallback icon
+	return load("res://assets/icons/empty.svg")
 
-## Handles input on the individual slot control.
-func _on_slot_input(slot: Node, event: InputEvent):
-	# Only respond to left-click (primary) presses
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+# --- Interaction ---
+
+func _on_slot_input(event: InputEvent, slot: Node):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var id = slot.item_data.get("id", "")
 		if id != "":
 			last_selected_id = id
 			show_item_preview(id)
+			print("Selected Item: ", id)
+
+func _on_trash_input(event: InputEvent):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if last_selected_id != "":
+			request_delete()
+		else:
+			print("No item selected to delete.")
 
 func show_item_preview(item_id: String):
-	# Assume ItemPreview is a TextureRect or similar
-	preview.texture = _get_icon(item_id)
-	
-	# Add item details (assuming ItemDatabase)
-	var item_details = ItemDatabase.get_item(item_id)
-	# You would update labels here: preview_name.text = item_details.get("name", "...")
-	# You would connect a "Use" button and a "Delete" button here
-	
-	preview.visible = true
+	if preview:
+		preview.texture = _get_icon(item_id)
+		preview.visible = true
 
-func hide_item_preview():
-	preview.visible = false
-
-# This function is usually connected to a dedicated button on the ItemPreview panel
 func request_delete():
-	if last_selected_id != "":
-		var item_info = ItemDatabase.get_item(last_selected_id)
-		confirm_delete.dialog_text = "Delete one %s?" % item_info.get("name", last_selected_id)
-		confirm_delete.popup_centered()
+	var item_info = ItemDatabase.get_item(last_selected_id)
+	var item_name = item_info.get("name", last_selected_id)
+	confirm_delete.dialog_text = "Delete %s?" % item_name
+	confirm_delete.popup_centered()
 
 func _on_confirm_delete():
 	if last_selected_id != "":
-		# CRITICAL FIX: Use the count argument for stackable items
-		GameState.remove_item(last_selected_id, 1) # Remove 1 item
-		# The _populate_inventory will be called via the GameState signal
-		# last_selected_id will be reset in _populate_inventory if the item is gone.
+		GameState.remove_item(last_selected_id, 1)
+		# Hide preview if item is completely gone
+		if not GameState.has_item(last_selected_id):
+			preview.visible = false
+			last_selected_id = ""
 
-## CRITICAL FIX 3: Multi-touch and gesture control for inventory closing.
+# --- Gestures (Close on swipe down) ---
 func _input(event):
-	if not visible or not GameState.are_gestures_enabled():
-		return
-
+	if not visible: return
+	
 	if event is InputEventScreenTouch:
 		if event.pressed and not dragging:
-			# Start drag only if we touch the background, not an interactive element
+			# Check if touch is OUTSIDE the inventory panel
 			if not base.get_global_rect().has_point(event.position):
 				touch_index = event.index
 				swipe_start = event.position
 				dragging = true
 		
 		elif not event.pressed and dragging and event.index == touch_index:
-			# End touch: Check for swipe down
 			if (event.position.y - swipe_start.y) > swipe_threshold:
-				_hide_inventory()
-			
+				GameState.set_inventory_open(false)
 			dragging = false
 			touch_index = -1
-			
-	elif event is InputEventScreenDrag and dragging and event.index == touch_index:
-		# Drag event updates the position for the eventual check on lift
-		pass # Logic moved to lift (ScreenTouch not pressed)
-
-func _hide_inventory():
-	# Use the setter method to update the state and emit the signal
-	GameState.set_inventory_open(false)

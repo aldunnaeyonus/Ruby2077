@@ -9,25 +9,39 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="InventoryPanel" type="Panel" parent="SafeArea"]
+[node name="InventoryPanel" type="PanelContainer" parent="SafeArea"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="GridContainer" type="GridContainer" parent="SafeArea/InventoryPanel"]
-layout_mode = 0
+[node name="MainLayout" type="HBoxContainer" parent="SafeArea/InventoryPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="GridContainer" type="GridContainer" parent="SafeArea/InventoryPanel/MainLayout"]
+layout_mode = 2
 columns = 3
 
-[node name="InventorySlot" parent="SafeArea/InventoryPanel/GridContainer" instance=ExtResource("2")]
+[node name="InventorySlot" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
 layout_mode = 2
 
-[node name="InventorySlot2" parent="SafeArea/InventoryPanel/GridContainer" instance=ExtResource("2")]
+[node name="InventorySlot2" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
 layout_mode = 2
 
-[node name="InventorySlot3" parent="SafeArea/InventoryPanel/GridContainer" instance=ExtResource("2")]
+[node name="InventorySlot3" parent="SafeArea/InventoryPanel/MainLayout/GridContainer" instance=ExtResource("2")]
 layout_mode = 2
 
-[node name="TrashSlot" parent="SafeArea/InventoryPanel" instance=ExtResource("2_m83bq")]
-layout_mode = 0
+[node name="SideBar" type="VBoxContainer" parent="SafeArea/InventoryPanel/MainLayout"]
+layout_mode = 2
+alignment = 2
+
+[node name="TrashSlot" parent="SafeArea/InventoryPanel/MainLayout/SideBar" instance=ExtResource("2_m83bq")]
+layout_mode = 2
 
 [node name="ItemPreview" type="TextureRect" parent="."]
 visible = false
@@ -36,7 +50,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-stretch_mode = 2
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ConfirmDelete" type="ConfirmationDialog" parent="."]
 dialog_text = "Delete this item?"

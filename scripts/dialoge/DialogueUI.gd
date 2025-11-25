@@ -1,12 +1,15 @@
 extends CanvasLayer
 class_name DialogueUI
 
-# --- Node References ---
-@onready var label_name = $SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer/LabelName
-@onready var label_text = $SafeAreaRoot/DialoguePanel/VBoxContainer/LabelText
-@onready var portrait = $SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer/Portrait
-@onready var choices_container = $SafeAreaRoot/DialoguePanel/VBoxContainer/ChoicesContainer
-@onready var btn_next = $SafeAreaRoot/DialoguePanel/VBoxContainer/ButtonNext
+@onready var container = $SafeAreaRoot/DialogueContainer
+# Portrait is now inside MainHBox (Directly)
+@onready var portrait = $SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/Portrait
+# All text elements are now inside MainHBox/TextVBox
+@onready var label_name = $SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox/LabelName
+@onready var label_text = $SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox/LabelText
+@onready var choices_container = $SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox/ChoicesContainer
+@onready var btn_next = $SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox/ButtonNext
+
 @onready var anim = $AnimationPlayer
 
 # --- Dialogue State ---
@@ -16,7 +19,7 @@ var current_id: String = ""
 # --- Swipe/Gesture State ---
 @export var swipe_threshold: float = 100.0
 var swipe_start := Vector2.ZERO
-var is_dragging: bool = false 
+var is_dragging: bool = false
 
 # --- INITIALIZATION ---
 

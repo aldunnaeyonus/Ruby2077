@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://i6hclmd74t8l"]
+[gd_scene load_steps=5 format=3 uid="uid://i6hclmd74t8l"]
 
 [ext_resource type="Script" uid="uid://ctwm7cj341bh7" path="res://scripts/settingtransitions/SettingsMenu.gd" id="1_yelko"]
-[ext_resource type="Texture2D" uid="uid://jlpmjhiwb1ua" path="res://assets/ui/panel.png" id="2_pd0xm"]
+[ext_resource type="PackedScene" uid="uid://ek4en8ouj0ae" path="res://scripts/UIHUD/panel.tscn" id="2_pd0xm"]
+[ext_resource type="Texture2D" uid="uid://bdqkwlvteic0" path="res://assets/icons/x.svg" id="3_vsaac"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pd0xm"]
 
 [node name="SettingsMenu" type="Control"]
 layout_mode = 3
@@ -21,79 +24,76 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.490196)
 
-[node name="Panel" type="NinePatchRect" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -178.0
-offset_top = -200.0
-offset_right = 178.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_pd0xm")
-region_rect = Rect2(0, 0, 232.866, 87.9287)
-patch_margin_left = 10
-patch_margin_top = 31
-patch_margin_right = 10
-patch_margin_bottom = 43
-
-[node name="ButtonBack" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -35.0
-offset_top = 1.0
-offset_right = -2.0
-offset_bottom = 28.0
-grow_horizontal = 0
-flat = true
-
-[node name="LabelTitle" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 59.0
-offset_top = 1.0
-offset_right = -59.0
-offset_bottom = 24.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 15
-text = "Settings"
-horizontal_alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 27.0
-offset_top = 40.0
-offset_right = -30.0
-offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+
+[node name="PanelContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="NinePatchRect" parent="CenterContainer/PanelContainer" instance=ExtResource("2_pd0xm")]
+layout_mode = 2
+
+[node name="InternalPadding" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/InternalPadding"]
+layout_mode = 2
+theme_override_constants/separation = 15
 alignment = 1
 
-[node name="LabelAudio" type="Label" parent="Panel/VBoxContainer"]
+[node name="Header" type="HBoxContainer" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/Header"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5058824, 0.09019608, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(0.6784314, 0.14901961, 0.3137255, 1)
+theme_override_colors/font_pressed_color = Color(0.3764706, 0.03529412, 0.24705882, 1)
+theme_override_colors/font_hover_color = Color(0.6784314, 0.14901961, 0.3137255, 1)
+theme_override_font_sizes/font_size = 10
+theme_override_icons/icon = ExtResource("3_vsaac")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pd0xm")
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelAudio" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
 text = "Audio"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="LabelVolume" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="LabelVolume" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Volume"
 
-[node name="VolumeSlider" type="HSlider" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="VolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -101,46 +101,42 @@ max_value = 1.0
 step = 0.05
 value = 0.8
 
-[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
-layout_mode = 2
-
-[node name="LabelVideo" type="Label" parent="Panel/VBoxContainer"]
+[node name="LabelVideo" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
 text = "Video"
 horizontal_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="LabelResolution" type="Label" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="LabelResolution" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Resolution"
 
-[node name="ResolutionOption" type="OptionButton" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="ResolutionOption" type="OptionButton" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckBoxFullscreen" type="CheckBox" parent="Panel/VBoxContainer"]
+[node name="CheckBoxFullscreen" type="CheckBox" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
 text = "Fullscreen"
 
-[node name="HSeparator2" type="HSeparator" parent="Panel/VBoxContainer"]
-layout_mode = 2
-
-[node name="LabelGameplay" type="Label" parent="Panel/VBoxContainer"]
+[node name="LabelGameplay" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
 text = "Gameplay"
 horizontal_alignment = 1
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="LabelDifficulty" type="Label" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="LabelDifficulty" type="Label" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Difficulty"
 
-[node name="DifficultyOption" type="OptionButton" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="DifficultyOption" type="OptionButton" parent="CenterContainer/PanelContainer/InternalPadding/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3

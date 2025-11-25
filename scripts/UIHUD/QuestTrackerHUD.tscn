@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfbd85rxlgq7j"]
+[gd_scene load_steps=3 format=3 uid="uid://cfbd85rxlgq7j"]
 
 [ext_resource type="Script" uid="uid://dmqfqj1351xku" path="res://scripts/UIHUD/QuestTrackerHUD.gd" id="1_pl543"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6q8pb"]
 
 [node name="QuestTrackerHud" type="CanvasLayer"]
 script = ExtResource("1_pl543")
@@ -11,6 +13,7 @@ offset_bottom = 40.0
 
 [node name="TrackerPanel" type="Panel" parent="SafeAreaRoot"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_6q8pb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/TrackerPanel"]
 layout_mode = 0

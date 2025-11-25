@@ -1,15 +1,12 @@
 extends Control
 class_name SettingsMenuUI
 
-# --- Node References ---
-@onready var volume_slider = $Panel/VBoxContainer/HBoxContainer/VolumeSlider
-# FIX: Updated path to HBoxContainer2
-@onready var resolution_option = $Panel/VBoxContainer/HBoxContainer2/ResolutionOption
-@onready var fullscreen_toggle = $Panel/VBoxContainer/CheckBoxFullscreen
-# FIX: Updated path to HBoxContainer3
-@onready var difficulty_option = $Panel/VBoxContainer/HBoxContainer3/DifficultyOption
-# FIX: Updated path (Button is now direct child of Panel)
-@onready var btn_back = $Panel/ButtonBack
+@onready var main_container = $CenterContainer/PanelContainer/InternalPadding/VBoxContainer
+@onready var volume_slider = main_container.get_node("HBoxContainer/VolumeSlider")
+@onready var resolution_option = main_container.get_node("HBoxContainer2/ResolutionOption")
+@onready var fullscreen_toggle = main_container.get_node("CheckBoxFullscreen")
+@onready var difficulty_option = main_container.get_node("HBoxContainer3/DifficultyOption")
+@onready var btn_back = main_container.get_node("Header/ButtonBack")
 
 const RESOLUTIONS = [
 	"1280x720",

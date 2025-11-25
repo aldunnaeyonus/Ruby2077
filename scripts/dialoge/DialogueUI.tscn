@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dd8rlh16wn876"]
+[gd_scene load_steps=5 format=3 uid="uid://dd8rlh16wn876"]
 
 [ext_resource type="Script" uid="uid://cpnwn7yfn3d2m" path="res://scripts/dialoge/DialogueUI.gd" id="1_0qyo7"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="2_5j0pa"]
 [ext_resource type="Texture2D" uid="uid://bp5q5xcwp82tv" path="res://assets/icons/level_transition.svg" id="3_d8gbn"]
+[ext_resource type="PackedScene" uid="uid://ek4en8ouj0ae" path="res://scripts/UIHUD/panel.tscn" id="3_lalo6"]
 
 [node name="DialogueUI" type="CanvasLayer"]
 script = ExtResource("1_0qyo7")
@@ -13,41 +14,62 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
 script = ExtResource("2_5j0pa")
 
-[node name="DialoguePanel" type="Panel" parent="SafeAreaRoot"]
+[node name="DialogueContainer" type="MarginContainer" parent="SafeAreaRoot"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 20
+
+[node name="NinePatchRect" parent="SafeAreaRoot/DialogueContainer" instance=ExtResource("3_lalo6")]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaRoot/DialoguePanel"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
+[node name="InternalPadding" type="MarginContainer" parent="SafeAreaRoot/DialogueContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer"]
+[node name="MainHBox" type="HBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding"]
 layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 0
 texture = ExtResource("3_d8gbn")
+expand_mode = 1
 stretch_mode = 5
 
-[node name="LabelName" type="Label" parent="SafeAreaRoot/DialoguePanel/VBoxContainer/HBoxContainer"]
+[node name="TextVBox" type="VBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="LabelName" type="Label" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Speaker"
 
-[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
+[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
-text = "This is a line of dialogue."
+theme_override_font_sizes/normal_font_size = 18
+text = "This is a line of dialogue that will now wrap automatically and push the box upwards if it gets too long."
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
 
-[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
+[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
 
-[node name="ButtonNext" type="Button" parent="SafeAreaRoot/DialoguePanel/VBoxContainer"]
+[node name="ButtonNext" type="Button" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
+size_flags_horizontal = 8
 text = "Next"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../SafeAreaRoot/DialoguePanel/VBoxContainer")
+root_node = NodePath("../SafeAreaRoot/DialogueContainer")
