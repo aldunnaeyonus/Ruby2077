@@ -60,7 +60,7 @@ func update_score_display(score: int) -> void:
 func update_time_display(time_seconds: int) -> void:
 	if time_label:
 		# Explicitly cast to int to prevent "Integer Division" warnings
-		var minutes = int(time_seconds / 60)
+		var minutes :int = int(time_seconds / 60.0)
 		var seconds = time_seconds % 60
 		time_label.text = "TIME: %02d:%02d" % [minutes, seconds]
 
