@@ -7,6 +7,7 @@ class_name TouchInventory
 @onready var preview = $ItemPreview
 @onready var confirm_delete = $ConfirmDelete
 @onready var base_rect = $CenterContainer/InventoryBase
+@onready var background = $CenterContainer/InventoryBase/Background # Reference to the NinePatchRect
 
 # --- STATE ---
 var selected_item_id: String = ""
@@ -15,21 +16,38 @@ var dragging: bool = false
 const SWIPE_THRESHOLD = 100.0
 
 func _ready():
-	# Initial state
 	visible = GameState.is_inventory_open()
 	
-	# Global Signals
 	if is_instance_valid(GameState):
 		GameState.item_added.connect(_refresh_inventory)
 		GameState.item_removed.connect(_refresh_inventory)
 		GameState.ui_state_changed.connect(_on_ui_state_changed)
+		# NEW: Connect the warning signal
+		GameState.inventory_full_warning.connect(_on_inventory_full)
 	
 	confirm_delete.confirmed.connect(_on_delete_confirmed)
 	
-	# Setup Slots
 	_connect_slots()
 	_refresh_inventory()
 
+# --- NEW VISUAL FEEDBACK ---
+func _on_inventory_full():
+	# Shake animation
+	var tween = create_tween()
+	var original_pos = base_rect.position
+	
+	# Flash Red
+	tween.tween_property(background, "modulate", Color(1, 0.5, 0.5), 0.1)
+	
+	# Shake X axis
+	for i in range(4):
+		var offset = 10 if i % 2 == 0 else -10
+		tween.tween_property(base_rect, "position:x", original_pos.x + offset, 0.05)
+	
+	# Reset
+	tween.tween_property(base_rect, "position", original_pos, 0.05)
+	tween.tween_property(background, "modulate", Color.WHITE, 0.2)
+	
 func _on_ui_state_changed(key: String, state: bool):
 	if key == "inventory_open":
 		visible = state
