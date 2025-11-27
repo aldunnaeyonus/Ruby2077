@@ -7,6 +7,8 @@
 radius = 30.0
 
 [node name="ItemPickup" type="Area2D"]
+collision_layer = 4
+collision_mask = 7
 script = ExtResource("1_w5sqa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -29,7 +29,6 @@ ConfigManager="*res://scripts/global/ConfigManager.gd"
 QuestTrackerHud="*res://scripts/UIHUD/QuestTrackerHUD.tscn"
 QuestPopupUi="*res://scripts/UIHUD/QuestPopupUI.tscn"
 ItemDatabase="*res://scripts/global/ItemDatabase.gd"
-#CRITICALFIX:Pointto.tscn,not.gdQuestTrackerHud="*res://scripts/UIHUD/QuestTrackerHUD.tscn"
 
 [display]
 

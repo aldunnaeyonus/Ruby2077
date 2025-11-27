@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ds61c7vd7h6tn"]
 
 [ext_resource type="Script" uid="uid://cxwgnuwskwx7f" path="res://scripts/player/Player.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/player/ruby.png" id="2_s415c"]
+[ext_resource type="Texture2D" uid="uid://b3grul3517bom" path="res://assets/player/ruby.png" id="2_s415c"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pg2bq"]
 animations = [{
@@ -62,6 +62,8 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 7
+visibility_layer = 7
 position = Vector2(-1.5, 9.5)
 shape = SubResource("RectangleShape2D_1")
 
