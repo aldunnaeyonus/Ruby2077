@@ -18,7 +18,7 @@ var xp: int = 0
 var inventory_open: bool = false
 var tracker_collapsed: bool = false
 var gestures_enabled: bool = true
-
+const MAX_SLOTS = 12
 # --- SAVE/LOAD SYSTEM ---
 const SAVE_PATH = "user://savegame.json"
 
@@ -77,10 +77,22 @@ func _apply_save_data(data: Dictionary) -> void:
 	# (Optional) Emit item signals if you need to refresh the full inventory UI
 
 # --- INVENTORY METHODS ---
-func add_item(id: String, count: int = 1) -> void:
-	var current_count = inventory.get(id, 0)
-	inventory[id] = current_count + count
-	item_added.emit(id, inventory[id])
+func add_item(id: String, count: int = 1) -> bool:
+	# Check Stacking: If we already have it, just add count and return TRUE
+	if inventory.has(id):
+		inventory[id] += count
+		item_added.emit(id, inventory[id])
+		return true 
+	
+	# Check Capacity: If it's a new item, do we have room?
+	if inventory.size() >= MAX_SLOTS:
+		print("Cannot pick up %s: Inventory Full!" % id)
+		return false # <--- Return FALSE so the item isn't deleted from the world
+		
+	# Add New Item
+	inventory[id] = count
+	item_added.emit(id, count)
+	return true # <--- Return TRUE to confirm success
 
 func remove_item(id: String, count: int = 1) -> void:
 	var current_count = inventory.get(id, 0)

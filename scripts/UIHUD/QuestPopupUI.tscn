@@ -20,8 +20,11 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="NinePatchRect" parent="PopupPanel" instance=ExtResource("2_n473t")]
-layout_mode = 0
-anchors_preset = 0
+layout_mode = 1
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel"]
 layout_mode = 1
