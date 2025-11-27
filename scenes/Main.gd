@@ -1,7 +1,7 @@
 extends Node
 class_name MainMenuManager
 
-# --- Node References ---
+# --- NODES ---
 @onready var startup_video = $StartupVideo
 @onready var ruby_intro = $RubyIntroVideo
 @onready var safe_area = $SafeAreaRoot
@@ -13,124 +13,96 @@ class_name MainMenuManager
 @onready var btn_continue = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue
 @onready var btn_settings = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonSettings
 
-var save_file_path := "user://savegame.json" # Best practice: use user:// for saves
+# CRITICAL: Always use user:// for saves
+var save_file_path := "user://savegame.json" 
 
 func _ready():
-	# Apply Settings
 	if is_instance_valid(ConfigManager):
 		ConfigManager.apply_settings()
 	
 	if safe_area and safe_area.has_method("update_safe_area"):
 		safe_area.update_safe_area()
 
-	# --- 1. Reset Visibility ---
-	if start_menu:
-		start_menu.visible = false
-	if ruby_intro:
-		ruby_intro.visible = false
-	if settings_menu:
-		settings_menu.visible = false
+	# Hide menus initially
+	if start_menu: start_menu.visible = false
+	if ruby_intro: ruby_intro.visible = false
+	if settings_menu: settings_menu.visible = false
 
-	# --- 2. Setup Startup Video ---
+	# Setup Buttons
+	if btn_start: btn_start.pressed.connect(_on_start_pressed)
+	if btn_continue: btn_continue.pressed.connect(_on_continue_pressed)
+	if btn_settings: btn_settings.pressed.connect(_on_settings_pressed)
+
+	# Start Video
 	if startup_video:
-		# Safety Check: Connect only if not already connected
 		if not startup_video.finished.is_connected(_on_startup_video_finished):
 			startup_video.finished.connect(_on_startup_video_finished)
 		startup_video.play()
-	
-	# --- REMOVED BUTTON CONNECTIONS ---
-	# These are already connected in Main.tscn (Green signal icon in Editor).
-	# Re-connecting them here caused the error.
-	
-	# --- 3. Setup Intro Video ---
-	if ruby_intro:
-		if not ruby_intro.finished.is_connected(_on_ruby_intro_finished):
-			ruby_intro.finished.connect(_on_ruby_intro_finished)
-		if not ruby_intro.gui_input.is_connected(_on_ruby_intro_skip):
-			ruby_intro.gui_input.connect(_on_ruby_intro_skip)
+	else:
+		# Fallback if no video
+		_on_startup_video_finished()
 
 func _on_startup_video_finished():
-	if transition:
-		await transition.play("fade_out")
+	if transition: await transition.play("fade_out")
+	if startup_video: startup_video.visible = false
 	
-	if startup_video:
-		startup_video.visible = false
-	
-	# Handle "Continue" button state
+	# Enable/Disable Continue based on save file
 	if btn_continue:
 		btn_continue.disabled = not FileAccess.file_exists(save_file_path)
 	
-	if start_menu:
-		start_menu.visible = true
-	
-	if transition:
-		await transition.play("fade_in")
+	if start_menu: start_menu.visible = true
+	if transition: await transition.play("fade_in")
 
 func _on_start_pressed():
-	if not FileAccess.file_exists(save_file_path):
-		# New Game Flow
-		if transition:
-			await transition.play("fade_out")
-		
-		if start_menu:
-			start_menu.visible = false
+	# Logic: Start -> New Game (Overwrite warning could be added here)
+	# For now, just starts a fresh game logic
+	_play_intro_sequence()
+
+func _play_intro_sequence():
+	if transition: await transition.play("fade_out")
+	if start_menu: start_menu.visible = false
+	
+	if ruby_intro:
+		ruby_intro.visible = true
+		if not ruby_intro.finished.is_connected(_on_ruby_intro_finished):
+			ruby_intro.finished.connect(_on_ruby_intro_finished)
+		# Allow skipping
+		if not ruby_intro.gui_input.is_connected(_on_intro_input):
+			ruby_intro.gui_input.connect(_on_intro_input)
 			
-		if ruby_intro:
-			ruby_intro.visible = true
-			ruby_intro.play()
-			
-		if transition:
-			await transition.play("fade_in")
+		ruby_intro.play()
+		if transition: await transition.play("fade_in")
 	else:
-		# Load Existing Game
-		_go_to_level(load_saved_level())
+		_go_to_level(1)
+
+func _on_intro_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		_on_ruby_intro_finished()
 
 func _on_ruby_intro_finished():
-	if ruby_intro:
-		ruby_intro.stop()
-		_go_to_level(1)
-
-func _on_ruby_intro_skip(event: InputEvent):
-	if event is InputEventMouseButton and event.pressed:
-		if ruby_intro:
-			ruby_intro.stop()
-		_go_to_level(1)
+	if ruby_intro: ruby_intro.stop()
+	_go_to_level(1)
 
 func _on_continue_pressed():
 	if FileAccess.file_exists(save_file_path):
-		_go_to_level(load_saved_level())
+		# Load global state first
+		if is_instance_valid(GameState):
+			GameState.load_game()
+		
+		# Assuming GameState or a generic level loader handles the scene switch,
+		# but if we store just the level index:
+		# _go_to_level(GameState.current_level_index) 
+		_go_to_level(1) # Default for now
 
 func _on_settings_pressed():
-	if start_menu:
-		start_menu.visible = false
-	if settings_menu: 
-		settings_menu.visible = true
+	if start_menu: start_menu.visible = false
+	if settings_menu: settings_menu.visible = true
 
 func _go_to_level(level: int):
-	if transition:
-		await transition.play("fade_out")
+	if transition: await transition.play("fade_out")
+	var path = "res://levels/Level%d.tscn" % level
+	if ResourceLoader.exists(path):
+		get_tree().change_scene_to_file(path)
+	else:
+		push_error("Level scene not found: %s" % path)
 		
-	var scene_path = "res://levels/Level%d.tscn" % level
-	get_tree().change_scene_to_file(scene_path)
-
-func load_saved_level() -> int:
-	if not FileAccess.file_exists(save_file_path):
-		return 1 
-		
-	var file = FileAccess.open(save_file_path, FileAccess.READ)
-	if file == null:
-		return 1 
-		
-	var json_text = file.get_as_text()
-	var json = JSON.new()
-	var error = json.parse(json_text)
-	
-	if error == OK:
-		var data = json.get_data()
-		# Assuming your save data has a "level" key, or you save just the number
-		if typeof(data) == TYPE_DICTIONARY:
-			return data.get("current_level", 1)
-		elif typeof(data) == TYPE_FLOAT or typeof(data) == TYPE_INT:
-			return int(data)
-			
-	return 1

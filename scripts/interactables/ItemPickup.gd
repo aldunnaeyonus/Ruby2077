@@ -1,4 +1,3 @@
-# scripts/interactables/ItemPickup.gd
 extends Area2D
 
 @export var item_id: String = "health_potion"
@@ -10,7 +9,7 @@ extends Area2D
 func _ready():
 	prompt.visible = false
 	
-	# Load default icon from DB if sprite is empty
+	# Auto-load icon if not manually set
 	if sprite.texture == null:
 		var data = ItemDatabase.get_item(item_id)
 		var icon_path = data.get("icon", "")
@@ -28,13 +27,19 @@ func _on_area_exited(area):
 	if area.name == "InteractionArea":
 		prompt.visible = false
 
+# Called by Player.gd
 func on_interact():
 	var ui = get_tree().get_first_node_in_group("inspection_ui")
 	
 	if ui:
-		# PASS THE TEXTURE HERE (sprite.texture)
+		# Pass texture to UI to avoid reloading
 		ui.open_inspection(item_id, quantity, self, sprite.texture)
 	else:
-		var added = GameState.add_item(item_id, quantity)
-		if added:
+		# Instant pickup fallback
+		var success = GameState.add_item(item_id, quantity)
+		if success:
 			queue_free()
+		else:
+			# Optional: Play "Error" sound
+			pass
+			

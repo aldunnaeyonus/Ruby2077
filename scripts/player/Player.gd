@@ -1,30 +1,38 @@
 extends CharacterBody2D
 class_name Player
 
-# --- Configuration ---
+# --- CONFIGURATION ---
 const SPEED = 300.0
-const JUMP_VELOCITY = -350.0
-const ACCELERATION = 1200.0
-const FRICTION = 1000.0
+const JUMP_VELOCITY = -450.0 # Increased slightly for snappier feel
+const ACCELERATION = 1500.0
+const FRICTION = 1200.0
 const MAX_JUMPS = 2
 
-# Define the Game Modes
-enum GameMode { PLATFORMER, TOP_DOWN }
+# Game Feel Settings
+const COYOTE_TIME = 0.1
+const JUMP_BUFFER_TIME = 0.1
 
-# Export this so you can set it in the Inspector for each Level
+enum GameMode { PLATFORMER, TOP_DOWN }
 @export var current_mode: GameMode = GameMode.PLATFORMER
 
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
-# --- Nodes ---
+# --- NODES ---
 @onready var sprite = $AnimatedSprite2D 
 @onready var interaction_area = $InteractionArea 
 
-# --- State ---
+# --- STATE ---
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var joystick_direction: Vector2 = Vector2.ZERO
 var jump_count: int = 0
 
+# Timers (floats for efficiency)
+var coyote_timer: float = 0.0
+var jump_buffer_timer: float = 0.0
+
 func _physics_process(delta):
+	# Handle Jump Buffer (decrements every frame)
+	if jump_buffer_timer > 0:
+		jump_buffer_timer -= delta
+		
 	match current_mode:
 		GameMode.PLATFORMER:
 			_handle_platformer_movement(delta)
@@ -33,69 +41,82 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
-	# PC Controls
-	if Input.is_action_just_pressed("ui_accept"):
+	# PC/Manual Input Checks
+	if Input.is_action_just_pressed("ui_accept"): # Map Spacebar/Button A
 		jump()
-	if Input.is_action_just_pressed("ui_focus_next"):
+	if Input.is_action_just_pressed("ui_focus_next"): # Map E/Button X
 		interact()
 
-# --- Movement Logic ---
+# --- PLATFORMER LOGIC ---
 
 func _handle_platformer_movement(delta):
-	# 1. Apply Gravity
+	# 1. Gravity & Coyote Time
 	if not is_on_floor():
 		velocity.y += gravity * delta
+		coyote_timer -= delta
 	else:
 		jump_count = 0
+		coyote_timer = COYOTE_TIME # Reset coyote time when on floor
 
-	# 2. Get Input (X only)
+	# 2. Handle Jump Buffer Execution
+	if jump_buffer_timer > 0 and (is_on_floor() or (coyote_timer > 0 and jump_count == 0) or jump_count < MAX_JUMPS):
+		_perform_jump()
+
+	# 3. Horizontal Movement
+	# Prioritize Joystick, fallback to Keyboard
 	var input_x = joystick_direction.x
 	if input_x == 0:
 		input_x = Input.get_axis("ui_left", "ui_right")
 
-	# 3. Move
 	if input_x != 0:
 		velocity.x = move_toward(velocity.x, input_x * SPEED, ACCELERATION * delta)
-		if sprite: sprite.flip_h = input_x < 0
+		if sprite: 
+			sprite.flip_h = input_x < 0
+			if is_on_floor(): _play_anim("run")
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+		if is_on_floor(): _play_anim("idle")
+		
+	if not is_on_floor():
+		_play_anim("jump" if velocity.y < 0 else "fall")
+
+# --- TOP-DOWN LOGIC ---
 
 func _handle_top_down_movement(delta):
-	# 1. Get Input (X and Y)
 	var input_vector = joystick_direction
-	
-	# Fallback to Keyboard if joystick is idle
 	if input_vector == Vector2.ZERO:
 		input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 
-	# 2. Move (No Gravity)
-	if input_vector != Vector2.ZERO:
-		velocity = velocity.move_toward(input_vector * SPEED, ACCELERATION * delta)
-		
-		# Handle Sprite Flipping
-		if sprite and input_vector.x != 0:
+	# Normalize vector to prevent fast diagonal movement
+	if input_vector.length() > 0:
+		velocity = velocity.move_toward(input_vector.normalized() * SPEED, ACCELERATION * delta)
+		if sprite: 
 			sprite.flip_h = input_vector.x < 0
-			
-		# Optional: Add Up/Down animation logic here
-		# if input_vector.y < 0: sprite.play("walk_up")
+			_play_anim("run")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		_play_anim("idle")
 
-# --- Public Actions ---
+# --- ACTIONS ---
 
 func set_joystick_input(vec: Vector2):
 	joystick_direction = vec
 
 func jump():
-	# Only allow jumping in Platformer Mode
+	# Instead of jumping immediately, we set the buffer.
+	# The physics process handles the actual jump if conditions are met.
 	if current_mode == GameMode.PLATFORMER:
-		if is_on_floor() or jump_count < MAX_JUMPS:
-			velocity.y = JUMP_VELOCITY
-			jump_count += 1
+		jump_buffer_timer = JUMP_BUFFER_TIME
 
-func attack():
-	print("Player Attack Initiated!")
-	# if sprite: sprite.play("attack")
+func _perform_jump():
+	velocity.y = JUMP_VELOCITY
+	jump_buffer_timer = 0.0 # Consume buffer
+	
+	# If utilizing coyote time, treat it as the first jump
+	if not is_on_floor() and jump_count == 0:
+		jump_count = 1 
+	else:
+		jump_count += 1
 
 func interact():
 	if interaction_area:
@@ -104,3 +125,7 @@ func interact():
 			if area.has_method("on_interact"):
 				area.on_interact()
 				return
+
+func _play_anim(anim_name: String):
+	if sprite and sprite.animation != anim_name:
+		sprite.play(anim_name)

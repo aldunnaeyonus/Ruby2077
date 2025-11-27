@@ -1,103 +1,90 @@
-# scripts/UIHUD/QuestTrackerHUD.gd
 extends CanvasLayer
 class_name QuestTrackerHUD
 
-# --- Node References ---
+# --- NODES ---
 @onready var quest_list: VBoxContainer = $SafeAreaRoot/TrackerPanel/VBoxContainer/QuestList
 @onready var btn_toggle: TextureButton = $SafeAreaRoot/TrackerPanel/VBoxContainer/HBoxHeader/ButtonToggle
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
-# --- State and Configuration ---
+# --- STATE ---
 var collapsed := false
 var was_collapsed := false
-@export var swipe_threshold: float = 100.0
 var swipe_start := Vector2.ZERO
 var touch_index: int = -1
+@export var swipe_threshold: float = 100.0
 
 func _ready():
-	# Safety Check: Ensure Autoloads exist
-	if not is_instance_valid(QuestManager):
-		push_error("QuestManager Autoload not found.")
-		return
+	if not is_instance_valid(QuestManager): return
 	
-	# Safety Check: Ensure Nodes exist
-	if quest_list == null:
-		push_error("FATAL: QuestTrackerHUD cannot find 'QuestList' node. Check Scene Tree paths.")
-		return
-
-	# Initialize state
-	collapsed = GameState.is_tracker_collapsed() if is_instance_valid(GameState) else false
-	quest_list.visible = not collapsed
+	# Initial State
+	if is_instance_valid(GameState):
+		collapsed = GameState.is_tracker_collapsed()
+	
+	_update_visibility()
 	
 	if btn_toggle:
-		btn_toggle.rotation_degrees = -90.0 if collapsed else 0.0
 		btn_toggle.pressed.connect(_toggle_tracker)
 	
 	QuestManager.quest_updated.connect(update_tracker)
+	QuestManager.quest_started.connect(func(_id): update_tracker())
+	QuestManager.quest_completed.connect(func(_id): update_tracker())
+	
 	update_tracker()
 
 func _toggle_tracker():
-	if quest_list == null: return
-	
 	collapsed = !collapsed
 	if is_instance_valid(GameState):
 		GameState.set_tracker_collapsed(collapsed)
 	
-	if anim and anim.has_animation("arrow_collapse") and anim.has_animation("arrow_expand"):
-		var anim_to_play = "arrow_collapse" if collapsed else "arrow_expand"
-		anim.play(anim_to_play)
+	if anim and anim.has_animation("arrow_collapse"):
+		anim.play("arrow_collapse" if collapsed else "arrow_expand")
 	else:
-		if btn_toggle: btn_toggle.rotation_degrees = -90.0 if collapsed else 0.0
-		quest_list.visible = not collapsed
+		_update_visibility()
+
+func _update_visibility():
+	if quest_list: quest_list.visible = not collapsed
+	if btn_toggle: btn_toggle.rotation_degrees = -90.0 if collapsed else 0.0
 
 func collapse_temporarily():
-	if quest_list == null: return
 	was_collapsed = collapsed
 	collapsed = true
-	quest_list.visible = false
-	if btn_toggle: btn_toggle.rotation_degrees = -90.0
+	_update_visibility()
 
 func restore_tracker():
-	if quest_list == null: return
 	collapsed = was_collapsed
 	if is_instance_valid(GameState):
 		GameState.set_tracker_collapsed(collapsed)
-	
-	if btn_toggle: btn_toggle.rotation_degrees = -90.0 if collapsed else 0.0
-	quest_list.visible = not collapsed
+	_update_visibility()
 
-func update_tracker():
-	if quest_list == null: return
+func update_tracker(_id = ""):
+	if not quest_list: return
 
+	# Clear existing (Simple approach for consistency)
 	for child in quest_list.get_children():
 		child.queue_free()
 		
-	for id in QuestManager.active_quests.keys():
-		var q = QuestManager.active_quests[id]
-		if q.get("status", "active") != "active":
-			continue
+	# Populate Active Quests
+	for q_id in QuestManager.active_quests:
+		var q_data = QuestManager.active_quests[q_id]
+		if q_data.get("status") != "active": continue
 			
-		var label := Label.new()
-		var title: String = QuestManager.get_quest_info(id).get("title", id)
-		var progress: int = q.get("progress", 0)
-		
-		label.text = "%s (%d%%)" % [title, progress]
-		# Optional: Add theme overrides here if needed
+		var info = QuestManager.get_quest_info(q_id)
+		var label = Label.new()
+		label.text = "- %s: %d%%" % [info.get("title", "Quest"), q_data.get("progress", 0)]
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		quest_list.add_child(label)
 
 func _input(event):
-	if is_instance_valid(GameState) and not GameState.are_gestures_enabled():
-		return
-		
+	if is_instance_valid(GameState) and not GameState.are_gestures_enabled(): return
+
 	if event is InputEventScreenTouch:
 		if event.pressed and touch_index == -1:
 			swipe_start = event.position
 			touch_index = event.index
 		elif not event.pressed and event.index == touch_index:
-			var delta: Vector2 = event.position - swipe_start
+			var delta = event.position.x - swipe_start.x
+			if abs(delta) > swipe_threshold:
+				if (delta < 0 and not collapsed) or (delta > 0 and collapsed):
+					_toggle_tracker()
 			touch_index = -1
 			
-			if delta.x < -swipe_threshold and not collapsed:
-				_toggle_tracker()
-			elif delta.x > swipe_threshold and collapsed:
-				_toggle_tracker()
