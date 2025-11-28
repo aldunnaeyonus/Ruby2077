@@ -35,11 +35,11 @@ visible = false
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("9_lbu4x")]
-position = Vector2(208, 456)
+position = Vector2(632, 352)
 
 [node name="LevelBounds" type="Node2D" parent="."]
 z_index = 100
-position = Vector2(-8, 80)
+position = Vector2(-8, -8)
 script = ExtResource("1_jrb8q")
 width = 864
 height = 494

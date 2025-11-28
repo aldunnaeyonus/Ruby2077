@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blueysa5pdbui"
-path="res://.godot/imported/Lamp_post.png-725c95c37c35eed28944c047a9a28cac.ctex"
+uid="uid://cvc3kiomd6puy"
+path="res://.godot/imported/Logo1.png-7ba7c6c24022e9bbc5434829ab681013.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/Lamp_post.png"
-dest_files=["res://.godot/imported/Lamp_post.png-725c95c37c35eed28944c047a9a28cac.ctex"]
+source_file="res://assets/ui/Logo1.png"
+dest_files=["res://.godot/imported/Logo1.png-7ba7c6c24022e9bbc5434829ab681013.ctex"]
 
 [params]
 

@@ -1,34 +1,43 @@
 extends MarginContainer
 class_name MobileHUD
 
-# --- SIGNALS ---
+# --- Node References ---
+@onready var hud_root = $HUDRoot 
+@onready var hud_frame = $HUDRoot/HUDFrame
+@onready var coin_label = $HUDRoot/HUDFrame/LabelCoins
+# Changed from Label to TextureProgressBar
+@onready var health_bar = $HUDRoot/HUDFrame/HealthBar
+
+# Instances
+@onready var joystick = $HUDRoot/TouchJoystick
+@onready var game_buttons = $HUDRoot/GameButtonsUi
+
+# --- Signals ---
 signal jump_pressed
 signal attack_pressed
 signal pause_requested
 signal joystick_input(vector: Vector2)
-
-# --- NODES ---
-@onready var hud_root = $HUDRoot 
-@onready var score_label = $HUDRoot/TopBar/LabelScore
-@onready var time_label = $HUDRoot/TopBar/LabelTime
-@onready var top_bar = $HUDRoot/TopBar
-@onready var joystick = $HUDRoot/TouchJoystick
-@onready var game_buttons = $HUDRoot/GameButtonsUi
+signal swap_pressed # <--- ADD THIS
 
 func _ready():
+	# 1. Determine Visibility
 	var is_mobile = DisplayServer.is_touchscreen_available() or OS.has_feature("mobile")
 	var is_editor = OS.has_feature("editor")
-	
-	# Determine visibility
 	var should_show = is_mobile or is_editor
 	
-	# Optimize: Disable processing if not visible
-	visible = should_show
-	process_mode = PROCESS_MODE_INHERIT if should_show else PROCESS_MODE_DISABLED
-	
+	visible = should_show 
 	if hud_root: hud_root.visible = should_show
 	
-	# Connect Components
+	# 2. Connect GameState Signals
+	if is_instance_valid(GameState):
+		GameState.coins_changed.connect(update_coin_display)
+		GameState.health_changed.connect(update_health_display)
+		
+		# Initialize
+		update_coin_display(GameState.coins)
+		update_health_display(GameState.health, GameState.max_health)
+
+	# 3. Connect Inputs
 	if joystick and joystick.has_signal("joystick_vector_changed"):
 		joystick.joystick_vector_changed.connect(_on_joystick_input)
 	
@@ -36,34 +45,32 @@ func _ready():
 		game_buttons.jump_requested.connect(func(): jump_pressed.emit())
 		game_buttons.attack_requested.connect(func(): attack_pressed.emit())
 		game_buttons.pause_requested.connect(func(): pause_requested.emit())
+		game_buttons.swap_requested.connect(func(): swap_pressed.emit())
 		
-	# Handle Safe Area updates dynamically
+	# 4. Safe Area
 	get_tree().root.size_changed.connect(update_safe_area)
 	update_safe_area()
 
 func _on_joystick_input(vec: Vector2):
 	joystick_input.emit(vec)
 
-func update_score_display(score: int) -> void:
-	if score_label: score_label.text = "SCORE: %d" % score
+# --- UI Updates ---
 
-func update_time_display(time_seconds: int) -> void:
-	if time_label:
-		var minutes: int = int(time_seconds / 60)
-		var seconds: int = time_seconds % 60
-		time_label.text = "TIME: %02d:%02d" % [minutes, seconds]
+func update_coin_display(coins: int) -> void:
+	if coin_label:
+		coin_label.text = "%d" % coins
+
+func update_health_display(current: int, max_val: int) -> void:
+	if health_bar:
+		health_bar.max_value = max_val
+		health_bar.value = current
 
 func update_safe_area():
-	if not top_bar: return
-	
+	if not hud_frame: return
 	var safe = DisplayServer.get_display_safe_area()
-	var full = get_viewport().get_visible_rect()
 	
-	# Apply margins to the top bar container to respect notches/cameras
-	var margin_top = safe.position.y
-	var margin_left = safe.position.x
-	var margin_right = full.size.x - (safe.position.x + safe.size.x)
+	# Only adjust top-left position, no need to stretch margins for this fixed HUD
+	var margin_top = safe.position.y + 20 # Add 20px padding
+	var margin_left = safe.position.x + 20
 	
-	top_bar.add_theme_constant_override("margin_top", int(margin_top))
-	top_bar.add_theme_constant_override("margin_left", int(margin_left))
-	top_bar.add_theme_constant_override("margin_right", int(margin_right))
+	hud_frame.position = Vector2(margin_left, margin_top)

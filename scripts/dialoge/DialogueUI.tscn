@@ -1,43 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd8rlh16wn876"]
+[gd_scene load_steps=4 format=3 uid="uid://dd8rlh16wn876"]
 
 [ext_resource type="Script" uid="uid://cpnwn7yfn3d2m" path="res://scripts/dialoge/DialogueUI.gd" id="1_0qyo7"]
-[ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="2_5j0pa"]
 [ext_resource type="PackedScene" uid="uid://ek4en8ouj0ae" path="res://scripts/UIHUD/panel.tscn" id="3_lalo6"]
 [ext_resource type="Texture2D" uid="uid://b3grul3517bom" path="res://assets/player/ruby.png" id="4_lalo6"]
 
 [node name="DialogueUI" type="CanvasLayer"]
 script = ExtResource("1_0qyo7")
 
-[node name="SafeAreaRoot" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_right = 20
-script = ExtResource("2_5j0pa")
-
-[node name="DialogueContainer" type="MarginContainer" parent="SafeAreaRoot"]
-layout_mode = 2
+[node name="DialogueContainer" type="MarginContainer" parent="."]
+offset_left = 18.0
+offset_top = 488.0
+offset_right = 1258.0
+offset_bottom = 673.0
 size_flags_vertical = 8
 theme_override_constants/margin_bottom = 20
 
-[node name="NinePatchRect" parent="SafeAreaRoot/DialogueContainer" instance=ExtResource("3_lalo6")]
+[node name="NinePatchRect" parent="DialogueContainer" instance=ExtResource("3_lalo6")]
 layout_mode = 2
 
-[node name="InternalPadding" type="MarginContainer" parent="SafeAreaRoot/DialogueContainer"]
+[node name="InternalPadding" type="MarginContainer" parent="DialogueContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="MainHBox" type="HBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding"]
+[node name="MainHBox" type="HBoxContainer" parent="DialogueContainer/InternalPadding"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Portrait" type="TextureRect" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox"]
+[node name="Portrait" type="TextureRect" parent="DialogueContainer/InternalPadding/MainHBox"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 0
@@ -45,17 +37,17 @@ texture = ExtResource("4_lalo6")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="TextVBox" type="VBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox"]
+[node name="TextVBox" type="VBoxContainer" parent="DialogueContainer/InternalPadding/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="LabelName" type="Label" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
+[node name="LabelName" type="Label" parent="DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Speaker"
 
-[node name="LabelText" type="RichTextLabel" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
+[node name="LabelText" type="RichTextLabel" parent="DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 18
 text = "This is a line of dialogue that will now wrap automatically and push the box upwards if it gets too long."
@@ -63,13 +55,13 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 2
 
-[node name="ChoicesContainer" type="VBoxContainer" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
+[node name="ChoicesContainer" type="VBoxContainer" parent="DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
 
-[node name="ButtonNext" type="Button" parent="SafeAreaRoot/DialogueContainer/InternalPadding/MainHBox/TextVBox"]
+[node name="ButtonNext" type="Button" parent="DialogueContainer/InternalPadding/MainHBox/TextVBox"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Next"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../SafeAreaRoot/DialogueContainer")
+root_node = NodePath("../DialogueContainer")

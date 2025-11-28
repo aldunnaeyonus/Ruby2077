@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0nctsi86ge48"]
 
-[ext_resource type="Script" uid="uid://dfl3266tu8v8h" path="res://scripts/UIHUD/ResponsivePanel.gd" id="1_bvv6p"]
+[ext_resource type="Script" uid="uid://dfl3266tu8v8h" path="res://scripts/settingtransitions/ResponsivePanel.gd" id="1_bvv6p"]
 
 [node name="ResponsivePanel" type="MarginContainer"]
 anchors_preset = 15

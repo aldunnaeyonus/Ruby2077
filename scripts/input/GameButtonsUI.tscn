@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3o6ftuv21ah6"]
+[gd_scene load_steps=9 format=3 uid="uid://c3o6ftuv21ah6"]
 
 [ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
 [ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://db0ncjfjo21dx" path="res://assets/icons/sword__pressed.svg" id="3_pdv1u"]
 [ext_resource type="Texture2D" uid="uid://b1ffiyirgfdfk" path="res://assets/icons/inventory_pressed.svg" id="5_eao6o"]
 [ext_resource type="Texture2D" uid="uid://unydm5wcyceq" path="res://assets/icons/jump_pressed.svg" id="7_7h2fc"]
+[ext_resource type="Texture2D" uid="uid://bsy04ludjph3" path="res://assets/ui/knife.png" id="8_eao6o"]
 
 [node name="GameButtonsUi" type="CanvasLayer"]
 layer = 10
@@ -34,10 +35,10 @@ grow_vertical = 0
 [node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -289.0
-offset_top = -133.0
-offset_right = -161.0
-offset_bottom = -5.0
+offset_left = -266.0
+offset_top = -207.0
+offset_right = -138.0
+offset_bottom = -79.0
 texture_normal = ExtResource("2_30ofi")
 texture_pressed = ExtResource("3_pdv1u")
 stretch_mode = 0
@@ -57,14 +58,37 @@ stretch_mode = 0
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
 offset_left = -131.0
-offset_top = -285.0
+offset_top = -282.0
 offset_right = -3.0
-offset_bottom = -157.0
+offset_bottom = -154.0
 texture_normal = ExtResource("3_egv6y")
 texture_pressed = ExtResource("7_7h2fc")
 stretch_mode = 0
 
+[node name="BottomCenterContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="SwapButton" type="TextureButton" parent="BottomCenterContainer"]
+modulate = Color(1, 1, 1, 0.49411765)
+layout_mode = 0
+offset_left = -33.0
+offset_top = -71.0
+offset_right = 36.0
+offset_bottom = -4.0
+texture_normal = ExtResource("8_eao6o")
+stretch_mode = 3
+
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]
-[connection signal="pressed" from="BottomRightContainer/MenuButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="BottomRightContainer/MenuButton" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="BottomRightContainer/JumpButton" to="." method="_on_jump_pressed"]
+[connection signal="pressed" from="BottomCenterContainer/SwapButton" to="." method="_on_swap_pressed"]
