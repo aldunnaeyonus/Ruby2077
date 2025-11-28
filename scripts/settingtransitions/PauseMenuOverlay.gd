@@ -1,18 +1,21 @@
-extends Control
+extends CanvasLayer # <--- CHANGED FROM Control
 class_name PauseMenuOverlay
 
-# --- NODES ---
-@onready var btn_resume = $BackgroundImage/ContentContainer/ButtonResume
-@onready var btn_restart = $BackgroundImage/ContentContainer/ButtonRestart
-@onready var btn_save = $BackgroundImage/ContentContainer/ButtonSave
-@onready var btn_load = $BackgroundImage/ContentContainer/ButtonLoad
-@onready var btn_settings = $BackgroundImage/ContentContainer/ButtonSettings
-@onready var btn_quit = $BackgroundImage/ContentContainer/ButtonQuit
+# --- Node References ---
+# Updated path: We added a 'Control' wrapper in the scene (see below)
+@onready var btn_resume = $Control/BackgroundImage/ContentContainer/ButtonResume
+@onready var btn_restart = $Control/BackgroundImage/ContentContainer/ButtonRestart
+@onready var btn_save = $Control/BackgroundImage/ContentContainer/ButtonSave
+@onready var btn_load = $Control/BackgroundImage/ContentContainer/ButtonLoad
+@onready var btn_settings = $Control/BackgroundImage/ContentContainer/ButtonSettings
+@onready var btn_quit = $Control/BackgroundImage/ContentContainer/ButtonQuit
 
-# Reference the internal SettingsMenu instance you added to the scene
 @onready var settings_menu = $SettingsMenu 
 
 func _ready():
+	# CRITICAL FIX: Allow this menu to run while the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	visible = false
 	if settings_menu: settings_menu.visible = false
 	
@@ -26,7 +29,6 @@ func _ready():
 func show_menu():
 	get_tree().paused = true
 	visible = true
-	# Ensure settings is closed when pause menu opens
 	if settings_menu: settings_menu.visible = false
 
 func hide_menu():
@@ -46,25 +48,19 @@ func _on_save():
 		GameState.save_game()
 		btn_save.text = "Saved!"
 		await get_tree().create_timer(1.0).timeout
+		# Check validity in case scene changed
 		if is_instance_valid(btn_save): btn_save.text = "Save Game"
 
 func _on_load():
 	if is_instance_valid(GameState):
 		get_tree().paused = false
 		GameState.load_game()
-		# Assuming load_game handles scene transition, otherwise reload scene:
 		get_tree().reload_current_scene()
 
 func _on_settings():
-	# Open the child settings menu
 	if settings_menu:
 		settings_menu.visible = true
-		# Note: We do NOT hide the Pause Menu, we just layer Settings on top.
-		# The SettingsMenu 'Back' button script simply does 'visible = false',
-		# which reveals this Pause Menu again.
 
 func _on_quit():
 	get_tree().paused = false
-	# Ensure this path matches your project structure!
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
-	

@@ -26,6 +26,12 @@ func open():
 	visible = true
 	_populate_quests()
 
+func toggle():
+	if visible:
+		_hide()
+	else:
+		open()
+		
 func _hide():
 	visible = false
 
@@ -64,6 +70,7 @@ func _on_quest_selected(index: int):
 
 func _input(event):
 	if not visible: return
+	
 	
 	# Close on Swipe Down
 	if event is InputEventScreenTouch:

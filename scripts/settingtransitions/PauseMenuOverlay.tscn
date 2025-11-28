@@ -1,18 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwxomwe8bttim"]
+[gd_scene load_steps=4 format=3 uid="uid://dwxomwe8bttim"]
 
 [ext_resource type="Script" uid="uid://did7q23571pwp" path="res://scripts/settingtransitions/PauseMenuOverlay.gd" id="1_gq3iu"]
 [ext_resource type="Texture2D" uid="uid://jlpmjhiwb1ua" path="res://assets/ui/panel.png" id="2_0tr1w"]
+[ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="3_stg"]
 
-[node name="PauseMenuOverlay" type="Control"]
+[node name="PauseMenuOverlay" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_gq3iu")
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_gq3iu")
 
-[node name="Dimmer" type="ColorRect" parent="."]
+[node name="Dimmer" type="ColorRect" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,8 +25,8 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.35)
 
-[node name="BackgroundImage" type="NinePatchRect" parent="."]
-modulate = Color(1, 1, 1, 0.7529412)
+[node name="BackgroundImage" type="NinePatchRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.9)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,28 +40,26 @@ offset_bottom = 212.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_0tr1w")
-patch_margin_left = 2
-patch_margin_top = 24
+patch_margin_left = 3
+patch_margin_top = 22
 patch_margin_right = 27
-patch_margin_bottom = 2
+patch_margin_bottom = 3
 
-[node name="ContentContainer" type="VBoxContainer" parent="BackgroundImage"]
+[node name="ContentContainer" type="VBoxContainer" parent="Control/BackgroundImage"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -178.5
-offset_top = -186.5
-offset_right = 182.5
-offset_bottom = 180.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 alignment = 1
 
-[node name="LabelPaused" type="Label" parent="BackgroundImage/ContentContainer"]
+[node name="LabelPaused" type="Label" parent="Control/BackgroundImage/ContentContainer"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
@@ -65,48 +67,45 @@ theme_override_font_sizes/font_size = 30
 text = "PAUSED"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="BackgroundImage/ContentContainer"]
+[node name="HSeparator" type="HSeparator" parent="Control/BackgroundImage/ContentContainer"]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 20
 
-[node name="ButtonResume" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonResume" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Resume"
-flat = true
 
-[node name="ButtonRestart" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonRestart" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Restart Level"
-flat = true
 
-[node name="ButtonSave" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonSave" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Save Game"
-flat = true
 
-[node name="ButtonLoad" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonLoad" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Load Game"
-flat = true
 
-[node name="ButtonSettings" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonSettings" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Settings"
-flat = true
 
-[node name="ButtonQuit" type="Button" parent="BackgroundImage/ContentContainer"]
-custom_minimum_size = Vector2(0, 40)
+[node name="ButtonQuit" type="Button" parent="Control/BackgroundImage/ContentContainer"]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Main Menu"
-flat = true
+
+[node name="SettingsMenu" parent="." instance=ExtResource("3_stg")]
+visible = false

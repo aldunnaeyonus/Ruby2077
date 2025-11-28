@@ -16,6 +16,7 @@ const MAX_SLOTS = 12
 const SAVE_PATH = "user://savegame.json"
 
 # --- STATE VARIABLES ---
+var app_launched: bool = false
 var inventory: Dictionary = {} # Format: { "item_id": count }
 var flags: Array = []
 var xp: int = 0

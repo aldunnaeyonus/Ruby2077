@@ -17,6 +17,7 @@ signal attack_pressed
 signal pause_requested
 signal swap_pressed
 signal joystick_input(vector: Vector2)
+signal journal_pressed # <--- NEW SIGNAL
 
 func _ready():
 	# 1. Determine Visibility
@@ -41,21 +42,17 @@ func _ready():
 		game_buttons.jump_requested.connect(func(): jump_pressed.emit())
 		game_buttons.attack_requested.connect(func(): attack_pressed.emit())
 		game_buttons.pause_requested.connect(func(): pause_requested.emit())
-		
-		# Connect Swap Button
-		if game_buttons.has_signal("swap_requested"):
-			game_buttons.swap_requested.connect(func(): swap_pressed.emit())
+		game_buttons.swap_requested.connect(func(): swap_pressed.emit())
+		game_buttons.journal_requested.connect(func(): journal_pressed.emit())
 			
 		# Connect Inventory Button (if exists)
-		if game_buttons.has_signal("inventory_requested"):
-			game_buttons.inventory_requested.connect(func(): 
+		game_buttons.inventory_requested.connect(func(): 
 				if is_instance_valid(GameState):
 					# Get current state
 					var is_open = GameState.is_inventory_open()
 					# Set to OPPOSITE state (Toggle)
 					GameState.set_inventory_open(not is_open)
-			)
-		
+		)
 	# 4. Safe Area Updates
 	get_tree().root.size_changed.connect(update_safe_area)
 	update_safe_area()

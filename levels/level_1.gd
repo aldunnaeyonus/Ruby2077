@@ -3,6 +3,7 @@ extends Node2D
 @onready var mobile_hud = $UI/MobileHUD
 @onready var player = $Player # Make sure your player node is named exactly "Player"
 @onready var pause_menu = $UI/PauseMenuOverlay
+@onready var quest_journal =  $UI/QuestJournalUI # <--- Reference your Journal Node
 
 func _ready():
 	# Check if nodes exist to prevent crashes
@@ -24,3 +25,6 @@ func _ready():
 	mobile_hud.pause_requested.connect(func():
 		if pause_menu: pause_menu.show_menu()
 	)
+
+	if mobile_hud.has_signal("journal_pressed"):
+		mobile_hud.journal_pressed.connect(quest_journal.toggle)

@@ -26,7 +26,34 @@ func _ready():
 	if start_menu: start_menu.visible = false
 	if ruby_intro: ruby_intro.visible = false
 	if settings_menu: settings_menu.visible = false
-
+	if startup_video: startup_video.visible = false
+	
+	# --- 2. Logic: Play Video OR Show Menu ---
+	if is_instance_valid(GameState) and not GameState.app_launched:
+		# FIRST LAUNCH: Play Video
+		GameState.app_launched = true # Mark as launched
+		
+		if startup_video:
+			startup_video.visible = true
+			if not startup_video.finished.is_connected(_on_startup_video_finished):
+				startup_video.finished.connect(_on_startup_video_finished)
+			startup_video.play()
+		else:
+			# Fallback if video node is missing
+			_on_startup_video_finished()
+			
+	else:
+		# RETURNING TO MENU: Skip Video, Show Start Screen Immediately
+		if start_menu:
+			start_menu.visible = true
+			
+		# Update Continue Button state immediately
+		if btn_continue:
+			btn_continue.disabled = not FileAccess.file_exists(save_file_path)
+			
+		# Optional: Fade in smoothly
+		TransitionManager.play("fade_in")
+			
 	# Setup Buttons
 	if btn_start: btn_start.pressed.connect(_on_start_pressed)
 	if btn_continue: btn_continue.pressed.connect(_on_continue_pressed)

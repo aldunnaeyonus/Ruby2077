@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c2lwludamy27l"]
+[gd_scene load_steps=9 format=3 uid="uid://c2lwludamy27l"]
 
 [ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_vwbvu"]
 [ext_resource type="PackedScene" uid="uid://cneggb4yr2doi" path="res://scripts/input/TouchJoystick.tscn" id="2_r4frp"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cq66dm2brh13h" path="res://assets/ui/HealthBar8.png" id="5_hb_empty"]
 [ext_resource type="Texture2D" uid="uid://bnfxqu2ehtq0q" path="res://assets/ui/Icon8_12.png" id="5_uyxnt"]
 [ext_resource type="Texture2D" uid="uid://dt7ekbhgxqcje" path="res://assets/ui/HealthBar1.png" id="6_hb_full"]
+[ext_resource type="PackedScene" uid="uid://624r5ye72sep" path="res://scripts/UIHUD/QuestJournalUI.tscn" id="8_6apfq"]
 
 [node name="MobileHUD" type="CanvasLayer"]
 script = ExtResource("1_vwbvu")
@@ -60,3 +61,5 @@ texture = ExtResource("5_uyxnt")
 [node name="TouchJoystick" parent="." instance=ExtResource("2_r4frp")]
 
 [node name="GameButtonsUi" parent="." instance=ExtResource("3_ougtj")]
+
+[node name="QuestJournalUI" parent="." instance=ExtResource("8_6apfq")]

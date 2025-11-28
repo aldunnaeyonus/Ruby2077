@@ -6,6 +6,7 @@ signal jump_requested
 signal pause_requested
 signal inventory_requested
 signal swap_requested
+signal journal_requested
 
 # --- Configuration (Assign these in the Inspector!) ---
 @export_group("Knife Icons")
@@ -21,7 +22,7 @@ signal swap_requested
 @onready var btn_jump = $BottomRightContainer/JumpButton
 @onready var btn_menu = $BottomRightContainer/MenuButton
 @onready var btn_pause = $CornerPause
-
+@onready var btn_journal = $BottomRightContainer/JournalButton
 # Weapon Buttons
 @onready var btn_knife = $BottomCenterContainer/SwapKnifeButton
 @onready var btn_gun = $BottomCenterContainer/SwapGunButton
@@ -47,6 +48,9 @@ func _on_pause_pressed():
 func _on_menu_pressed():
 	inventory_requested.emit()
 
+func _on_journal_pressed():
+	journal_requested.emit()
+	
 func _on_swap_pressed():
 	# 1. Toggle local state
 	if current_weapon_state == "knife":

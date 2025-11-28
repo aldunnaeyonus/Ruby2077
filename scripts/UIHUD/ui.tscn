@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://4c8poa84b8ce"]
+
+[ext_resource type="PackedScene" uid="uid://dwxomwe8bttim" path="res://scripts/settingtransitions/PauseMenuOverlay.tscn" id="1_m178o"]
+[ext_resource type="PackedScene" uid="uid://bl6vkhokqopkh" path="res://scripts/inventory/TouchInventory.tscn" id="2_nd84j"]
+[ext_resource type="PackedScene" uid="uid://cfbd85rxlgq7j" path="res://scripts/UIHUD/QuestTrackerHUD.tscn" id="3_mn002"]
+[ext_resource type="PackedScene" uid="uid://cp8a0t3x0mbtv" path="res://scripts/UIHUD/QuestPopupUI.tscn" id="4_ag4cl"]
+[ext_resource type="PackedScene" uid="uid://dd8rlh16wn876" path="res://scripts/dialoge/DialogueUI.tscn" id="5_rmpoo"]
+[ext_resource type="PackedScene" uid="uid://c2lwludamy27l" path="res://scripts/UIHUD/MobileHUD.tscn" id="6_37ks1"]
+[ext_resource type="PackedScene" uid="uid://624r5ye72sep" path="res://scripts/UIHUD/QuestJournalUI.tscn" id="7_dagwu"]
+
+[node name="UI" type="CanvasLayer"]
+visible = false
+
+[node name="PauseMenuOverlay" parent="." instance=ExtResource("1_m178o")]
+
+[node name="TouchInventory" parent="." instance=ExtResource("2_nd84j")]
+
+[node name="QuestTrackerHud" parent="." instance=ExtResource("3_mn002")]
+visible = false
+
+[node name="QuestPopupUi" parent="." instance=ExtResource("4_ag4cl")]
+visible = false
+
+[node name="DialogueUI" parent="." instance=ExtResource("5_rmpoo")]
+visible = false
+
+[node name="MobileHUD" parent="." instance=ExtResource("6_37ks1")]
+visible = false
+
+[node name="QuestJournalUI" parent="." instance=ExtResource("7_dagwu")]
+
+[connection signal="pause_requested" from="MobileHUD" to="PauseMenuOverlay" method="show_menu"]
