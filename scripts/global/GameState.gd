@@ -10,6 +10,7 @@ signal ui_state_changed(key: String, state: bool)
 signal inventory_full_warning
 signal coins_changed(new_amount: int)
 signal health_changed(current: int, max_hp: int)
+var current_ammo: int = 10 # <--- NEW VARIABLE
 
 # --- CONFIGURATION ---
 const MAX_SLOTS = 12
@@ -130,7 +131,8 @@ func save_game() -> void:
 		"coins": coins,
 		"health": health,
 		"max_health": max_health,
-		"active_quests": QuestManager.active_quests
+		"active_quests": QuestManager.active_quests,
+		"current_ammo": current_ammo, # <--- SAVE IT
 	}
 	
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -162,6 +164,7 @@ func _apply_save_data(data: Dictionary) -> void:
 	coins = data.get("coins", 0)
 	health = data.get("health", 100)
 	max_health = data.get("max_health", 100)
+	current_ammo = data.get("current_ammo", 10)
 	
 	if data.has("active_quests"):
 		QuestManager.active_quests = data["active_quests"]

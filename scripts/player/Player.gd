@@ -14,14 +14,19 @@ const JUMP_BUFFER_TIME = 0.1
 
 enum GameMode { PLATFORMER, TOP_DOWN }
 @export var current_mode: GameMode = GameMode.PLATFORMER
+signal ammo_changed(current: int, max_val: int)
 
 # New: Choose your default weapon (matches animation names: "gun" or "knife")
 @export_enum("knife", "gun") var equipped_weapon: String = "knife"
+@export var bullet_scene: PackedScene = preload("res://scripts/player/Bullet.tscn") # Assign Bullet.tscn here
+var max_ammo: int = 10
+var current_ammo: int = 10
 
 # --- NODES ---
 @onready var sprite = $AnimatedSprite2D 
 @onready var interaction_area = $InteractionArea 
-
+@onready var hitbox_col = $Hitbox/CollisionShape2D
+@onready var muzzle = $Muzzle # <--- NEW: The spawn point
 # --- STATE ---
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var joystick_direction: Vector2 = Vector2.ZERO
@@ -35,6 +40,61 @@ var jump_buffer_timer: float = 0.0
 var is_attacking: bool = false
 var is_dead: bool = false
 
+func _ready():
+	# ... (Existing setup) ...
+	if is_instance_valid(GameState):
+		current_ammo = GameState.current_ammo
+		
+	ammo_changed.emit(current_ammo, max_ammo)
+	# Connect the frame change signal
+	sprite.frame_changed.connect(_on_frame_changed)
+	
+	# Connect the hitbox hit signal
+	$Hitbox.body_entered.connect(_on_hitbox_body_entered)
+	
+func _on_frame_changed():
+	# 1. Knife Logic (Existing)
+	if sprite.animation == "knife":
+		if sprite.frame == 4:
+			hitbox_col.set_deferred("disabled", false)
+		else:
+			hitbox_col.set_deferred("disabled", true)
+	
+	# 2. Gun Logic (NEW)
+	elif sprite.animation == "gun":
+		if sprite.frame == 3: 
+			_fire_bullet()
+# --- DAMAGE LOGIC ---
+
+func _fire_bullet():
+	if current_ammo > 0:
+		current_ammo -= 1
+		
+		# 2. Sync with Global State
+		if is_instance_valid(GameState):
+			GameState.current_ammo = current_ammo
+			
+		ammo_changed.emit(current_ammo, max_ammo)
+		
+		# ... bullet spawning logic ...
+
+func reload():
+	current_ammo = max_ammo
+	print("Reloaded!")
+	
+	# 3. Sync with Global State
+	if is_instance_valid(GameState):
+		GameState.current_ammo = current_ammo
+		
+	ammo_changed.emit(current_ammo, max_ammo)
+	
+func _on_hitbox_body_entered(body):
+	# This runs when the enabled hitbox touches something
+	if body.has_method("take_damage"):
+		print("Hit enemy!")
+		# Apply damage (e.g., 10 damage)
+		body.take_damage(10)
+		
 func _physics_process(delta):
 	# 1. ALWAYS Apply Gravity in Platformer Mode (even if dead/attacking)
 	if current_mode == GameMode.PLATFORMER and not is_on_floor():

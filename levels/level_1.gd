@@ -28,3 +28,13 @@ func _ready():
 
 	if mobile_hud.has_signal("journal_pressed"):
 		mobile_hud.journal_pressed.connect(quest_journal.toggle)
+	
+	if mobile_hud.has_signal("reload_pressed"):
+		mobile_hud.reload_pressed.connect(player.reload)
+	
+	# 2. Connect Player Ammo Signal -> HUD Display
+	if player.has_signal("ammo_changed"):
+		player.ammo_changed.connect(mobile_hud.on_player_ammo_changed)
+		
+		# Force initial update
+		mobile_hud.on_player_ammo_changed(player.current_ammo, player.max_ammo)

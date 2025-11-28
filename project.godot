@@ -15,6 +15,7 @@ general/accessibility_support=2
 [application]
 
 config/name="RUBY2077"
+config/version="1.0.0"
 run/main_scene="uid://dgqnrfxcg85mn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="uid://qa8xpgvfm46r"

@@ -18,6 +18,7 @@ signal pause_requested
 signal swap_pressed
 signal joystick_input(vector: Vector2)
 signal journal_pressed # <--- NEW SIGNAL
+signal reload_pressed # <--- ADD THIS
 
 func _ready():
 	# 1. Determine Visibility
@@ -44,7 +45,10 @@ func _ready():
 		game_buttons.pause_requested.connect(func(): pause_requested.emit())
 		game_buttons.swap_requested.connect(func(): swap_pressed.emit())
 		game_buttons.journal_requested.connect(func(): journal_pressed.emit())
-			
+		
+	if game_buttons.has_signal("reload_requested"):
+		game_buttons.reload_requested.connect(func(): reload_pressed.emit())
+		
 		# Connect Inventory Button (if exists)
 		game_buttons.inventory_requested.connect(func(): 
 				if is_instance_valid(GameState):
@@ -71,6 +75,10 @@ func update_health_display(current: int, max_val: int) -> void:
 		health_bar.max_value = max_val
 		health_bar.value = current
 
+func on_player_ammo_changed(current: int, max_val: int):
+	if game_buttons:
+		game_buttons.update_ammo_display(current, max_val)
+		
 func update_safe_area():
 	if not safe_area: return
 	var safe = DisplayServer.get_display_safe_area()

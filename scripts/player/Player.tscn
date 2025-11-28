@@ -63,17 +63,13 @@ region = Rect2(400, 3000, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(800, 3000, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0jnn6"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyu0n"]
 atlas = ExtResource("2_s415c")
-region = Rect2(1200, 3000, 400, 600)
+region = Rect2(2000, 3000, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ifisd"]
 atlas = ExtResource("2_s415c")
 region = Rect2(1600, 3000, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dyu0n"]
-atlas = ExtResource("2_s415c")
-region = Rect2(2000, 3000, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pg2bq"]
 atlas = ExtResource("2_s415c")
@@ -230,17 +226,14 @@ animations = [{
 "texture": SubResource("AtlasTexture_hhns3")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0jnn6")
+"texture": SubResource("AtlasTexture_dyu0n")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ifisd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dyu0n")
 }],
 "loop": true,
 "name": &"gun",
-"speed": 10.0
+"speed": 13.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -309,7 +302,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knife",
-"speed": 10.0
+"speed": 13.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -338,15 +331,18 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(13, 29)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s415c"]
+size = Vector2(5, 5)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_pg2bq")
-animation = &"idle"
+animation = &"gun"
 autoplay = "idle"
-frame_progress = 0.74843174
+frame_progress = 0.688752
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 7
@@ -357,3 +353,14 @@ shape = SubResource("RectangleShape2D_1")
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 rotation_smoothing_enabled = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(22, 17)
+shape = SubResource("RectangleShape2D_s415c")
+disabled = true
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(20, 12)
