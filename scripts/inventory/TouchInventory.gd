@@ -41,8 +41,8 @@ func _on_inventory_full():
 	
 	# Shake X axis
 	for i in range(4):
-		var offset = 10 if i % 2 == 0 else -10
-		tween.tween_property(base_rect, "position:x", original_pos.x + offset, 0.05)
+		var offsets = 10 if i % 2 == 0 else -10
+		tween.tween_property(base_rect, "position:x", original_pos.x + offsets, 0.05)
 	
 	# Reset
 	tween.tween_property(base_rect, "position", original_pos, 0.05)

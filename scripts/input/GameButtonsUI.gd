@@ -7,6 +7,15 @@ signal pause_requested
 signal inventory_requested
 signal swap_requested
 
+# --- Configuration (Assign these in the Inspector!) ---
+@export_group("Knife Icons")
+@export var icon_knife: Texture2D = preload("res://assets/icons/knife.svg")
+@export var icon_knife_pressed: Texture2D = preload("res://assets/icons/knife_pressed.svg")
+
+@export_group("Gun Icons")
+@export var icon_gun: Texture2D = preload("res://assets/icons/gun.svg")
+@export var icon_gun_pressed: Texture2D = preload("res://assets/icons/gun_pressed.svg") # Assign your gun_pressed.svg here
+
 # --- Nodes ---
 @onready var btn_attack = $BottomRightContainer/AttackButton
 @onready var btn_jump = $BottomRightContainer/JumpButton
@@ -58,8 +67,20 @@ func update_weapon_visuals(active_weapon: String):
 	btn_knife.modulate.a = 0.5
 	btn_gun.modulate.a = 0.5
 	
-	# Highlight the active one (1.0 alpha)
 	if active_weapon == "knife":
 		btn_knife.modulate.a = 1.0
+		
+		# 2. Swap Attack Textures (Knife)
+		if icon_knife: 
+			btn_attack.texture_normal = icon_knife
+		if icon_knife_pressed:
+			btn_attack.texture_pressed = icon_knife_pressed
+			
 	elif active_weapon == "gun":
 		btn_gun.modulate.a = 1.0
+		
+		# 2. Swap Attack Textures (Gun)
+		if icon_gun: 
+			btn_attack.texture_normal = icon_gun
+		if icon_gun_pressed:
+			btn_attack.texture_pressed = icon_gun_pressed

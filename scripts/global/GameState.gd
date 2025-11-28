@@ -66,7 +66,7 @@ func add_item(id: String, count: int = 1) -> bool:
 	if inventory.has(id):
 		inventory[id] += count
 		item_added.emit(id, inventory[id])
-		return true 
+		return true
 	
 	# 2. Check capacity for new item
 	if inventory.size() >= MAX_SLOTS:
@@ -192,4 +192,3 @@ func has_flag(flag: String) -> bool:
 func add_xp(amount: int) -> void:
 	xp += amount
 	xp_changed.emit(xp)
-	

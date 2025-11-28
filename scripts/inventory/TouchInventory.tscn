@@ -1,12 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://bl6vkhokqopkh"]
 
-[ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bfx0srys8l17s" path="res://scripts/inventory/TouchInventory.gd" id="1_507r6"]
 [ext_resource type="Texture2D" uid="uid://jlpmjhiwb1ua" path="res://assets/ui/panel.png" id="2_507r6"]
 [ext_resource type="PackedScene" uid="uid://cuagcflnjqffc" path="res://scripts/inventory/InventorySlot.tscn" id="2_slot"]
 [ext_resource type="PackedScene" uid="uid://55a6b24xt5oc" path="res://scripts/inventory/TrashSlot.tscn" id="3_trash"]
 
 [node name="TouchInventory" type="CanvasLayer"]
-script = ExtResource("1_script")
+visible = false
+script = ExtResource("1_507r6")
 
 [node name="Dimmer" type="ColorRect" parent="."]
 anchors_preset = 15

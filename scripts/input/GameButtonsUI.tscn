@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://c3o6ftuv21ah6"]
 
 [ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
-[ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
+[ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/gun.svg" id="2_30ofi"]
 [ext_resource type="Texture2D" uid="uid://cf3jj6esb4vw7" path="res://assets/icons/jump.svg" id="3_egv6y"]
 [ext_resource type="Texture2D" uid="uid://b7ahaakxasqo4" path="res://assets/icons/inventory.svg" id="3_ks07j"]
-[ext_resource type="Texture2D" uid="uid://db0ncjfjo21dx" path="res://assets/icons/sword__pressed.svg" id="3_pdv1u"]
+[ext_resource type="Texture2D" uid="uid://db0ncjfjo21dx" path="res://assets/icons/gun_pressed.svg" id="3_pdv1u"]
 [ext_resource type="Texture2D" uid="uid://b1ffiyirgfdfk" path="res://assets/icons/inventory_pressed.svg" id="5_eao6o"]
 [ext_resource type="Texture2D" uid="uid://unydm5wcyceq" path="res://assets/icons/jump_pressed.svg" id="7_7h2fc"]
 [ext_resource type="Texture2D" uid="uid://bsy04ludjph3" path="res://assets/ui/knife.png" id="8_eao6o"]
@@ -36,10 +36,10 @@ grow_vertical = 0
 [node name="AttackButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -266.0
-offset_top = -207.0
-offset_right = -138.0
-offset_bottom = -79.0
+offset_left = -137.0
+offset_top = -132.0
+offset_right = -9.0
+offset_bottom = -4.0
 texture_normal = ExtResource("2_30ofi")
 texture_pressed = ExtResource("3_pdv1u")
 stretch_mode = 0
@@ -47,9 +47,9 @@ stretch_mode = 0
 [node name="MenuButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -131.0
+offset_left = -291.0
 offset_top = -132.0
-offset_right = -3.0
+offset_right = -163.0
 offset_bottom = -4.0
 texture_normal = ExtResource("3_ks07j")
 texture_pressed = ExtResource("5_eao6o")
@@ -58,9 +58,9 @@ stretch_mode = 0
 [node name="JumpButton" type="TextureButton" parent="BottomRightContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -131.0
+offset_left = -137.0
 offset_top = -282.0
-offset_right = -3.0
+offset_right = -9.0
 offset_bottom = -154.0
 texture_normal = ExtResource("3_egv6y")
 texture_pressed = ExtResource("7_7h2fc")
@@ -81,22 +81,23 @@ size_flags_vertical = 8
 [node name="SwapKnifeButton" type="TextureButton" parent="BottomCenterContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -63.0
-offset_top = -72.0
-offset_right = 6.0
-offset_bottom = -5.0
+offset_left = -72.0
+offset_top = -58.0
+offset_right = -32.0
+offset_bottom = -18.0
 texture_normal = ExtResource("8_eao6o")
-stretch_mode = 3
+stretch_mode = 5
 
 [node name="SwapGunButton" type="TextureButton" parent="BottomCenterContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = 20.0
-offset_top = -71.0
-offset_right = 89.0
-offset_bottom = -4.0
+offset_left = 9.0
+offset_top = -58.0
+offset_right = 49.0
+offset_bottom = -18.0
 texture_normal = ExtResource("9_7h2fc")
-stretch_mode = 3
+stretch_mode = 5
+flip_h = true
 
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]

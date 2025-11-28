@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db0ncjfjo21dx"
-path="res://.godot/imported/sword__pressed.svg-e60946b09b715322cf23f3a9cbc3af4c.ctex"
+uid="uid://btm4ju21amr4h"
+path="res://.godot/imported/knife_pressed.svg-e0a8d74fd1ddef169d709dcb1a36a591.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/sword__pressed.svg"
-dest_files=["res://.godot/imported/sword__pressed.svg-e60946b09b715322cf23f3a9cbc3af4c.ctex"]
+source_file="res://assets/icons/knife_pressed.svg"
+dest_files=["res://.godot/imported/knife_pressed.svg-e0a8d74fd1ddef169d709dcb1a36a591.ctex"]
 
 [params]
 

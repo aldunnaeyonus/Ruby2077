@@ -50,7 +50,10 @@ func _ready():
 		if game_buttons.has_signal("inventory_requested"):
 			game_buttons.inventory_requested.connect(func(): 
 				if is_instance_valid(GameState):
-					GameState.set_inventory_open(not GameState.is_inventory_open())
+					# Get current state
+					var is_open = GameState.is_inventory_open()
+					# Set to OPPOSITE state (Toggle)
+					GameState.set_inventory_open(not is_open)
 			)
 		
 	# 4. Safe Area Updates

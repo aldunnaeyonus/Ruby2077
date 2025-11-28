@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2lwludamy27l"]
+[gd_scene load_steps=8 format=3 uid="uid://c2lwludamy27l"]
 
 [ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_vwbvu"]
 [ext_resource type="PackedScene" uid="uid://cneggb4yr2doi" path="res://scripts/input/TouchJoystick.tscn" id="2_r4frp"]
 [ext_resource type="PackedScene" uid="uid://c3o6ftuv21ah6" path="res://scripts/input/GameButtonsUI.tscn" id="3_ougtj"]
-[ext_resource type="Texture2D" uid="uid://logo1placeholder" path="res://assets/ui/Logo1.png" id="4_logo"]
-[ext_resource type="Texture2D" uid="uid://hb8placeholder" path="res://assets/ui/HealthBar8.png" id="5_hb_empty"]
-[ext_resource type="Texture2D" uid="uid://hb1placeholder" path="res://assets/ui/HealthBar1.png" id="6_hb_full"]
+[ext_resource type="Texture2D" uid="uid://cvc3kiomd6puy" path="res://assets/ui/Logo1.png" id="4_logo"]
+[ext_resource type="Texture2D" uid="uid://cq66dm2brh13h" path="res://assets/ui/HealthBar8.png" id="5_hb_empty"]
+[ext_resource type="Texture2D" uid="uid://bnfxqu2ehtq0q" path="res://assets/ui/Icon8_12.png" id="5_uyxnt"]
+[ext_resource type="Texture2D" uid="uid://dt7ekbhgxqcje" path="res://assets/ui/HealthBar1.png" id="6_hb_full"]
 
 [node name="MobileHUD" type="CanvasLayer"]
 script = ExtResource("1_vwbvu")
@@ -25,33 +26,36 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = ExtResource("4_logo")
-stretch_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SafeArea/HUDFrame"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 85.0
-offset_top = 15.0
-offset_right = -15.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="LabelCoins" type="Label" parent="SafeArea/HUDFrame/VBoxContainer"]
-layout_mode = 2
+[node name="LabelCoins" type="Label" parent="SafeArea/HUDFrame"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 26.0
+offset_right = 185.0
+offset_bottom = 54.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 20
-text = "COINS: 0"
+text = "000000000"
 
-[node name="HealthBar" type="TextureProgressBar" parent="SafeArea/HUDFrame/VBoxContainer"]
-layout_mode = 2
+[node name="HealthBar" type="TextureProgressBar" parent="SafeArea/HUDFrame"]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 93.0
+offset_right = 248.0
+offset_bottom = 109.0
 value = 100.0
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_top = 5
+stretch_margin_right = 3
+stretch_margin_bottom = 3
 texture_under = ExtResource("5_hb_empty")
 texture_progress = ExtResource("6_hb_full")
+
+[node name="Sprite2D" type="Sprite2D" parent="SafeArea/HUDFrame"]
+position = Vector2(36, 40)
+texture = ExtResource("5_uyxnt")
 
 [node name="TouchJoystick" parent="." instance=ExtResource("2_r4frp")]
 
