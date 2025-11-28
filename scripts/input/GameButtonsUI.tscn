@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c3o6ftuv21ah6"]
+[gd_scene load_steps=10 format=3 uid="uid://c3o6ftuv21ah6"]
 
 [ext_resource type="Script" uid="uid://4y77v7i62g0y" path="res://scripts/input/GameButtonsUI.gd" id="1_r1u40"]
 [ext_resource type="Texture2D" uid="uid://fqxnw5kbvkk5" path="res://assets/icons/sword.svg" id="2_30ofi"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b1ffiyirgfdfk" path="res://assets/icons/inventory_pressed.svg" id="5_eao6o"]
 [ext_resource type="Texture2D" uid="uid://unydm5wcyceq" path="res://assets/icons/jump_pressed.svg" id="7_7h2fc"]
 [ext_resource type="Texture2D" uid="uid://bsy04ludjph3" path="res://assets/ui/knife.png" id="8_eao6o"]
+[ext_resource type="Texture2D" uid="uid://xlrhr6qaehin" path="res://assets/ui/gun.png" id="9_7h2fc"]
 
 [node name="GameButtonsUi" type="CanvasLayer"]
 layer = 10
@@ -77,18 +78,29 @@ grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="SwapButton" type="TextureButton" parent="BottomCenterContainer"]
+[node name="SwapKnifeButton" type="TextureButton" parent="BottomCenterContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
-offset_left = -33.0
-offset_top = -71.0
-offset_right = 36.0
-offset_bottom = -4.0
+offset_left = -63.0
+offset_top = -72.0
+offset_right = 6.0
+offset_bottom = -5.0
 texture_normal = ExtResource("8_eao6o")
+stretch_mode = 3
+
+[node name="SwapGunButton" type="TextureButton" parent="BottomCenterContainer"]
+modulate = Color(1, 1, 1, 0.49411765)
+layout_mode = 0
+offset_left = 20.0
+offset_top = -71.0
+offset_right = 89.0
+offset_bottom = -4.0
+texture_normal = ExtResource("9_7h2fc")
 stretch_mode = 3
 
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="BottomRightContainer/MenuButton" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="BottomRightContainer/JumpButton" to="." method="_on_jump_pressed"]
-[connection signal="pressed" from="BottomCenterContainer/SwapButton" to="." method="_on_swap_pressed"]
+[connection signal="pressed" from="BottomCenterContainer/SwapKnifeButton" to="." method="_on_swap_pressed"]
+[connection signal="pressed" from="BottomCenterContainer/SwapGunButton" to="." method="_on_swap_pressed"]

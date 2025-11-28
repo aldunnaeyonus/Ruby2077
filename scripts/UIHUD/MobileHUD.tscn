@@ -1,128 +1,58 @@
-[gd_scene load_steps=17 format=3 uid="uid://c2lwludamy27l"]
+[gd_scene load_steps=7 format=3 uid="uid://c2lwludamy27l"]
 
 [ext_resource type="Script" uid="uid://cg7cx6e5wdg8f" path="res://scripts/UIHUD/MobileHUD.gd" id="1_vwbvu"]
 [ext_resource type="PackedScene" uid="uid://cneggb4yr2doi" path="res://scripts/input/TouchJoystick.tscn" id="2_r4frp"]
 [ext_resource type="PackedScene" uid="uid://c3o6ftuv21ah6" path="res://scripts/input/GameButtonsUI.tscn" id="3_ougtj"]
-[ext_resource type="Texture2D" uid="uid://cvc3kiomd6puy" path="res://assets/ui/Logo1.png" id="4_logo"]
-[ext_resource type="Texture2D" uid="uid://cq66dm2brh13h" path="res://assets/ui/HealthBar8.png" id="5_hb_empty"]
-[ext_resource type="Texture2D" uid="uid://chgvlxa5orf68" path="res://assets/ui/Card.png" id="5_uyxnt"]
-[ext_resource type="Texture2D" uid="uid://dt7ekbhgxqcje" path="res://assets/ui/HealthBar1.png" id="6_hb_full"]
+[ext_resource type="Texture2D" uid="uid://logo1placeholder" path="res://assets/ui/Logo1.png" id="4_logo"]
+[ext_resource type="Texture2D" uid="uid://hb8placeholder" path="res://assets/ui/HealthBar8.png" id="5_hb_empty"]
+[ext_resource type="Texture2D" uid="uid://hb1placeholder" path="res://assets/ui/HealthBar1.png" id="6_hb_full"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6apfq"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(0, 0, 24, 24)
+[node name="MobileHUD" type="CanvasLayer"]
+script = ExtResource("1_vwbvu")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3baur"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(24, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8ngh6"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(48, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wpja3"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(72, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lcpw1"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(96, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8h5lb"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(120, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qhemi"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(144, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0evlm"]
-atlas = ExtResource("5_uyxnt")
-region = Rect2(168, 0, 24, 24)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_q3tsa"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6apfq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3baur")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8ngh6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wpja3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lcpw1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8h5lb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qhemi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0evlm")
-}],
-"loop": true,
-"name": &"default",
-"speed": 6.0
-}]
-
-[node name="MobileHUD" type="MarginContainer"]
+[node name="SafeArea" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_vwbvu")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
 
-[node name="HUDRoot" type="CanvasLayer" parent="."]
-
-[node name="HUDFrame" type="TextureRect" parent="HUDRoot"]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 219.0
-offset_bottom = 104.0
+[node name="HUDFrame" type="TextureRect" parent="SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource("4_logo")
-expand_mode = 1
-stretch_mode = 4
+stretch_mode = 2
 
-[node name="HealthBar" type="TextureProgressBar" parent="HUDRoot/HUDFrame"]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 64.0
-offset_right = 174.0
-offset_bottom = 76.0
-value = 100.0
-nine_patch_stretch = true
-stretch_margin_left = 3
-stretch_margin_top = 9
-stretch_margin_right = 3
-stretch_margin_bottom = 3
-texture_under = ExtResource("5_hb_empty")
-texture_progress = ExtResource("6_hb_full")
-
-[node name="LabelCoins" type="Label" parent="HUDRoot/HUDFrame"]
-layout_mode = 0
-offset_left = 34.0
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeArea/HUDFrame"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 85.0
 offset_top = 15.0
-offset_right = 114.0
-offset_bottom = 43.0
+offset_right = -15.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="LabelCoins" type="Label" parent="SafeArea/HUDFrame/VBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 20
-text = "999999"
+text = "COINS: 0"
 
-[node name="Coin" type="AnimatedSprite2D" parent="HUDRoot/HUDFrame"]
-position = Vector2(22, 29)
-scale = Vector2(1.245, 2.075)
-sprite_frames = SubResource("SpriteFrames_q3tsa")
+[node name="HealthBar" type="TextureProgressBar" parent="SafeArea/HUDFrame/VBoxContainer"]
+layout_mode = 2
+value = 100.0
+texture_under = ExtResource("5_hb_empty")
+texture_progress = ExtResource("6_hb_full")
 
-[node name="TouchJoystick" parent="HUDRoot" instance=ExtResource("2_r4frp")]
+[node name="TouchJoystick" parent="." instance=ExtResource("2_r4frp")]
 
-[node name="GameButtonsUi" parent="HUDRoot" instance=ExtResource("3_ougtj")]
+[node name="GameButtonsUi" parent="." instance=ExtResource("3_ougtj")]

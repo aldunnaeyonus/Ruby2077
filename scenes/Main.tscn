@@ -86,7 +86,4 @@ grow_vertical = 2
 stream = ExtResource("2_vcsgt")
 
 [node name="TransitionLayer" parent="." instance=ExtResource("6_c01mt")]
-
-[connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonStart" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="SafeAreaRoot/StartMenu/VBoxContainer/ButtonSettings" to="." method="_on_settings_pressed"]
+visible = false

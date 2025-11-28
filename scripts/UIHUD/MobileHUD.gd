@@ -1,39 +1,35 @@
-extends MarginContainer
+extends CanvasLayer
 class_name MobileHUD
 
 # --- Node References ---
-@onready var hud_root = $HUDRoot 
-@onready var hud_frame = $HUDRoot/HUDFrame
-@onready var coin_label = $HUDRoot/HUDFrame/LabelCoins
-# Changed from Label to TextureProgressBar
-@onready var health_bar = $HUDRoot/HUDFrame/HealthBar
+# Updated to match new scene structure
+@onready var safe_area = $SafeArea
+@onready var coin_label = $SafeArea/HUDFrame/VBoxContainer/LabelCoins
+@onready var health_bar = $SafeArea/HUDFrame/VBoxContainer/HealthBar
 
 # Instances
-@onready var joystick = $HUDRoot/TouchJoystick
-@onready var game_buttons = $HUDRoot/GameButtonsUi
+@onready var joystick = $TouchJoystick
+@onready var game_buttons = $GameButtonsUi
 
 # --- Signals ---
 signal jump_pressed
 signal attack_pressed
 signal pause_requested
+signal swap_pressed
 signal joystick_input(vector: Vector2)
-signal swap_pressed # <--- ADD THIS
 
 func _ready():
 	# 1. Determine Visibility
 	var is_mobile = DisplayServer.is_touchscreen_available() or OS.has_feature("mobile")
 	var is_editor = OS.has_feature("editor")
-	var should_show = is_mobile or is_editor
-	
-	visible = should_show 
-	if hud_root: hud_root.visible = should_show
+	visible = is_mobile or is_editor
 	
 	# 2. Connect GameState Signals
 	if is_instance_valid(GameState):
 		GameState.coins_changed.connect(update_coin_display)
 		GameState.health_changed.connect(update_health_display)
 		
-		# Initialize
+		# Initialize display
 		update_coin_display(GameState.coins)
 		update_health_display(GameState.health, GameState.max_health)
 
@@ -45,9 +41,19 @@ func _ready():
 		game_buttons.jump_requested.connect(func(): jump_pressed.emit())
 		game_buttons.attack_requested.connect(func(): attack_pressed.emit())
 		game_buttons.pause_requested.connect(func(): pause_requested.emit())
-		game_buttons.swap_requested.connect(func(): swap_pressed.emit())
 		
-	# 4. Safe Area
+		# Connect Swap Button
+		if game_buttons.has_signal("swap_requested"):
+			game_buttons.swap_requested.connect(func(): swap_pressed.emit())
+			
+		# Connect Inventory Button (if exists)
+		if game_buttons.has_signal("inventory_requested"):
+			game_buttons.inventory_requested.connect(func(): 
+				if is_instance_valid(GameState):
+					GameState.set_inventory_open(not GameState.is_inventory_open())
+			)
+		
+	# 4. Safe Area Updates
 	get_tree().root.size_changed.connect(update_safe_area)
 	update_safe_area()
 
@@ -66,11 +72,17 @@ func update_health_display(current: int, max_val: int) -> void:
 		health_bar.value = current
 
 func update_safe_area():
-	if not hud_frame: return
+	if not safe_area: return
 	var safe = DisplayServer.get_display_safe_area()
+	var full = get_viewport().get_visible_rect()
 	
-	# Only adjust top-left position, no need to stretch margins for this fixed HUD
-	var margin_top = safe.position.y + 20 # Add 20px padding
+	# Apply margins to the SafeArea container
+	var margin_top = safe.position.y + 20
 	var margin_left = safe.position.x + 20
+	var margin_right = full.size.x - (safe.position.x + safe.size.x)
+	var margin_bottom = full.size.y - (safe.position.y + safe.size.y)
 	
-	hud_frame.position = Vector2(margin_left, margin_top)
+	safe_area.add_theme_constant_override("margin_top", int(margin_top))
+	safe_area.add_theme_constant_override("margin_left", int(margin_left))
+	safe_area.add_theme_constant_override("margin_right", int(margin_right))
+	safe_area.add_theme_constant_override("margin_bottom", int(margin_bottom))

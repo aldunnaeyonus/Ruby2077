@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqtr6nup4dhfc"
-path="res://.godot/imported/PauseMenu.png-251480c6574e929c12045901e97b80bb.ctex"
+uid="uid://xlrhr6qaehin"
+path="res://.godot/imported/gun.png-8f5fc80da581cf9742f7be6a1a27f631.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/PauseMenu.png"
-dest_files=["res://.godot/imported/PauseMenu.png-251480c6574e929c12045901e97b80bb.ctex"]
+source_file="res://assets/ui/gun.png"
+dest_files=["res://.godot/imported/gun.png-8f5fc80da581cf9742f7be6a1a27f631.ctex"]
 
 [params]
 
