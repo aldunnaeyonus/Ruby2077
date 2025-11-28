@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgqnrfxcg85mn"]
+[gd_scene load_steps=8 format=3 uid="uid://dgqnrfxcg85mn"]
 
 [ext_resource type="Script" uid="uid://bvmmvb6x4kwxn" path="res://scenes/Main.gd" id="1_elqb8"]
 [ext_resource type="VideoStream" uid="uid://b1jhw77if3yuc" path="res://assets/videos/main.ogv" id="2_vcsgt"]
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
 [ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="4_rarhs"]
 [ext_resource type="Texture2D" uid="uid://bngyku0m7ex0h" path="res://assets/ui/main.png" id="4_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://dwfw1eu1i8gjb" path="res://scripts/settingtransitions/TransitionManager.tscn" id="6_c01mt"]
+[ext_resource type="VideoStream" uid="uid://brybxxkl634e0" path="res://assets/videos/intro.ogv" id="5_jlsqs"]
+[ext_resource type="AudioStream" uid="uid://behmh74gpb4gb" path="res://assets/sounds/Out of Flux - SNIPERBUNKER.mp3" id="7_nxtc6"]
 
 [node name="Main" type="CanvasLayer"]
 script = ExtResource("1_elqb8")
@@ -65,25 +66,25 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -192.0
-offset_top = -472.0
-offset_right = 192.0
-offset_bottom = 472.0
 grow_horizontal = 2
 grow_vertical = 2
 stream = ExtResource("2_vcsgt")
+volume_db = 23.999996
+expand = true
 
 [node name="StartupVideo" type="VideoStreamPlayer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -192.0
-offset_top = -472.0
-offset_right = 192.0
-offset_bottom = 472.0
 grow_horizontal = 2
 grow_vertical = 2
-stream = ExtResource("2_vcsgt")
+stream = ExtResource("5_jlsqs")
+volume_db = 23.999996
+expand = true
 
-[node name="TransitionLayer" parent="." instance=ExtResource("6_c01mt")]
-visible = false
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_nxtc6")
+volume_db = 24.0
+autoplay = true
+max_distance = 1064.0
+attenuation = 1.4640863

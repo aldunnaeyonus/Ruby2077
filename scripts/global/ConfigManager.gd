@@ -11,7 +11,6 @@ var settings := {
 	"difficulty": "normal"
 }
 
-# Internal cache
 var volume_db: float = -2.0
 
 func _ready():
@@ -22,11 +21,7 @@ func load_config():
 	if config.load(CONFIG_PATH) == OK:
 		for key in settings:
 			if config.has_section_key(SECTION, key):
-				var loaded_value = config.get_value(SECTION, key)
-				# Ensure Vector2i type safety
-				if typeof(settings[key]) == TYPE_VECTOR2I and typeof(loaded_value) == TYPE_STRING:
-					pass # ConfigFile usually handles this, but explicit parsing can be added if needed
-				settings[key] = loaded_value
+				settings[key] = config.get_value(SECTION, key)
 	apply_settings()
 
 func save_config():
@@ -41,11 +36,17 @@ func apply_settings():
 	volume_db = linear_to_db(volume)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volume_db)
 
-	# Video
+	# Video (CRITICAL FIX)
 	var resolution = settings["resolution"]
 	var fullscreen = settings["fullscreen"]
-	DisplayServer.window_set_size(resolution)
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
+	
+	if fullscreen:
+		# If fullscreen, we ONLY set the mode. Setting size can break it.
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		# If windowed, set mode first, THEN size.
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(resolution)
 
 	# Gameplay
 	ProjectSettings.set_setting("application/config/difficulty", settings["difficulty"])
@@ -57,7 +58,7 @@ func set_setting(key: String, value):
 		apply_settings()
 
 func get_setting(key: String):
-	# FIX: Allow retrieving the calculated volume_db
 	if key == "volume_db":
 		return volume_db
 	return settings.get(key, null)
+	

@@ -7,7 +7,6 @@ class_name MainMenuManager
 @onready var safe_area = $SafeAreaRoot
 @onready var start_menu = $SafeAreaRoot/StartMenu
 @onready var settings_menu = $SettingsMenu
-@onready var transition = $TransitionLayer
 
 @onready var btn_start = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonStart
 @onready var btn_continue = $SafeAreaRoot/StartMenu/VBoxContainer/ButtonContinue
@@ -43,7 +42,7 @@ func _ready():
 		_on_startup_video_finished()
 
 func _on_startup_video_finished():
-	if transition: await transition.play("fade_out")
+	TransitionManager.play("fade_out")
 	if startup_video: startup_video.visible = false
 	
 	# Enable/Disable Continue based on save file
@@ -51,7 +50,7 @@ func _on_startup_video_finished():
 		btn_continue.disabled = not FileAccess.file_exists(save_file_path)
 	
 	if start_menu: start_menu.visible = true
-	if transition: await transition.play("fade_in")
+	TransitionManager.play("fade_in")
 
 func _on_start_pressed():
 	# Logic: Start -> New Game (Overwrite warning could be added here)
@@ -59,7 +58,7 @@ func _on_start_pressed():
 	_play_intro_sequence()
 
 func _play_intro_sequence():
-	if transition: await transition.play("fade_out")
+	TransitionManager.play("fade_out")
 	if start_menu: start_menu.visible = false
 	
 	if ruby_intro:
@@ -71,7 +70,8 @@ func _play_intro_sequence():
 			ruby_intro.gui_input.connect(_on_intro_input)
 			
 		ruby_intro.play()
-		if transition: await transition.play("fade_in")
+		TransitionManager.play("fade_in")
+
 	else:
 		_go_to_level(1)
 
@@ -99,7 +99,7 @@ func _on_settings_pressed():
 	if settings_menu: settings_menu.visible = true
 
 func _go_to_level(level: int):
-	if transition: await transition.play("fade_out")
+	TransitionManager.play("fade_in")
 	var path = "res://levels/Level%d.tscn" % level
 	if ResourceLoader.exists(path):
 		get_tree().change_scene_to_file(path)

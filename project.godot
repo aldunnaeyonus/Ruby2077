@@ -29,6 +29,7 @@ ConfigManager="*res://scripts/global/ConfigManager.gd"
 QuestTrackerHud="*res://scripts/UIHUD/QuestTrackerHUD.tscn"
 QuestPopupUi="*res://scripts/UIHUD/QuestPopupUI.tscn"
 ItemDatabase="*res://scripts/global/ItemDatabase.gd"
+TransitionManager="*res://scripts/settingtransitions/TransitionManager.tscn"
 
 [display]
 
