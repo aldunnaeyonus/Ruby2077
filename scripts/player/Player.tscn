@@ -1,7 +1,7 @@
 [gd_scene load_steps=43 format=3 uid="uid://ds61c7vd7h6tn"]
 
 [ext_resource type="Script" uid="uid://cxwgnuwskwx7f" path="res://scripts/player/Player.gd" id="1_player"]
-[ext_resource type="AudioStream" uid="uid://dvns5h54u8pmp" path="res://assets/sounds/scifi-gun-shoot-1-266417.mp3" id="2_c6xvm"]
+[ext_resource type="AudioStream" uid="uid://d2qmfegcchqto" path="res://assets/sounds/9mm-pistol-shoot-short-reverb-7152.mp3" id="2_hd152"]
 [ext_resource type="AudioStream" uid="uid://2xp3whj6cbhf" path="res://assets/sounds/1911-reload-6248.mp3" id="2_pg2bq"]
 [ext_resource type="Texture2D" uid="uid://bmv2kogx1glc3" path="res://assets/player/ruby-sheet.png" id="2_s415c"]
 [ext_resource type="AudioStream" uid="uid://d26107l0immu6" path="res://assets/sounds/empty-gun-shot-6209.mp3" id="3_k8y5b"]
@@ -271,54 +271,42 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(13, 29)
+size = Vector2(16, 58)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s415c"]
-size = Vector2(5, 5)
+size = Vector2(7.5, 6.5)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
-sfx_shoot = ExtResource("2_c6xvm")
+sfx_shoot = ExtResource("2_hd152")
 sfx_empty = ExtResource("3_k8y5b")
 sfx_reload = ExtResource("2_pg2bq")
 sfx_slash = ExtResource("5_hd152")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.335, 0.335)
 sprite_frames = SubResource("SpriteFrames_pg2bq")
-animation = &"gun"
+animation = &"knife"
 autoplay = "idle"
-frame = 3
+frame = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 7
 visibility_layer = 7
-position = Vector2(-1.5, 26.5)
+position = Vector2(-1, 48)
 shape = SubResource("RectangleShape2D_1")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2.5, 2.5)
-process_callback = 0
-position_smoothing_enabled = true
-position_smoothing_speed = 5.0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.1
-drag_top_margin = 0.1
-drag_right_margin = 0.1
-drag_bottom_margin = 0.1
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(22, 17)
+position = Vector2(37.75, 28.75)
 shape = SubResource("RectangleShape2D_s415c")
 disabled = true
 
 [node name="Muzzle" type="Marker2D" parent="."]
-position = Vector2(20, 12)
+position = Vector2(33, 20)
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Muzzle"]
 visible = false
@@ -326,7 +314,20 @@ position = Vector2(6.875001, 0)
 scale = Vector2(0.25520828, 0.26041666)
 texture = ExtResource("6_k8y5b")
 hframes = 4
+frame = 1
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="."]
 volume_db = 24.0
 autoplay = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+zoom = Vector2(2.5, 2.5)
+process_callback = 0
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1

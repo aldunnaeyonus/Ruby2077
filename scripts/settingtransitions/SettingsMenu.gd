@@ -14,7 +14,7 @@ class_name SettingsMenuUI
 # Assign a sound file here in the Inspector!
 @export var test_sound: AudioStream 
 
-const RESOLUTIONS = ["1280x720", "1920x1080", "2560x1440"]
+const RESOLUTIONS = ["640x360", "1280x720", "1920x1080", "2560x1440"]
 const DIFFICULTIES = ["Easy", "Normal", "Hard"]
 
 # --- State ---

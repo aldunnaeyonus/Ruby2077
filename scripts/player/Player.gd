@@ -92,20 +92,36 @@ func _handle_platformer_movement(delta):
 
 	var input_x = joystick_direction.x
 	if input_x == 0: input_x = Input.get_axis("ui_left", "ui_right")
-
+	
 	if is_on_floor():
 		if input_x != 0:
 			velocity.x = move_toward(velocity.x, input_x * SPEED, ACCELERATION * delta)
-			if sprite:
-				sprite.flip_h = input_x < 0
-				if not is_attacking: _play_anim("run")
+			
+			# UPDATE FACING HERE
+			_update_facing_direction(input_x < 0)
+			
+			if not is_attacking: _play_anim("run")
 		else:
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
 			if not is_attacking: _play_anim("idle")
 	else:
 		if not is_attacking:
 			_play_anim("jump" if velocity.y < 0 else "fall")
-
+			
+func _update_facing_direction(is_left: bool):
+	if not sprite or not muzzle: return
+	
+	# 1. Flip Sprite
+	sprite.flip_h = is_left
+	
+	# 2. Flip Muzzle Position & Flash
+	if is_left:
+		muzzle.position.x = -abs(muzzle.position.x) # Move to Left
+		muzzle.scale.x = -1 # Flip the flash sprite itself
+	else:
+		muzzle.position.x = abs(muzzle.position.x) # Move to Right
+		muzzle.scale.x = 1 # Normal flash
+		
 func _handle_top_down_movement(delta):
 	var input_vector = joystick_direction
 	if input_vector == Vector2.ZERO:
@@ -113,14 +129,15 @@ func _handle_top_down_movement(delta):
 
 	if input_vector.length() > 0:
 		velocity = velocity.move_toward(input_vector.normalized() * SPEED, ACCELERATION * delta)
-		if sprite:
-			sprite.flip_h = input_vector.x < 0
-			if not is_attacking: _play_anim("run")
+		
+		# UPDATE FACING HERE
+		if input_vector.x != 0:
+			_update_facing_direction(input_vector.x < 0)
+			
+		if not is_attacking: _play_anim("run")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		if not is_attacking: _play_anim("idle")
-
-# --- ACTIONS ---
 
 func attack():
 	if is_attacking or is_dead: return
@@ -155,31 +172,34 @@ func _fire_bullet() -> bool:
 		if is_instance_valid(GameState): GameState.current_ammo = current_ammo
 		ammo_changed.emit(current_ammo, max_ammo)
 		
-		# Muzzle Flash
+		# Muzzle Flash (Now appears on correct side!)
 		if muzzle_flash:
 			muzzle_flash.visible = true
 			get_tree().create_timer(0.05).timeout.connect(func(): muzzle_flash.visible = false)
 
-		# Sound
 		if sfx_player and sfx_shoot:
 			sfx_player.stream = sfx_shoot
 			sfx_player.play()
 		
-		# Bullet
 		if bullet_scene:
 			var bullet = bullet_scene.instantiate()
-			var spawn_pos = muzzle.position
-			if sprite.flip_h:
-				spawn_pos.x = -abs(spawn_pos.x)
+			
+			# Calculate direction based on sprite flip
+			var is_left = sprite.flip_h
+			
+			if is_left:
 				bullet.direction = Vector2.LEFT
+				bullet.rotation_degrees = 180 # ROTATE BULLET LEFT
 			else:
-				spawn_pos.x = abs(spawn_pos.x)
 				bullet.direction = Vector2.RIGHT
-			bullet.position = position + spawn_pos
+				bullet.rotation_degrees = 0   # ROTATE BULLET RIGHT
+			
+			# Muzzle position is already updated by our helper, so just use it
+			bullet.position = position + muzzle.position
 			get_parent().add_child(bullet)
 		return true
 	else:
-		print("Click! Out of ammo.")
+		print("Click!")
 		if sfx_player and sfx_empty:
 			sfx_player.stream = sfx_empty
 			sfx_player.play()
