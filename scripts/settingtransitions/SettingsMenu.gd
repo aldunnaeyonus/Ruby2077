@@ -64,7 +64,10 @@ func _ready():
 
 func _on_volume(val):
 	var linear = val / 100.0
-	var db = linear_to_db(linear)
+	
+	# Apply the same 2x Boost
+	var db = linear_to_db(linear * 24.0)
+	
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
 	ConfigManager.set_setting("volume", linear)
 	

@@ -6,12 +6,12 @@ const SECTION := "preferences"
 var settings := {
 	"resolution": Vector2i(1920, 1080),
 	"fullscreen": false,
-	"volume": 0.8,
+	"volume": 1.0,
 	"gestures_enabled": true,
 	"difficulty": "normal"
 }
 
-var volume_db: float = -2.0
+var volume_db: float = 2.0
 
 func _ready():
 	load_config()
@@ -31,20 +31,19 @@ func save_config():
 	config.save(CONFIG_PATH)
 
 func apply_settings():
-	# Audio
+	# Audio (Boosted: 100% = +6dB)
 	var volume = settings["volume"]
-	volume_db = linear_to_db(volume)
+	# We multiply by 2.0 so that 1.0 (100%) becomes linear 2.0 (+6dB)
+	volume_db = linear_to_db(volume * 24.0) 
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volume_db)
 
-	# Video (CRITICAL FIX)
+	# Video
 	var resolution = settings["resolution"]
 	var fullscreen = settings["fullscreen"]
 	
 	if fullscreen:
-		# If fullscreen, we ONLY set the mode. Setting size can break it.
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
-		# If windowed, set mode first, THEN size.
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_size(resolution)
 

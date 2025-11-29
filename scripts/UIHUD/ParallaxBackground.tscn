@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://b0gsmj2ic7q6u"]
+
+[ext_resource type="Script" uid="uid://c6c2asr6pppys" path="res://scripts/UIHUD/ParallaxBackground.gd" id="1_x4yei"]
+[ext_resource type="Texture2D" uid="uid://d287tu0ud322e" path="res://assets/backrounds/bar/Day/2.png" id="1_ye41d"]
+[ext_resource type="Texture2D" uid="uid://dnx86rh57q7" path="res://assets/backrounds/bar/Day/3.png" id="2_j80ts"]
+[ext_resource type="Texture2D" uid="uid://dfp24eahmy886" path="res://assets/backrounds/bar/Night/2.png" id="2_ye41d"]
+[ext_resource type="Texture2D" uid="uid://bxuc06lyxkbs2" path="res://assets/backrounds/bar/Day/5.png" id="3_tjvf2"]
+[ext_resource type="Texture2D" uid="uid://ocs74yvprr7d" path="res://assets/backrounds/bar/Day/1.png" id="5_tjvf2"]
+[ext_resource type="Texture2D" uid="uid://dciaoksqhqvls" path="res://assets/backrounds/bar/Night/3.png" id="7_fvmex"]
+[ext_resource type="Texture2D" uid="uid://ddwiq0251x4wc" path="res://assets/backrounds/bar/Night/5.png" id="8_uabap"]
+[ext_resource type="Texture2D" uid="uid://ciibancehha5d" path="res://assets/backrounds/bar/Night/1.png" id="9_u4btx"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_x4yei")
+day_farthest = ExtResource("1_ye41d")
+day_middle = ExtResource("2_j80ts")
+day_closest = ExtResource("3_tjvf2")
+day_sky = ExtResource("5_tjvf2")
+night_farthest = ExtResource("2_ye41d")
+night_middle = ExtResource("7_fvmex")
+night_closest = ExtResource("8_uabap")
+night_sky = ExtResource("9_u4btx")
+
+[node name="LayerSky" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(1, 0)
+motion_mirroring = Vector2(576, 0)
+
+[node name="Sky" type="TextureRect" parent="LayerSky"]
+offset_right = 576.0
+offset_bottom = 324.0
+
+[node name="Layer0_Farthest" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.3, 0)
+motion_mirroring = Vector2(576, 0)
+
+[node name="Texture0" type="TextureRect" parent="Layer0_Farthest"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Layer1_Middle" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.6, 0)
+motion_mirroring = Vector2(576, 0)
+
+[node name="Texture1" type="TextureRect" parent="Layer1_Middle"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Layer2_Closest" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.9, 0)
+motion_mirroring = Vector2(576, 0)
+
+[node name="Texture2" type="TextureRect" parent="Layer2_Closest"]
+offset_right = 40.0
+offset_bottom = 40.0

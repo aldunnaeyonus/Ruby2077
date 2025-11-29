@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ctwm7cj341bh7" path="res://scripts/settingtransitions/SettingsMenu.gd" id="1_yelko"]
 [ext_resource type="PackedScene" uid="uid://ek4en8ouj0ae" path="res://scripts/UIHUD/panel.tscn" id="2_pd0xm"]
 [ext_resource type="Texture2D" uid="uid://bdqkwlvteic0" path="res://assets/icons/x.svg" id="3_vsaac"]
-[ext_resource type="AudioStream" uid="uid://blp5ragpimgdo" path="res://assets/sounds/ui_beeps.mp3" id="4_ahfrx"]
+[ext_resource type="AudioStream" uid="uid://bt4cmpmipn1us" path="res://assets/sounds/beep-329314.mp3" id="4_ahfrx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pd0xm"]
 

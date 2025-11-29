@@ -12,6 +12,7 @@
 visible = false
 
 [node name="PauseMenuOverlay" parent="." instance=ExtResource("1_m178o")]
+visible = false
 
 [node name="TouchInventory" parent="." instance=ExtResource("2_nd84j")]
 
@@ -28,5 +29,6 @@ visible = false
 visible = false
 
 [node name="QuestJournalUI" parent="." instance=ExtResource("7_dagwu")]
+visible = false
 
 [connection signal="pause_requested" from="MobileHUD" to="PauseMenuOverlay" method="show_menu"]

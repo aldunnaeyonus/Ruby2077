@@ -1,7 +1,12 @@
-[gd_scene load_steps=47 format=3 uid="uid://ds61c7vd7h6tn"]
+[gd_scene load_steps=43 format=3 uid="uid://ds61c7vd7h6tn"]
 
 [ext_resource type="Script" uid="uid://cxwgnuwskwx7f" path="res://scripts/player/Player.gd" id="1_player"]
+[ext_resource type="AudioStream" uid="uid://dvns5h54u8pmp" path="res://assets/sounds/scifi-gun-shoot-1-266417.mp3" id="2_c6xvm"]
+[ext_resource type="AudioStream" uid="uid://2xp3whj6cbhf" path="res://assets/sounds/1911-reload-6248.mp3" id="2_pg2bq"]
 [ext_resource type="Texture2D" uid="uid://bmv2kogx1glc3" path="res://assets/player/ruby-sheet.png" id="2_s415c"]
+[ext_resource type="AudioStream" uid="uid://d26107l0immu6" path="res://assets/sounds/empty-gun-shot-6209.mp3" id="3_k8y5b"]
+[ext_resource type="AudioStream" uid="uid://nof7cl14y34l" path="res://assets/sounds/sword-slash-315218.mp3" id="5_hd152"]
+[ext_resource type="Texture2D" uid="uid://blxe1tisejwxp" path="res://assets/ui/2.png" id="6_k8y5b"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s415c"]
 atlas = ExtResource("2_s415c")
@@ -27,37 +32,13 @@ region = Rect2(1600, 1200, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(2000, 1200, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_k6n56"]
-atlas = ExtResource("2_s415c")
-region = Rect2(0, 2400, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x7rxi"]
-atlas = ExtResource("2_s415c")
-region = Rect2(400, 2400, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vfyam"]
-atlas = ExtResource("2_s415c")
-region = Rect2(800, 2400, 400, 600)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_layjt"]
 atlas = ExtResource("2_s415c")
 region = Rect2(1200, 2400, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mddgh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7rxi"]
 atlas = ExtResource("2_s415c")
-region = Rect2(1600, 2400, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_41osl"]
-atlas = ExtResource("2_s415c")
-region = Rect2(2000, 2400, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_htcnr"]
-atlas = ExtResource("2_s415c")
-region = Rect2(0, 3000, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kudbt"]
-atlas = ExtResource("2_s415c")
-region = Rect2(400, 3000, 400, 600)
+region = Rect2(800, 2400, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hhns3"]
 atlas = ExtResource("2_s415c")
@@ -71,21 +52,13 @@ region = Rect2(2000, 3000, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(1600, 3000, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pg2bq"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8y5b"]
 atlas = ExtResource("2_s415c")
-region = Rect2(0, 0, 400, 600)
+region = Rect2(1200, 3000, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iwa3u"]
 atlas = ExtResource("2_s415c")
 region = Rect2(400, 0, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c6xvm"]
-atlas = ExtResource("2_s415c")
-region = Rect2(800, 0, 400, 600)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k8y5b"]
-atlas = ExtResource("2_s415c")
-region = Rect2(1200, 0, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd152"]
 atlas = ExtResource("2_s415c")
@@ -95,10 +68,6 @@ region = Rect2(1600, 0, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(2000, 0, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mc500"]
-atlas = ExtResource("2_s415c")
-region = Rect2(0, 1800, 400, 600)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ul0ri"]
 atlas = ExtResource("2_s415c")
 region = Rect2(400, 1800, 400, 600)
@@ -107,17 +76,17 @@ region = Rect2(400, 1800, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(800, 1800, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mv85o"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pg2bq"]
 atlas = ExtResource("2_s415c")
-region = Rect2(1200, 1800, 400, 600)
+region = Rect2(400, 1800, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5uhtn"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfyam"]
 atlas = ExtResource("2_s415c")
-region = Rect2(1600, 1800, 400, 600)
+region = Rect2(800, 2400, 400, 600)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a4bgf"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6xvm"]
 atlas = ExtResource("2_s415c")
-region = Rect2(2000, 1800, 400, 600)
+region = Rect2(400, 2400, 400, 600)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jr64r"]
 atlas = ExtResource("2_s415c")
@@ -188,40 +157,22 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bigoh")
 }],
-"loop": true,
+"loop": false,
 "name": &"die",
 "speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_k6n56")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_x7rxi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vfyam")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_layjt")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mddgh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_41osl")
+"texture": SubResource("AtlasTexture_x7rxi")
 }],
 "loop": true,
 "name": &"fall",
-"speed": 10.0
+"speed": 7.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_htcnr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kudbt")
-}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hhns3")
 }, {
@@ -230,23 +181,17 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ifisd")
-}],
-"loop": true,
-"name": &"gun",
-"speed": 13.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pg2bq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_iwa3u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c6xvm")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k8y5b")
+}],
+"loop": false,
+"name": &"gun",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwa3u")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hd152")
@@ -256,12 +201,9 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 10.0
+"speed": 6.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mc500")
-}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ul0ri")
 }, {
@@ -269,17 +211,17 @@ animations = [{
 "texture": SubResource("AtlasTexture_u4gh6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mv85o")
+"texture": SubResource("AtlasTexture_pg2bq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5uhtn")
+"texture": SubResource("AtlasTexture_vfyam")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a4bgf")
+"texture": SubResource("AtlasTexture_c6xvm")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
-"speed": 10.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -300,7 +242,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_a8ot0")
 }],
-"loop": true,
+"loop": false,
 "name": &"knife",
 "speed": 13.0
 }, {
@@ -336,13 +278,17 @@ size = Vector2(5, 5)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
+sfx_shoot = ExtResource("2_c6xvm")
+sfx_empty = ExtResource("3_k8y5b")
+sfx_reload = ExtResource("2_pg2bq")
+sfx_slash = ExtResource("5_hd152")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_pg2bq")
 animation = &"gun"
 autoplay = "idle"
-frame_progress = 0.688752
+frame = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 7
@@ -351,6 +297,7 @@ position = Vector2(-1.5, 26.5)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 rotation_smoothing_enabled = true
 
@@ -364,3 +311,14 @@ disabled = true
 
 [node name="Muzzle" type="Marker2D" parent="."]
 position = Vector2(20, 12)
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Muzzle"]
+visible = false
+position = Vector2(6.875001, 0)
+scale = Vector2(0.25520828, 0.26041666)
+texture = ExtResource("6_k8y5b")
+hframes = 4
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = 24.0
+autoplay = true

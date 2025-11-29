@@ -69,7 +69,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stream = ExtResource("2_vcsgt")
-volume_db = 23.999996
+volume_db = 23.999992
 expand = true
 
 [node name="StartupVideo" type="VideoStreamPlayer" parent="."]
@@ -79,12 +79,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stream = ExtResource("5_jlsqs")
-volume_db = 23.999996
+volume_db = 23.999992
 expand = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_nxtc6")
 volume_db = 24.0
 autoplay = true
-max_distance = 1064.0
-attenuation = 1.4640863

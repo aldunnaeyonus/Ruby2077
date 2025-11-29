@@ -102,6 +102,26 @@ grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
+[node name="AmmoLabel" type="Label" parent="BottomCenterContainer"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = -38.0
+offset_right = 62.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.36824116, 0.94421345, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "10"
+horizontal_alignment = 2
+
 [node name="SwapKnifeButton" type="TextureButton" parent="BottomCenterContainer"]
 modulate = Color(1, 1, 1, 0.49411765)
 layout_mode = 0
@@ -123,30 +143,10 @@ texture_normal = ExtResource("9_7h2fc")
 stretch_mode = 5
 flip_h = true
 
-[node name="AmmoLabel" type="Label" parent="BottomCenterContainer/SwapGunButton"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = -20.0
-offset_right = 11.0
-offset_bottom = 8.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0.36824116, 0.94421345, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 20
-text = "10"
-horizontal_alignment = 2
-
 [connection signal="pressed" from="CornerPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="BottomRightContainer/AttackButton" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="BottomRightContainer/MenuButton" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="BottomRightContainer/JournalButton" to="." method="_on_journal_pressed"]
 [connection signal="pressed" from="BottomRightContainer/JumpButton" to="." method="_on_jump_pressed"]
-[connection signal="pressed" from="BottomCenterContainer/SwapKnifeButton" to="." method="_on_swap_pressed"]
-[connection signal="pressed" from="BottomCenterContainer/SwapGunButton" to="." method="_on_swap_pressed"]
+[connection signal="pressed" from="BottomCenterContainer/SwapKnifeButton" to="." method="_on_knife_pressed"]
+[connection signal="pressed" from="BottomCenterContainer/SwapGunButton" to="." method="_on_gun_pressed"]

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://6r31482b275b" path="res://scripts/UIHUD/QuestJournalUI.gd" id="1_mo871"]
 
 [node name="QuestJournalUI" type="CanvasLayer"]
+visible = false
 script = ExtResource("1_mo871")
 
 [node name="JournalPanel" type="Panel" parent="."]

@@ -8,6 +8,7 @@ signal inventory_requested
 signal swap_requested
 signal journal_requested
 signal reload_requested # <--- NEW
+signal change_weapon_requested(weapon_name: String)
 
 # --- Configuration (Assign these in the Inspector!) ---
 @export_group("Knife Icons")
@@ -27,31 +28,32 @@ signal reload_requested # <--- NEW
 # Weapon Buttons
 @onready var btn_knife = $BottomCenterContainer/SwapKnifeButton
 @onready var btn_gun = $BottomCenterContainer/SwapGunButton
-@onready var ammo_label = $BottomCenterContainer/SwapGunButton/AmmoLabel
+@onready var ammo_label = $BottomCenterContainer/AmmoLabel
 
 # --- State ---
 var current_weapon_state = "knife" # Keeps track of UI state
 var current_ammo = 10
 
 func _on_knife_pressed():
+	# Always switch to knife
 	if current_weapon_state != "knife":
 		current_weapon_state = "knife"
 		update_weapon_visuals("knife")
-		swap_requested.emit()
-
-# NEW: Specific handler for Gun Button
+		# Emit the explicit signal with the name "knife"
+		change_weapon_requested.emit("knife")
+		
 func _on_gun_pressed():
-	# If we are ALREADY holding the gun AND it is empty -> RELOAD
+	# 1. Reload Logic
 	if current_weapon_state == "gun" and current_ammo <= 0:
 		reload_requested.emit()
 		return
 
-	# Otherwise, just switch to gun
+	# 2. Switch Logic
 	if current_weapon_state != "gun":
 		current_weapon_state = "gun"
 		update_weapon_visuals("gun")
-		swap_requested.emit()
-
+		change_weapon_requested.emit("gun") # <--- Send specific name
+		
 func _ready():
 	# 1. Initialize Visuals (Knife Active by default)
 	update_weapon_visuals("knife")
@@ -104,11 +106,11 @@ func update_weapon_visuals(active_weapon: String):
 	# 1. Update Opacity (Alpha)
 	# Knife
 	btn_knife.modulate = Color.WHITE
-	btn_knife.modulate.a = 1.0 if active_weapon == "knife" else 0.5
+	btn_knife.modulate.a = 1.0 if active_weapon == "knife" else 0.3
 	
 	# Gun (Combine Red tint with Opacity)
 	btn_gun.modulate = gun_color
-	btn_gun.modulate.a = 1.0 if active_weapon == "gun" else 0.5
+	btn_gun.modulate.a = 1.0 if active_weapon == "gun" else 0.3
 	
 	# 2. Swap Attack Icons
 	if active_weapon == "knife":
