@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://dnt2dv8xsjcp0" path="res://scripts/settingtransitions/SafeArea.gd" id="3_i8f85"]
 [ext_resource type="PackedScene" uid="uid://i6hclmd74t8l" path="res://scripts/settingtransitions/SettingsMenu.tscn" id="4_rarhs"]
 [ext_resource type="Texture2D" uid="uid://bngyku0m7ex0h" path="res://assets/ui/main.png" id="4_vcsgt"]
-[ext_resource type="VideoStream" uid="uid://brybxxkl634e0" path="res://assets/videos/intro.ogv" id="5_jlsqs"]
-[ext_resource type="AudioStream" uid="uid://behmh74gpb4gb" path="res://assets/sounds/Out of Flux - SNIPERBUNKER.mp3" id="7_nxtc6"]
+[ext_resource type="VideoStream" uid="uid://ru2fwgc5moh3" path="res://assets/videos/intro.ogv" id="5_jlsqs"]
+[ext_resource type="AudioStream" uid="uid://behmh74gpb4gb" path="res://assets/sfx/Out of Flux - SNIPERBUNKER.mp3" id="7_nxtc6"]
 
 [node name="Main" type="CanvasLayer"]
 script = ExtResource("1_elqb8")

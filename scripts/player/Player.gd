@@ -3,7 +3,7 @@ class_name Player
 
 # --- CONFIGURATION ---
 const SPEED = 300.0
-const JUMP_VELOCITY = -300.0
+const JUMP_VELOCITY = -300.0 # Increased for snappier jump
 const ACCELERATION = 1500.0
 const FRICTION = 3000.0
 const MAX_JUMPS = 2
@@ -31,18 +31,16 @@ var joystick_direction: Vector2 = Vector2.ZERO
 var jump_count: int = 0
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
-
-# ACTION FLAGS
 var is_attacking: bool = false
 var is_dead: bool = false
+var is_reloading: bool = false
 var attempting_mouse_fire: bool = false
-var is_reloading: bool = false # <--- Tracks reload state
 
-# --- MUZZLE POSITIONS ---
+# --- OFFSET CONFIG ---
 var muzzle_offsets = {
-	"gun": Vector2(34, 20),      # Standing still
-	"run_gun": Vector2(43, 24),  # Running
-	"default": Vector2(34, 20)   # Fallback
+	"gun": Vector2(151.0, -39),
+	"run_gun": Vector2(190, -18),
+	"default": Vector2(151, -39)
 }
 
 # --- NODES ---
@@ -57,71 +55,58 @@ var muzzle_offsets = {
 signal ammo_changed(current: int, max_val: int)
 signal weapon_switched(weapon_name: String)
 
-func _unhandled_input(event):
-	# Mouse Fire Logic
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		attempting_mouse_fire = true
-		
 func _ready():
 	if is_instance_valid(GameState):
 		current_ammo = GameState.current_ammo
-	
 	ammo_changed.emit(current_ammo, max_ammo)
-	
 	sprite.frame_changed.connect(_on_frame_changed)
 	if has_node("Hitbox"):
 		$Hitbox.body_entered.connect(_on_hitbox_body_entered)
+
+func _unhandled_input(event):
+	# Using "attack" action from Input Map is safer than hardcoding Mouse Button
+	if event.is_action_pressed("attack"):
+		attempting_mouse_fire = true
+	elif event.is_action_released("attack"):
+		attempting_mouse_fire = false
 
 func _physics_process(delta):
 	# 1. Gravity
 	if current_mode == GameMode.PLATFORMER and not is_on_floor():
 		velocity.y += gravity * delta
 
-	# 2. Dead State
+	# 2. Block Input States
 	if is_dead:
 		move_and_slide()
 		return
 
-	# 3. Attack State
-	if is_attacking:
-		if equipped_weapon == "knife":
-			velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
-			move_and_slide()
-			return 
+	if is_attacking and equipped_weapon == "knife":
+		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+		move_and_slide()
+		return 
 
-	# 4. Timers
+	# 3. Timers
 	if jump_buffer_timer > 0: jump_buffer_timer -= delta
 
-	# 5. Movement Logic
+	# 4. Movement
 	match current_mode:
 		GameMode.PLATFORMER: _handle_platformer_movement(delta)
 		GameMode.TOP_DOWN: _handle_top_down_movement(delta)
 
 	move_and_slide()
 	
-	# --- INPUTS ---
+	# 5. Actions (Using Input Map)
+	if Input.is_action_just_pressed("ui_accept"): jump() # Space
+	if Input.is_action_just_pressed("ui_focus_next"): interact() # E / Tab
+	if Input.is_action_just_pressed("reload"): reload() # R
+	if Input.is_action_just_pressed("swap_weapon"): # Q
+		equip_weapon("gun" if equipped_weapon == "knife" else "knife")
 	
-	if Input.is_action_just_pressed("ui_accept"): 
-		jump()
-	if Input.is_action_just_pressed("ui_focus_next"): 
-		interact()
-	
-	# Attack Input
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		attempting_mouse_fire = false
-	
-	if attempting_mouse_fire or Input.is_key_pressed(KEY_CTRL):
+	# Auto-fire logic
+	if attempting_mouse_fire:
 		attack()
-		
-	# Reload
-	if Input.is_key_pressed(KEY_R):
-		reload()
-		
-	# Swap Weapon
-	if Input.is_action_just_pressed("ui_page_up") or Input.is_key_pressed(KEY_Q):
-		var new_wep = "gun" if equipped_weapon == "knife" else "knife"
-		equip_weapon(new_wep)
 
+# --- MOVEMENT ---
 func _handle_platformer_movement(delta):
 	if not is_on_floor():
 		coyote_timer -= delta
@@ -137,29 +122,23 @@ func _handle_platformer_movement(delta):
 
 	if is_on_floor():
 		if input_x != 0:
-			# MOVING
 			velocity.x = move_toward(velocity.x, input_x * SPEED, ACCELERATION * delta)
 			_update_facing_direction(input_x < 0)
 			
-			# Animation Logic (Prioritize Run-Gun if shooting, else Run)
 			if is_attacking and equipped_weapon == "gun":
 				_play_anim("run_gun")
 			elif not is_attacking:
-				# Play 'run' even if reloading!
 				_play_anim("run")
 		else:
-			# IDLE
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
 			if is_attacking and equipped_weapon == "gun":
 				_play_anim("gun")
 			elif not is_attacking:
-				# Play 'idle' even if reloading!
 				_play_anim("idle")
 	else:
-		# AIR
 		if not is_attacking:
 			_play_anim("jump" if velocity.y < 0 else "fall")
-			
+
 func _handle_top_down_movement(delta):
 	var input_vector = joystick_direction
 	if input_vector == Vector2.ZERO:
@@ -167,45 +146,17 @@ func _handle_top_down_movement(delta):
 
 	if input_vector.length() > 0:
 		velocity = velocity.move_toward(input_vector.normalized() * SPEED, ACCELERATION * delta)
+		if input_vector.x != 0: _update_facing_direction(input_vector.x < 0)
 		
-		if input_vector.x != 0:
-			_update_facing_direction(input_vector.x < 0)
-			
-		if is_attacking and equipped_weapon == "gun":
-			_play_anim("run_gun")
-		elif not is_attacking:
-			_play_anim("run")
+		if is_attacking and equipped_weapon == "gun": _play_anim("run_gun")
+		elif not is_attacking: _play_anim("run")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-		if is_attacking and equipped_weapon == "gun":
-			_play_anim("gun")
-		elif not is_attacking:
-			_play_anim("idle")
+		if is_attacking and equipped_weapon == "gun": _play_anim("gun")
+		elif not is_attacking: _play_anim("idle")
 
-func _update_facing_direction(is_left: bool):
-	if not sprite: return
-	
-	sprite.flip_h = is_left
-	_refresh_muzzle_transform()
-
-func _refresh_muzzle_transform():
-	if not sprite or not muzzle: return
-	
-	var current_anim = sprite.animation
-	var target_pos = muzzle_offsets.get(current_anim, muzzle_offsets["default"])
-	var is_facing_left = sprite.flip_h
-	
-	if is_facing_left:
-		muzzle.position.x = -abs(target_pos.x)
-		muzzle.position.y = target_pos.y
-		muzzle.scale.x = -1
-	else:
-		muzzle.position.x = abs(target_pos.x)
-		muzzle.position.y = target_pos.y
-		muzzle.scale.x = 1
-
+# --- ACTIONS ---
 func attack():
-	# Block attack if reloading
 	if is_attacking or is_dead or is_reloading: return
 	
 	is_attacking = true
@@ -216,17 +167,12 @@ func attack():
 		if fired:
 			cooldown = 0.15 
 			if velocity.length() == 0:
-				if sprite:
-					sprite.stop()
-					sprite.play("gun")
+				if sprite: sprite.stop(); sprite.play("gun")
 		else:
 			cooldown = 0.2
 	else:
-		# Knife Logic
 		_play_anim(equipped_weapon)
-		if sfx_player and sfx_slash:
-			sfx_player.stream = sfx_slash
-			sfx_player.play()
+		if sfx_player and sfx_slash: sfx_player.stream = sfx_slash; sfx_player.play()
 	
 	get_tree().create_timer(cooldown).timeout.connect(func(): is_attacking = false)
 
@@ -236,18 +182,29 @@ func _fire_bullet() -> bool:
 		if is_instance_valid(GameState): GameState.current_ammo = current_ammo
 		ammo_changed.emit(current_ammo, max_ammo)
 		
+		# Visuals
 		if muzzle_flash:
 			muzzle_flash.visible = true
 			get_tree().create_timer(0.05).timeout.connect(func(): muzzle_flash.visible = false)
 
+		# Sound
 		if sfx_player and sfx_shoot:
 			sfx_player.stream = sfx_shoot
 			sfx_player.play()
 		
+		# Spawn Bullet
 		if bullet_scene:
 			var bullet = bullet_scene.instantiate()
-			var is_left = sprite.flip_h
 			
+			# 1. Add to Scene Root (Not as child of player!)
+			get_tree().current_scene.add_child(bullet)
+			
+			# 2. Set Position: Use Global Position of Muzzle
+			bullet.global_position = muzzle.global_position
+			
+			# 3. Set Direction: Check Sprite Flip manually
+			# (We don't rely on muzzle scale/rotation because parent scale can mess it up)
+			var is_left = sprite.flip_h
 			if is_left:
 				bullet.direction = Vector2.LEFT
 				bullet.rotation_degrees = 180 
@@ -255,8 +212,6 @@ func _fire_bullet() -> bool:
 				bullet.direction = Vector2.RIGHT
 				bullet.rotation_degrees = 0
 			
-			bullet.position = position + muzzle.position
-			get_parent().add_child(bullet)
 		return true
 	else:
 		if sfx_player and sfx_empty:
@@ -265,71 +220,56 @@ func _fire_bullet() -> bool:
 		return false
 
 func reload():
-	# 1. Validation Checks
-	if is_reloading: return
-	if current_ammo == max_ammo: return
-	
-	# 2. Start Reload State
-	print("Reloading...")
+	if is_reloading or current_ammo == max_ammo: return
 	is_reloading = true
 	
-	# Play Sound immediately
-	if sfx_player and sfx_reload:
-		sfx_player.stream = sfx_reload
-		sfx_player.play()
+	if sfx_player and sfx_reload: sfx_player.stream = sfx_reload; sfx_player.play()
+	await get_tree().create_timer(3.0).timeout
 	
-	# 3. Wait 3 Seconds (Movement animations will continue playing in physics_process)
-	await get_tree().create_timer(1.5).timeout
-	
-	# 4. Finish Reload
 	current_ammo = max_ammo
 	if is_instance_valid(GameState): GameState.current_ammo = current_ammo
 	ammo_changed.emit(current_ammo, max_ammo)
-	
 	is_reloading = false
-	print("Reload Complete!")
 
 func equip_weapon(weapon_name: String):
-	# Optional: Cancel reload on swap?
-	# is_reloading = false 
-	
 	if weapon_name in ["knife", "gun"]:
 		equipped_weapon = weapon_name
-		weapon_switched.emit(weapon_name) 
+		weapon_switched.emit(weapon_name)
 
+# --- HELPERS ---
+func _update_facing_direction(is_left: bool):
+	if not sprite: return
+	sprite.flip_h = is_left
+	_refresh_muzzle_transform()
+
+func _refresh_muzzle_transform():
+	if not sprite or not muzzle: return
+	var target_pos = muzzle_offsets.get(sprite.animation, muzzle_offsets["default"])
+	var is_left = sprite.flip_h
+	
+	muzzle.position.x = -abs(target_pos.x) if is_left else abs(target_pos.x)
+	muzzle.position.y = target_pos.y
+	muzzle.scale.x = -1 if is_left else 1
+
+func _play_anim(anim: String):
+	if sprite.sprite_frames.has_animation(anim) and sprite.animation != anim:
+		sprite.play(anim)
+		_refresh_muzzle_transform()
+
+# --- INPUT RECEIVERS ---
 func set_joystick_input(vec: Vector2): joystick_direction = vec
-
-func jump():
-	if current_mode == GameMode.PLATFORMER and not is_dead:
-		jump_buffer_timer = JUMP_BUFFER_TIME
-
+func jump(): if not is_dead: jump_buffer_timer = JUMP_BUFFER_TIME
 func _perform_jump():
 	velocity.y = JUMP_VELOCITY
 	jump_buffer_timer = 0.0
-	jump_count += 1 if (is_on_floor() or coyote_timer > 0) else 1
-
+	jump_count += 1
 func interact():
 	if interaction_area:
-		var areas = interaction_area.get_overlapping_areas()
-		for area in areas:
-			if area.has_method("on_interact"):
-				area.on_interact()
-				return
-
+		for area in interaction_area.get_overlapping_areas():
+			if area.has_method("on_interact"): area.on_interact(); return
 func _on_frame_changed():
-	if sprite.animation == "knife":
-		if sprite.frame == 3:
-			hitbox_col.set_deferred("disabled", false)
-		else:
-			hitbox_col.set_deferred("disabled", true)
-	else:
-		hitbox_col.set_deferred("disabled", true)
-
+	if sprite.animation == "knife" and sprite.frame == 3: hitbox_col.set_deferred("disabled", false)
+	else: hitbox_col.set_deferred("disabled", true)
 func _on_hitbox_body_entered(body):
 	if body.has_method("take_damage"): body.take_damage(10)
-
-func _play_anim(anim_name: String):
-	if sprite and sprite.sprite_frames.has_animation(anim_name):
-		if sprite.animation != anim_name:
-			sprite.play(anim_name)
-			_refresh_muzzle_transform()
+	

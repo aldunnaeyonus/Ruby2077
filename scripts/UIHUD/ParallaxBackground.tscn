@@ -23,7 +23,7 @@ night_sky = ExtResource("9_u4btx")
 
 [node name="LayerSky" type="ParallaxLayer" parent="."]
 scale = Vector2(1.5, 1.5)
-motion_scale = Vector2(1, 0)
+motion_scale = Vector2(0, 1)
 motion_mirroring = Vector2(100, 0)
 
 [node name="Sky" type="TextureRect" parent="LayerSky"]
@@ -33,14 +33,14 @@ texture = ExtResource("5_tjvf2")
 expand_mode = 1
 
 [node name="Layer0_Farthest" type="ParallaxLayer" parent="."]
-motion_scale = Vector2(0.1, 0)
+motion_scale = Vector2(0.1, 1)
 motion_mirroring = Vector2(576, 0)
 
 [node name="Texture0" type="TextureRect" parent="Layer0_Farthest"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 220.0
+offset_top = 175.0
 offset_right = 576.0
 offset_bottom = 570.0
 grow_horizontal = 2
@@ -51,27 +51,25 @@ stretch_mode = 6
 
 [node name="Layer1_Middle" type="ParallaxLayer" parent="."]
 scale = Vector2(1.29, 1.29)
-motion_scale = Vector2(0.2, 0)
+motion_scale = Vector2(0.2, 1)
 motion_mirroring = Vector2(400, 0)
 
 [node name="Texture1" type="TextureRect" parent="Layer1_Middle"]
 offset_top = 118.0
 offset_right = 576.0
 offset_bottom = 462.10852
-grow_horizontal = 2
-grow_vertical = 2
 texture = ExtResource("7_fvmex")
 stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
 [node name="Layer2_Closest" type="ParallaxLayer" parent="."]
 scale = Vector2(1.28, 1.28)
-motion_scale = Vector2(0.25, 0)
+motion_scale = Vector2(0.25, 1)
 motion_mirroring = Vector2(450, 0)
 
 [node name="Texture2" type="TextureRect" parent="Layer2_Closest"]
-offset_top = 120.0
+offset_top = 139.84375
 offset_right = 576.0
-offset_bottom = 464.5
+offset_bottom = 463.84375
 texture = ExtResource("8_uabap")
 stretch_mode = 6

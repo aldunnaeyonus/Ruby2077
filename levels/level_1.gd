@@ -34,6 +34,13 @@ func _ready():
 		if pause_menu: pause_menu.show_menu()
 	)
 	
+	if player.has_signal("ammo_changed"):
+		# This connects the Player's signal to the function we just added above
+		player.ammo_changed.connect(mobile_hud.on_player_ammo_changed)
+		
+		# Force initial update
+		mobile_hud.on_player_ammo_changed(player.current_ammo, player.max_ammo)
+		
 	if mobile_hud.has_signal("journal_pressed") and quest_journal:
 		mobile_hud.journal_pressed.connect(quest_journal.toggle)
 
