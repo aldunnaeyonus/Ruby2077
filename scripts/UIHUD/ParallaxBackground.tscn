@@ -22,56 +22,56 @@ night_closest = ExtResource("8_uabap")
 night_sky = ExtResource("9_u4btx")
 
 [node name="LayerSky" type="ParallaxLayer" parent="."]
-position = Vector2(-2, 0)
 scale = Vector2(1.5, 1.5)
 motion_scale = Vector2(1, 0)
-motion_mirroring = Vector2(376, 0)
+motion_mirroring = Vector2(100, 0)
 
 [node name="Sky" type="TextureRect" parent="LayerSky"]
-offset_left = 4.0
-offset_top = -4.0
-offset_right = 580.0
-offset_bottom = 446.0
+offset_right = 849.3333
+offset_bottom = 372.6667
 texture = ExtResource("5_tjvf2")
 expand_mode = 1
 
 [node name="Layer0_Farthest" type="ParallaxLayer" parent="."]
-motion_scale = Vector2(0.3, 0)
-motion_mirroring = Vector2(450, 0)
+motion_scale = Vector2(0.1, 0)
+motion_mirroring = Vector2(576, 0)
 
 [node name="Texture0" type="TextureRect" parent="Layer0_Farthest"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = 1.0
-offset_right = 581.0
-offset_bottom = 325.0
+offset_top = 220.0
+offset_right = 576.0
+offset_bottom = 570.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 texture = ExtResource("2_ye41d")
+stretch_mode = 6
 
 [node name="Layer1_Middle" type="ParallaxLayer" parent="."]
 scale = Vector2(1.29, 1.29)
-motion_scale = Vector2(0.6, 0)
+motion_scale = Vector2(0.2, 0)
 motion_mirroring = Vector2(400, 0)
 
 [node name="Texture1" type="TextureRect" parent="Layer1_Middle"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_top = 118.0
+offset_right = 576.0
+offset_bottom = 462.10852
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_fvmex")
-expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
 
 [node name="Layer2_Closest" type="ParallaxLayer" parent="."]
 scale = Vector2(1.28, 1.28)
-motion_scale = Vector2(0.9, 0)
-motion_mirroring = Vector2(552, 0)
+motion_scale = Vector2(0.25, 0)
+motion_mirroring = Vector2(450, 0)
 
 [node name="Texture2" type="TextureRect" parent="Layer2_Closest"]
-offset_bottom = 397.6875
+offset_top = 120.0
+offset_right = 576.0
+offset_bottom = 464.5
 texture = ExtResource("8_uabap")
-expand_mode = 1
+stretch_mode = 6

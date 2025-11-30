@@ -31,18 +31,20 @@ var joystick_direction: Vector2 = Vector2.ZERO
 var jump_count: int = 0
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
+
+# ACTION FLAGS
 var is_attacking: bool = false
 var is_dead: bool = false
-var muzzle_positions = {
+var attempting_mouse_fire: bool = false
+var is_reloading: bool = false # <--- Tracks reload state
+
+# --- MUZZLE POSITIONS ---
+var muzzle_offsets = {
 	"gun": Vector2(34, 20),      # Standing still
-	"run_gun": Vector2(43, 24),  # Running (Gun might be lower/higher/forward)
+	"run_gun": Vector2(43, 24),  # Running
 	"default": Vector2(34, 20)   # Fallback
 }
-var muzzle_offsets = {
-	"gun": Vector2(-34, 20),       # Standing still
-	"run_gun": Vector2(-43, 24),   # Running (Maybe slightly forward/down?)
-	"default": Vector2(-34, 20)    # Fallback
-}
+
 # --- NODES ---
 @onready var sprite = $AnimatedSprite2D 
 @onready var interaction_area = $InteractionArea 
@@ -53,8 +55,13 @@ var muzzle_offsets = {
 
 # --- SIGNALS ---
 signal ammo_changed(current: int, max_val: int)
-signal weapon_switched(weapon_name: String) # <--- NEW SIGNAL FOR UI SYNC
+signal weapon_switched(weapon_name: String)
 
+func _unhandled_input(event):
+	# Mouse Fire Logic
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		attempting_mouse_fire = true
+		
 func _ready():
 	if is_instance_valid(GameState):
 		current_ammo = GameState.current_ammo
@@ -92,32 +99,30 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
-	# --- KEYBOARD & MOUSE INPUTS ---
+	# --- INPUTS ---
 	
-	# Jump (Spacebar / UI Accept)
 	if Input.is_action_just_pressed("ui_accept"): 
 		jump()
-		
-	# Interact (E / Tab / UI Focus Next)
 	if Input.is_action_just_pressed("ui_focus_next"): 
 		interact()
 	
-	# Attack (Left Mouse Click or Ctrl)
-	# Using 'is_mouse_button_pressed' allows holding for auto-fire (Run-and-Gun)
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_CTRL):
+	# Attack Input
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		attempting_mouse_fire = false
+	
+	if attempting_mouse_fire or Input.is_key_pressed(KEY_CTRL):
 		attack()
 		
-	# Reload (R Key)
+	# Reload
 	if Input.is_key_pressed(KEY_R):
 		reload()
 		
-	# Swap Weapon (Q Key)
+	# Swap Weapon
 	if Input.is_action_just_pressed("ui_page_up") or Input.is_key_pressed(KEY_Q):
 		var new_wep = "gun" if equipped_weapon == "knife" else "knife"
 		equip_weapon(new_wep)
 
 func _handle_platformer_movement(delta):
-	# ... (Keep Gravity & Jump Buffer logic same as before) ...
 	if not is_on_floor():
 		coyote_timer -= delta
 	else:
@@ -136,31 +141,25 @@ func _handle_platformer_movement(delta):
 			velocity.x = move_toward(velocity.x, input_x * SPEED, ACCELERATION * delta)
 			_update_facing_direction(input_x < 0)
 			
-			# --- ANIMATION LOGIC ---
+			# Animation Logic (Prioritize Run-Gun if shooting, else Run)
 			if is_attacking and equipped_weapon == "gun":
-				_play_anim("run_gun") # New Animation!
+				_play_anim("run_gun")
 			elif not is_attacking:
+				# Play 'run' even if reloading!
 				_play_anim("run")
 		else:
 			# IDLE
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
 			if is_attacking and equipped_weapon == "gun":
-				_play_anim("gun") # Standing Shoot
+				_play_anim("gun")
 			elif not is_attacking:
+				# Play 'idle' even if reloading!
 				_play_anim("idle")
 	else:
 		# AIR
 		if not is_attacking:
 			_play_anim("jump" if velocity.y < 0 else "fall")
 			
-func _update_facing_direction(is_left: bool):
-	if not sprite: return
-	
-	sprite.flip_h = is_left
-	
-	# Recalculate muzzle pos immediately based on new direction
-	_refresh_muzzle_transform()
-		
 func _handle_top_down_movement(delta):
 	var input_vector = joystick_direction
 	if input_vector == Vector2.ZERO:
@@ -172,7 +171,6 @@ func _handle_top_down_movement(delta):
 		if input_vector.x != 0:
 			_update_facing_direction(input_vector.x < 0)
 			
-		# --- ANIMATION LOGIC ---
 		if is_attacking and equipped_weapon == "gun":
 			_play_anim("run_gun")
 		elif not is_attacking:
@@ -183,9 +181,32 @@ func _handle_top_down_movement(delta):
 			_play_anim("gun")
 		elif not is_attacking:
 			_play_anim("idle")
-			
+
+func _update_facing_direction(is_left: bool):
+	if not sprite: return
+	
+	sprite.flip_h = is_left
+	_refresh_muzzle_transform()
+
+func _refresh_muzzle_transform():
+	if not sprite or not muzzle: return
+	
+	var current_anim = sprite.animation
+	var target_pos = muzzle_offsets.get(current_anim, muzzle_offsets["default"])
+	var is_facing_left = sprite.flip_h
+	
+	if is_facing_left:
+		muzzle.position.x = -abs(target_pos.x)
+		muzzle.position.y = target_pos.y
+		muzzle.scale.x = -1
+	else:
+		muzzle.position.x = abs(target_pos.x)
+		muzzle.position.y = target_pos.y
+		muzzle.scale.x = 1
+
 func attack():
-	if is_attacking or is_dead: return
+	# Block attack if reloading
+	if is_attacking or is_dead or is_reloading: return
 	
 	is_attacking = true
 	var cooldown = 0.6 
@@ -194,8 +215,6 @@ func attack():
 		var fired = _fire_bullet()
 		if fired:
 			cooldown = 0.15 
-			# ONLY play static 'gun' anim if we are NOT moving
-			# If we are moving, the physics process loop will catch it and play 'run_gun'
 			if velocity.length() == 0:
 				if sprite:
 					sprite.stop()
@@ -203,7 +222,7 @@ func attack():
 		else:
 			cooldown = 0.2
 	else:
-		# Knife Logic (Stop moving)
+		# Knife Logic
 		_play_anim(equipped_weapon)
 		if sfx_player and sfx_slash:
 			sfx_player.stream = sfx_slash
@@ -228,6 +247,7 @@ func _fire_bullet() -> bool:
 		if bullet_scene:
 			var bullet = bullet_scene.instantiate()
 			var is_left = sprite.flip_h
+			
 			if is_left:
 				bullet.direction = Vector2.LEFT
 				bullet.rotation_degrees = 180 
@@ -245,17 +265,36 @@ func _fire_bullet() -> bool:
 		return false
 
 func reload():
-	current_ammo = max_ammo
-	if is_instance_valid(GameState): GameState.current_ammo = current_ammo
-	ammo_changed.emit(current_ammo, max_ammo)
+	# 1. Validation Checks
+	if is_reloading: return
+	if current_ammo == max_ammo: return
+	
+	# 2. Start Reload State
+	print("Reloading...")
+	is_reloading = true
+	
+	# Play Sound immediately
 	if sfx_player and sfx_reload:
 		sfx_player.stream = sfx_reload
 		sfx_player.play()
+	
+	# 3. Wait 3 Seconds (Movement animations will continue playing in physics_process)
+	await get_tree().create_timer(1.5).timeout
+	
+	# 4. Finish Reload
+	current_ammo = max_ammo
+	if is_instance_valid(GameState): GameState.current_ammo = current_ammo
+	ammo_changed.emit(current_ammo, max_ammo)
+	
+	is_reloading = false
+	print("Reload Complete!")
 
 func equip_weapon(weapon_name: String):
+	# Optional: Cancel reload on swap?
+	# is_reloading = false 
+	
 	if weapon_name in ["knife", "gun"]:
 		equipped_weapon = weapon_name
-		# NEW: Emit signal so UI knows we switched via Keyboard
 		weapon_switched.emit(weapon_name) 
 
 func set_joystick_input(vec: Vector2): joystick_direction = vec
@@ -293,43 +332,4 @@ func _play_anim(anim_name: String):
 	if sprite and sprite.sprite_frames.has_animation(anim_name):
 		if sprite.animation != anim_name:
 			sprite.play(anim_name)
-			
-			# Recalculate muzzle pos immediately for the new animation pose
 			_refresh_muzzle_transform()
-
-func _update_muzzle_position(anim_name: String):
-	# 1. Get the target position from our dictionary (or use default)
-	var target_pos = muzzle_positions.get(anim_name, muzzle_positions["default"])
-	
-	# 2. Respect the player's facing direction
-	if sprite.flip_h: # Facing Left
-		target_pos.x = -abs(target_pos.x)
-	else: # Facing Right
-		target_pos.x = abs(target_pos.x)
-		
-	# 3. Apply position
-	if muzzle:
-		muzzle.position = target_pos
-		
-func _refresh_muzzle_transform():
-	if not sprite or not muzzle: return
-	
-	# 1. Get the base offset for the CURRENT animation
-	var current_anim = sprite.animation
-	var target_pos = muzzle_offsets.get(current_anim, muzzle_offsets["default"])
-	
-	# 2. Check Facing Direction
-	var is_facing_left = sprite.flip_h
-	
-	# 3. Apply Flip Logic
-	if is_facing_left:
-		# Flip X coordinate for Left
-		muzzle.position.x = -abs(target_pos.x)
-		muzzle.position.y = target_pos.y # Keep Y the same (usually)
-		muzzle.scale.x = -1 # Flip the flash sprite to point left
-	else:
-		# Normal Right Position
-		muzzle.position.x = abs(target_pos.x)
-		muzzle.position.y = target_pos.y
-		muzzle.scale.x = 1 # Normal flash sprite
-		
