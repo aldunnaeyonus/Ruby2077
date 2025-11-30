@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://b2bln1sacd826"]
+
+[ext_resource type="Texture2D" uid="uid://l46bu2g7wp5d" path="res://assets/drone/Idle.png" id="1_psqdo"]
+[ext_resource type="Script" uid="uid://cofq48tu3xxr5" path="res://scripts/drones/drone.gd" id="1_vhnb4"]
+[ext_resource type="Texture2D" uid="uid://b2f18ems65kl8" path="res://assets/drone/Walk.png" id="2_vhnb4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovy2r"]
+atlas = ExtResource("1_psqdo")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yu6j"]
+atlas = ExtResource("1_psqdo")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jccu3"]
+atlas = ExtResource("1_psqdo")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lnho1"]
+atlas = ExtResource("1_psqdo")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s48gp"]
+atlas = ExtResource("2_vhnb4")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3iemq"]
+atlas = ExtResource("2_vhnb4")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_byxve"]
+atlas = ExtResource("2_vhnb4")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1fob7"]
+atlas = ExtResource("2_vhnb4")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ssaha"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ovy2r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5yu6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jccu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lnho1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s48gp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3iemq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_byxve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1fob7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pi4yf"]
+radius = 6.0
+
+[node name="Drone" type="CharacterBody2D"]
+script = ExtResource("1_vhnb4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(6, 1)
+sprite_frames = SubResource("SpriteFrames_ssaha")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pi4yf")
+
+[node name="DecisionTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://ds61c7vd7h6tn"]
+[gd_scene load_steps=50 format=3 uid="uid://ds61c7vd7h6tn"]
 
 [ext_resource type="Script" uid="uid://cxwgnuwskwx7f" path="res://scripts/player/Player.gd" id="1_player"]
 [ext_resource type="AudioStream" uid="uid://d2qmfegcchqto" path="res://assets/sounds/9mm-pistol-shoot-short-reverb-7152.mp3" id="2_hd152"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://d26107l0immu6" path="res://assets/sounds/empty-gun-shot-6209.mp3" id="3_k8y5b"]
 [ext_resource type="AudioStream" uid="uid://nof7cl14y34l" path="res://assets/sounds/sword-slash-315218.mp3" id="5_hd152"]
 [ext_resource type="Texture2D" uid="uid://blxe1tisejwxp" path="res://assets/ui/2.png" id="6_k8y5b"]
+[ext_resource type="Texture2D" uid="uid://d3ed6wxkb6eou" path="res://assets/player/ruby-sheet copy.png" id="7_m58sq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s415c"]
 atlas = ExtResource("2_s415c")
@@ -136,6 +137,30 @@ region = Rect2(1600, 600, 400, 600)
 atlas = ExtResource("2_s415c")
 region = Rect2(2000, 600, 400, 600)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6n56"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(0, 600, 400, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mddgh"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(400, 600, 400, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41osl"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(800, 600, 400, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_htcnr"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(1200, 600, 400, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kudbt"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(1600, 600, 400, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jnn6"]
+atlas = ExtResource("7_m58sq")
+region = Rect2(2000, 600, 400, 600)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_pg2bq"]
 animations = [{
 "frames": [{
@@ -244,7 +269,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"knife",
-"speed": 13.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -268,13 +293,36 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k6n56")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mddgh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_41osl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_htcnr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kudbt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jnn6")
+}],
+"loop": false,
+"name": &"run_gun",
+"speed": 10.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(16, 58)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s415c"]
 size = Vector2(7.5, 6.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(16, 58)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player")
@@ -286,15 +334,8 @@ sfx_slash = ExtResource("5_hd152")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.335, 0.335)
 sprite_frames = SubResource("SpriteFrames_pg2bq")
-animation = &"knife"
+animation = &"run_gun"
 autoplay = "idle"
-frame = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-light_mask = 7
-visibility_layer = 7
-position = Vector2(-1, 48)
-shape = SubResource("RectangleShape2D_1")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
@@ -306,7 +347,7 @@ shape = SubResource("RectangleShape2D_s415c")
 disabled = true
 
 [node name="Muzzle" type="Marker2D" parent="."]
-position = Vector2(33, 20)
+position = Vector2(43, 24)
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Muzzle"]
 visible = false
@@ -321,8 +362,8 @@ volume_db = 24.0
 autoplay = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-enabled = false
-zoom = Vector2(2.5, 2.5)
+position = Vector2(-1, -140)
+zoom = Vector2(1.2, 1.2)
 process_callback = 0
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
@@ -331,3 +372,9 @@ drag_left_margin = 0.1
 drag_top_margin = 0.1
 drag_right_margin = 0.1
 drag_bottom_margin = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 7
+visibility_layer = 7
+position = Vector2(-1, 47.999996)
+shape = SubResource("RectangleShape2D_1")
